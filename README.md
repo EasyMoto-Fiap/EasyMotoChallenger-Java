@@ -56,7 +56,6 @@ O projeto implementa as seguintes entidades, todas com CRUD completo (GET, GET/{
 3. **Usando Oracle (SQL Developer):**
    - Abra o Oracle SQL Developer
    - Conecte-se ao seu banco
-   - Execute os comandos INSERT fornecidos em `data.sql`
 
 4. **Rode a aplicação pela sua IDE (IntelliJ/Eclipse):**
     - Encontre a classe principal `EasyMotoApplication.java`
