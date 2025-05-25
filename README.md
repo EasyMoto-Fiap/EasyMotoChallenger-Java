@@ -102,9 +102,8 @@ O projeto implementa as seguintes entidades, todas com CRUD completo (GET, GET/{
 4. **Acesse a aplicação:**
     - [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
 
-### Observações importantes
-
-- Os dados das entidades devem ser inseridos no Oracle manualmente (via SQL Developer), conforme os INSERTs fornecidos em `data.sql` ou na documentação.
+### Observações importantes:
 - Para deploy em nuvem (Azure/AWS), basta subir o Docker na VM e garantir o acesso externo à porta 8080.
-
+- os inserts estão no src/main em `DataSeeder.java`
+  
 ---
