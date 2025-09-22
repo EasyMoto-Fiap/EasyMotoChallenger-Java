@@ -1,26 +1,10 @@
 services:
-  # Serviço da Aplicação Java
-  easymoto-app:
-    build: .
-    container_name: easymoto-app
-    ports:
-      - "8080:8080"
-    environment:
-      # A URL agora aponta para o nome do serviço do banco
-      - DB_URL=jdbc:postgresql://postgres-db:5432/easymoto
-      - DB_USERNAME=easymoto_user
-      - DB_PASSWORD=easymoto_pass
-    depends_on:
-      - postgres-db
-    networks:
-      - easymoto-network
-
   # Serviço do Banco de Dados PostgreSQL
   postgres-db:
     image: postgres:15-alpine
     container_name: postgres-db
     ports:
-      - "5432:5432"
+      - "5432:5432" # Mapeia a porta do banco para o seu localhost
     environment:
       - POSTGRES_DB=easymoto
       - POSTGRES_USER=easymoto_user
@@ -30,14 +14,12 @@ services:
     networks:
       - easymoto-network
 
-  # NOVO: Interface Web para o Banco de Dados
+  # Interface Web para o Banco de Dados
   adminer:
     image: adminer
     container_name: adminer
     ports:
-      - "8081:8080" # Usamos a porta 8081 para não conflitar com a sua aplicação
-    depends_on:
-      - postgres-db
+      - "8081:8080"
     networks:
       - easymoto-network
 
