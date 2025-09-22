@@ -11,6 +11,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,6 +20,7 @@ public class FuncionarioService {
 
     private final FuncionarioRepository funcionarioRepository;
     private final FilialRepository filialRepository;
+    private final PasswordEncoder passwordEncoder; // Injete o encoder
 
     @Cacheable("funcionarios")
     public Page<FuncionarioResponse> listar(String nome, Pageable pageable) {
@@ -36,18 +38,21 @@ public class FuncionarioService {
         return toResponse(funcionario);
     }
 
+
+
     @CacheEvict(value = "funcionarios", allEntries = true)
     public FuncionarioResponse salvar(FuncionarioRequest dto) {
         Filial filial = filialRepository.findById(dto.filialId()).orElseThrow();
-        Funcionario funcionario = new Funcionario(
-                null,
-                dto.nomeFunc(),
-                dto.cpfFunc(),
-                dto.cargo(),
-                dto.telefoneFunc(),
-                dto.emailFunc(),
-                filial
-        );
+        String encryptedPassword = passwordEncoder.encode(dto.password());
+        Funcionario funcionario = new Funcionario();
+        funcionario.setNomeFunc(dto.nomeFunc());
+        funcionario.setCpfFunc(dto.cpfFunc());
+        funcionario.setCargo(dto.cargo());
+        funcionario.setTelefoneFunc(dto.telefoneFunc());
+        funcionario.setEmailFunc(dto.emailFunc());
+        funcionario.setPassword(encryptedPassword);
+        funcionario.setFilial(filial);
+
         return toResponse(funcionarioRepository.save(funcionario));
     }
 
@@ -55,12 +60,18 @@ public class FuncionarioService {
     public FuncionarioResponse atualizar(Long id, FuncionarioRequest dto) {
         Funcionario funcionario = funcionarioRepository.findById(id).orElseThrow();
         Filial filial = filialRepository.findById(dto.filialId()).orElseThrow();
+
         funcionario.setNomeFunc(dto.nomeFunc());
         funcionario.setCpfFunc(dto.cpfFunc());
         funcionario.setCargo(dto.cargo());
         funcionario.setTelefoneFunc(dto.telefoneFunc());
         funcionario.setEmailFunc(dto.emailFunc());
         funcionario.setFilial(filial);
+
+        if (dto.password() != null && !dto.password().isEmpty()) {
+            funcionario.setPassword(passwordEncoder.encode(dto.password()));
+        }
+
         return toResponse(funcionarioRepository.save(funcionario));
     }
 
@@ -77,6 +88,7 @@ public class FuncionarioService {
                 funcionario.getCargo(),
                 funcionario.getTelefoneFunc(),
                 funcionario.getEmailFunc(),
+                funcionario.getPassword(),
                 funcionario.getFilial().getId(),
                 funcionario.getFilial().getNomeFilial()
         );
