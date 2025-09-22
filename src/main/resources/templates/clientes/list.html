@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Clientes</title>
+</head>
+<body>
+    <h1>Clientes Cadastrados</h1>
+    <div th:if="${mensagem}" th:text="${mensagem}" style="color: green;"></div>
+    <a href="/web/clientes/novo">Cadastrar Novo Cliente</a>
+    <br/><br/>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>CPF</th>
+                <th>Email</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="cliente : ${clientes}">
+                <td th:text="${cliente.nomeCliente}"></td>
+                <td th:text="${cliente.cpfCliente}"></td>
+                <td th:text="${cliente.emailCliente}"></td>
+                <td>
+                    <a th:href="@{/web/clientes/editar/{id}(id=${cliente.id})}">Editar</a>
+                    <a th:if="${#authorization.expression('hasRole(''ADMIN'')')}"
+                       th:href="@{/web/clientes/deletar/{id}(id=${cliente.id})}">Excluir</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <br/>
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Sair"/>
+    </form>
+</body>
+</html>
