@@ -1,5 +1,6 @@
 package br.com.easymoto.dto;
 
+import br.com.easymoto.enums.TypeCargo;
 import jakarta.validation.constraints.*;
 
 public record FuncionarioRequest(
@@ -11,9 +12,8 @@ public record FuncionarioRequest(
         @Size(min = 11, max = 11)
         String cpfFunc,
 
-        @NotBlank
-        @Size(max = 50)
-        String cargo,
+        @NotNull
+        TypeCargo cargo,
 
         @NotBlank
         @Size(max = 15)
@@ -23,6 +23,9 @@ public record FuncionarioRequest(
         @Email
         @Size(max = 100)
         String emailFunc,
+
+        @NotBlank
+        String password,
 
         @NotNull
         Long filialId
