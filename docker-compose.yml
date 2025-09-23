@@ -15,11 +15,14 @@ services:
       - easymoto-network
 
   # Interface Web para o Banco de Dados
-  adminer:
-    image: adminer
-    container_name: adminer
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
     ports:
-      - "8081:8080"
+      - "5050:80" # Mapeia a porta do pgAdmin para a porta 5050 da VM
     networks:
       - easymoto-network
 
