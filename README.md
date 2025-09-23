@@ -7,7 +7,7 @@ O objetivo é facilitar o mapeamento inteligente de pátios, o gerenciamento de 
 
 ## 🛠️ Tecnologias Utilizadas
 
-- ☕ Java 17
+- ☕ Java 21
 - 🌱 Spring Boot 3
 - 🟦 Spring Data JPA
 - 🟩 Bean Validation
