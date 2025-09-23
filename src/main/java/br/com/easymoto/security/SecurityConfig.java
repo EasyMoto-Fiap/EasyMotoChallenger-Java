@@ -36,11 +36,11 @@ public class SecurityConfig {
     @Order(2)
     public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
         return http
-                .securityMatcher("/api/**" )
-                .csrf(AbstractHttpConfigurer::disable)
+                .securityMatcher("/api/**","/**" )
+                .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
@@ -57,7 +57,7 @@ public class SecurityConfig {
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .defaultSuccessUrl("/web/clientes", false)
+                        .defaultSuccessUrl("/clientes/list.thml", false)
                         .permitAll()
                 )
                 .logout(logout -> logout
