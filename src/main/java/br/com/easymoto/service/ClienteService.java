@@ -2,6 +2,7 @@ package br.com.easymoto.service;
 
 import br.com.easymoto.dto.ClienteRequest;
 import br.com.easymoto.dto.ClienteResponse;
+import br.com.easymoto.exception.ResourceNotFoundException;
 import br.com.easymoto.model.Cliente;
 import br.com.easymoto.repository.ClienteRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +30,7 @@ public class ClienteService {
     }
 
     public ClienteResponse buscarPorId(Long id) {
-        Cliente cliente = repository.findById(id).orElseThrow();
+        Cliente cliente = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado com o ID: " + id));
         return toResponse(cliente);
     }
 
@@ -46,7 +47,9 @@ public class ClienteService {
 
     @CacheEvict(value = "clientes", allEntries = true)
     public ClienteResponse atualizar(Long id, ClienteRequest dto) {
-        Cliente cliente = repository.findById(id).orElseThrow();
+        Cliente cliente = repository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Cliente não encontrado com o ID: " + id)
+        );
         cliente.setNomeCliente(dto.nomeCliente());
         cliente.setCpfCliente(dto.cpfCliente());
         cliente.setTelefoneCliente(dto.telefoneCliente());
