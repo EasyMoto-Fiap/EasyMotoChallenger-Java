@@ -10,10 +10,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.Optional;
-
 @Controller
-@RequestMapping("/web/clientes") // Usamos "/web" para não conflitar com a API
+@RequestMapping("/web/clientes")
 public class ClienteWebController {
 
     @Autowired
@@ -22,13 +20,21 @@ public class ClienteWebController {
     @GetMapping
     public String listarClientes(Model model) {
         model.addAttribute("clientes", clienteRepository.findAll());
-        return "clientes/list"; // Aponta para o arquivo templates/clientes/list.html
+        return "clientes/list";
     }
 
     @GetMapping("/novo")
     public String mostrarFormularioNovo(Model model) {
         model.addAttribute("cliente", new Cliente());
-        return "clientes/form"; // Aponta para templates/clientes/form.html
+        return "clientes/form";
+    }
+
+    @GetMapping("/editar/{id}")
+    public String mostrarFormularioEditar(@PathVariable("id") Long id, Model model) {
+        Cliente cliente = clienteRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("ID de Cliente inválido:" + id));
+        model.addAttribute("cliente", cliente);
+        return "clientes/form";
     }
 
     @PostMapping("/salvar")
@@ -36,19 +42,11 @@ public class ClienteWebController {
         if (result.hasErrors()) {
             return "clientes/form";
         }
-        clienteRepository.save(cliente);
-        redirectAttributes.addFlashAttribute("mensagem", "Cliente salvo com sucesso!");
-        return "redirect:/web/clientes";
-    }
 
-    @GetMapping("/editar/{id}")
-    public String mostrarFormularioEditar(@PathVariable("id") Long id, Model model) {
-        Optional<Cliente> cliente = clienteRepository.findById(id);
-        if (cliente.isEmpty()) {
-            return "redirect:/web/clientes";
-        }
-        model.addAttribute("cliente", cliente.get());
-        return "clientes/form";
+        String mensagem = (cliente.getId() == null) ? "Cliente cadastrado com sucesso!" : "Cliente atualizado com sucesso!";
+        clienteRepository.save(cliente);
+        redirectAttributes.addFlashAttribute("mensagem", mensagem);
+        return "redirect:/web/clientes";
     }
 
     @GetMapping("/deletar/{id}")

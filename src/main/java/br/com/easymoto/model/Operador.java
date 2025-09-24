@@ -3,6 +3,7 @@ package br.com.easymoto.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
+import org.hibernate.validator.constraints.br.CPF;
 
 @Entity
 @Data
@@ -23,6 +24,7 @@ public class Operador {
     @NotBlank
     @Size(min = 11, max = 11)
     @Column(name = "cpf_opr", unique = true)
+    @CPF
     private String cpfOpr;
 
     @NotBlank
