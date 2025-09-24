@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}" th:with="titulo='Empresas'" xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.w3.org/1999/xhtml">
+<section layout:fragment="conteudo">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1>Empresas Cadastradas</h1>
+        <a href="/web/empresas/novo" class="btn btn-primary">Nova Empresa</a>
+    </div>
+    <div th:if="${mensagem}" class="alert alert-success" th:text="${mensagem}"></div>
+    <table class="table table-striped table-hover">
+        <thead class="table-dark"><tr><th>Nome</th><th>CNPJ</th></tr></thead>
+        <tbody><tr th:each="emp : ${empresas}"><td th:text="${emp.nomeEmpresa()}"></td><td th:text="${emp.cnpj()}"></td></tr></tbody>
+    </table>
+</section>
+</html>

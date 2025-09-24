@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html
+        layout:decorate="~{layout}"
+        th:with="titulo='Formulário de Locação'"
+        xmlns:layout="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.w3.org/1999/xhtml"
+>
+<section layout:fragment="conteudo">
+    <h1>Formulário de Locação</h1>
+    <div class="card"><div class="card-body">
+        <form th:action="@{/web/locacoes/salvar}" th:object="${locacaoRequest}" method="post">
+            <div class="mb-3">
+                <label class="form-label">Cliente</label>
+                <select class="form-select" th:field="*{clienteId}" th:errorclass="is-invalid">
+                    <option value="">Selecione um cliente...</option>
+                    <option th:each="cli : ${clientes}" th:value="${cli.id}" th:text="${cli.nomeCliente}"></option>
+                </select>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('clienteId')}" th:errors="*{clienteId}"></div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Data de Início</label>
+                    <input type="date" class="form-control" th:field="*{dataInicio}" th:errorclass="is-invalid">
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('dataInicio')}" th:errors="*{dataInicio}"></div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Data de Fim</label>
+                    <input type="date" class="form-control" th:field="*{dataFim}" th:errorclass="is-invalid">
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('dataFim')}" th:errors="*{dataFim}"></div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Status da Locação</label>
+                <input type="text" class="form-control" th:field="*{statusLocacao}" th:errorclass="is-invalid">
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('statusLocacao')}" th:errors="*{statusLocacao}"></div>
+            </div>
+            <div class="mt-4">
+                <button type="submit" class="btn btn-success">Salvar</button>
+                <a th:href="@{/web/locacoes}" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div></div>
+</section>
+</html>

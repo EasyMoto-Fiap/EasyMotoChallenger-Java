@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}" th:with="titulo='Formulário de Empresa'" xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.w3.org/1999/xhtml">
+<section layout:fragment="conteudo">
+    <h1>Formulário de Empresa</h1>
+    <div class="card"><div class="card-body">
+        <form th:action="@{/web/empresas/salvar}" th:object="${empresaRequest}" method="post">
+            <div class="mb-3">
+                <label class="form-label">Nome da Empresa</label>
+                <input type="text" class="form-control" th:field="*{nomeEmpresa}" th:errorclass="is-invalid">
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('nomeEmpresa')}" th:errors="*{nomeEmpresa}"></div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">CNPJ</label>
+                <input type="text" class="form-control" th:field="*{cnpj}" th:errorclass="is-invalid">
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('cnpj')}" th:errors="*{cnpj}"></div>
+            </div>
+            <div class="mt-4"><button type="submit" class="btn btn-success">Salvar</button><a th:href="@{/web/empresas}" class="btn btn-secondary">Cancelar</a></div>
+        </form>
+    </div></div>
+</section>
+</html>
