@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{layout}"
+      th:with="titulo='Lista de Funcionários'"
+      xmlns:layout="http://www.w3.org/1999/xhtml"
+>
+
+    <section layout:fragment="conteudo">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h1>Funcionários Cadastrados</h1>
+            <a href="/web/funcionarios/novo" class="btn btn-primary">Novo Funcionário</a>
+        </div>
+
+        <div th:if="${mensagem}" class="alert alert-success" th:text="${mensagem}"></div>
+
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
+            <tr>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Cargo</th>
+                <th class="text-center">Ações</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="func : ${funcionarios}">
+                <td th:text="${func.nomeFunc()}"></td>
+                <td th:text="${func.emailFunc()}"></td>
+                <td th:text="${func.cargo()}"></td>
+                <td class="text-center">
+                    <button class="btn btn-warning btn-sm" disabled>Editar</button>
+                    <button class="btn btn-danger btn-sm" disabled>Excluir</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</html>

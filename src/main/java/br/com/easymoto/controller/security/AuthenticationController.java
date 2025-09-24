@@ -1,4 +1,4 @@
-package br.com.easymoto.controller;
+package br.com.easymoto.controller.security;
 
 import br.com.easymoto.dto.AuthenticationDTO;
 import br.com.easymoto.dto.LoginResponseDTO;

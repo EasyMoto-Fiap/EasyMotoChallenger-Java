@@ -15,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.header.writers.ContentSecurityPolicyHeaderWriter;
 
 @Configuration
 @EnableWebSecurity
@@ -23,15 +24,11 @@ public class SecurityConfig {
     @Autowired
     private SecurityFilter securityFilter;
 
-    /**
-     * Cadeia de Filtros para a API REST (/api/**).
-     * Prioridade 1: Stateless, desabilita CSRF e usa o filtro JWT.
-     */
     @Bean
     @Order(1)
     public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
         http
-                .securityMatcher("/api/**") // Aplica esta cadeia APENAS para URLs /api/**
+                .securityMatcher("/api/**")
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
@@ -42,32 +39,41 @@ public class SecurityConfig {
         return http.build();
     }
 
-    /**
-     * Cadeia de Filtros para a aplicação Web (Thymeleaf, Swagger, etc.).
-     * Prioridade 2: Fallback para tudo que não for /api/**.
-     */
     @Bean
     @Order(2)
     public SecurityFilterChain webFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(AbstractHttpConfigurer::disable) // Mantém o CSRF desabilitado
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-                        // Permite acesso a todas as URLs públicas necessárias
-                        .requestMatchers("/login", "/css/**", "/js/**", "/swagger-ui/**", "/v3/api-docs/**", "/error").permitAll()
-                        // Exige autenticação para todas as outras
+                        .requestMatchers("/login", "/forgot-password", "/css/**", "/js/**", "/images/**", "/swagger-ui/**", "/v3/api-docs/**", "/error").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
-                        .loginPage("/login") // Sua página de login
-                        .loginProcessingUrl("/login") // URL para a qual o formulário de login faz POST
-                        .defaultSuccessUrl("/web/clientes", true) // Onde ir em caso de sucesso
-                        .failureUrl("/login?error=true") // Onde ir em caso de falha (senha/usuário incorreto)
-                        .permitAll() // Permite acesso a todas as URLs relacionadas ao formLogin
+                        .loginPage("/login").permitAll()
+                        .loginProcessingUrl("/login")
+                        .defaultSuccessUrl("/", true)
+                        .failureUrl("/login?error=true")
                 )
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/login?logout")
-                        .permitAll());
+                        .permitAll()
+                )
+                .rememberMe(remember -> remember
+                        .key("chave-secreta-muito-forte")
+                        .tokenValiditySeconds(86400 * 7)
+                        .useSecureCookie(true)
+                        .rememberMeCookieName("remember-me-easymoto")
+                )
+                .headers(headers -> headers
+                        .addHeaderWriter(new ContentSecurityPolicyHeaderWriter(
+                                "default-src 'self'; " +
+                                        "script-src 'self' https://cdn.jsdelivr.net; " +
+                                        "style-src 'self' https://cdn.jsdelivr.net 'unsafe-inline'; " +
+                                        "img-src 'self' https://i.giphy.com data:;"
+                        ))
+                );
+
         return http.build();
     }
 

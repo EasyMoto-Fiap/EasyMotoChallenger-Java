@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{layout}"
+      th:with="titulo='Página Inicial'"
+      xmlns:sec="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.w3.org/1999/xhtml">
+
+<section layout:fragment="conteudo">
+    <div class="p-5 mb-4 bg-light rounded-3">
+        <div class="container-fluid py-5">
+            <h1 class="display-5 fw-bold">Bem-vindo ao EasyMoto!</h1>
+            <p class="col-md-8 fs-4">
+                Sistema de gerenciamento de pátios e locação de motocicletas.
+            </p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Gerenciar Clientes</h5>
+                    <p class="card-text">Visualize, crie e edite os clientes do sistema.</p>
+                    <a th:href="@{/web/clientes}" class="btn btn-primary">Ir para Clientes</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Gerenciar Motos</h5>
+                    <p class="card-text">Controle a frota de motocicletas, status e localização.</p>
+                    <a th:href="@{/web/motos}" class="btn btn-primary">Ir para Motos</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4" sec:authorize="hasRole('ADMIN')">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Administração</h5>
+                    <p class="card-text">Gerencie funcionários e outras configurações do sistema.</p>
+                    <a th:href="@{/web/funcionarios}" class="btn btn-warning">Ir para Funcionários</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</html>

@@ -9,4 +9,5 @@ public class EasyMotoApplication {
     public static void main(String[] args) {
         SpringApplication.run(EasyMotoApplication.class, args);
     }
+
 }
