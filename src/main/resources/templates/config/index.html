@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{layout}"
+      th:with="titulo='Configurações'"
+      xmlns:layout="http://www.w3.org/1999/xhtml"
+>
+
+<section layout:fragment="conteudo">
+    <h1>Configurações da Conta</h1>
+    <p>Altere suas informações pessoais e de segurança.</p>
+
+    <div class="card mt-4">
+        <div class="card-header">
+            Alterar Senha
+        </div>
+        <div class="card-body">
+            <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+            <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+            <form th:action="@{/web/config/change-password}" method="post">
+                <div class="mb-3">
+                    <label for="oldPassword" class="form-label">Senha Atual</label>
+                    <input type="password" class="form-control" id="oldPassword" name="oldPassword" required>
+                </div>
+                <div class="mb-3">
+                    <label for="newPassword" class="form-label">Nova Senha</label>
+                    <input type="password" class="form-control" id="newPassword" name="newPassword" required minlength="6">
+                </div>
+                <div class="mb-3">
+                    <label for="confirmPassword" class="form-label">Confirme a Nova Senha</label>
+                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required minlength="6">
+                </div>
+                <button type="submit" class="btn btn-primary">Alterar Senha</button>
+            </form>
+        </div>
+    </div>
+</section>
+</html>

@@ -2,6 +2,8 @@ package br.com.easymoto.service;
 
 import br.com.easymoto.dto.FuncionarioRequest;
 import br.com.easymoto.dto.FuncionarioResponse;
+import br.com.easymoto.exception.InvalidPasswordException;
+import br.com.easymoto.exception.ResourceNotFoundException;
 import br.com.easymoto.model.Filial;
 import br.com.easymoto.model.Funcionario;
 import br.com.easymoto.repository.FilialRepository;
@@ -11,6 +13,8 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -73,6 +77,23 @@ public class FuncionarioService {
         }
 
         return toResponse(funcionarioRepository.save(funcionario));
+    }
+
+    public void changePassword(String oldPassword, String newPassword) {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = ((UserDetails) principal).getUsername();
+
+        Funcionario funcionario = (Funcionario) funcionarioRepository.findByEmailFunc(username);
+        if (funcionario == null) {
+            throw new ResourceNotFoundException("Usuário não encontrado.");
+        }
+
+        if (!passwordEncoder.matches(oldPassword, funcionario.getPassword())) {
+            throw new InvalidPasswordException("A senha antiga está incorreta.");
+        }
+
+        funcionario.setPassword(passwordEncoder.encode(newPassword));
+        funcionarioRepository.save(funcionario);
     }
 
     @CacheEvict(value = "funcionarios", allEntries = true)

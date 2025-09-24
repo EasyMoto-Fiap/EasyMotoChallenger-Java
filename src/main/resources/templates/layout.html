@@ -31,7 +31,9 @@
                             Olá, <span sec:authentication="principal.nomeFunc">Usuário</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarUserDropdown">
-                            <li><a class="dropdown-item" th:href="@{/web/funcionarios}">Gerenciar Funcionários</a></li>
+                            <li sec:authorize="hasRole('ADMIN')">
+                                <a class="dropdown-item" th:href="@{/web/funcionarios}">Gerenciar Funcionários</a>
+                            </li>
                             <li><a class="dropdown-item" th:href="@{/web/empresas}">Gerenciar Empresas</a></li>
                             <li><a class="dropdown-item" th:href="@{/web/filiais}">Gerenciar Filiais</a></li>
                             <li><a class="dropdown-item" th:href="@{/web/patios}">Gerenciar Pátios</a></li>
@@ -39,10 +41,12 @@
                             <li><a class="dropdown-item" th:href="@{/web/localizacoes}">Gerenciar Localizações</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li>
+                                <li><a class="dropdown-item" th:href="@{/web/config}">Configurações</a></li>
                                 <form th:action="@{/logout}" method="post" class="d-flex">
                                     <button class="dropdown-item" type="submit">Sair</button>
                                 </form>
                             </li>
+
                         </ul>
                     </li>
                 </div>

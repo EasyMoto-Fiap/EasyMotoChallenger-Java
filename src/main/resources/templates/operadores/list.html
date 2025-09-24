@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}" th:with="titulo='Operadores'" xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.w3.org/1999/xhtml">
+<section layout:fragment="conteudo">
+    <h1 class="mb-3">Operadores (Somente Visualização)</h1>
+    <table class="table table-striped table-hover">
+        <thead class="table-dark"><tr><th>Nome</th><th>Email</th><th>Filial</th></tr></thead>
+        <tbody>
+        <tr th:each="op : ${operadores}">
+            <td th:text="${op.nomeOpr()}"></td>
+            <td th:text="${op.emailOpr()}"></td>
+            <td th:text="${op.filialNome()}"></td>
+        </tr>
+        </tbody>
+    </table>
+</section>
+</html>

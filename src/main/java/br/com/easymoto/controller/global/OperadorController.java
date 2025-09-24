@@ -1,8 +1,8 @@
-package br.com.easymoto.controller;
+package br.com.easymoto.controller.global;
 
-import br.com.easymoto.dto.PatioRequest;
-import br.com.easymoto.dto.PatioResponse;
-import br.com.easymoto.service.PatioService;
+import br.com.easymoto.dto.OperadorRequest;
+import br.com.easymoto.dto.OperadorResponse;
+import br.com.easymoto.service.OperadorService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -11,32 +11,32 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/patios")
+@RequestMapping("/api/operadores")
 @RequiredArgsConstructor
-@Tag(name = "Patio", description = "Endpoints para gerenciamento de pátios")
-public class PatioController {
+@Tag(name = "Operador", description = "Endpoints para gerenciamento de operadores")
+public class OperadorController {
 
-    private final PatioService service;
+    private final OperadorService service;
 
     @GetMapping
-    public Page<PatioResponse> listar(
+    public Page<OperadorResponse> listar(
             @RequestParam(required = false) String nome,
             Pageable pageable) {
         return service.listar(nome, pageable);
     }
 
     @GetMapping("/{id}")
-    public PatioResponse buscarPorId(@PathVariable Long id) {
+    public OperadorResponse buscarPorId(@PathVariable Long id) {
         return service.buscarPorId(id);
     }
 
     @PostMapping
-    public PatioResponse salvar(@RequestBody @Valid PatioRequest request) {
+    public OperadorResponse salvar(@RequestBody @Valid OperadorRequest request) {
         return service.salvar(request);
     }
 
     @PutMapping("/{id}")
-    public PatioResponse atualizar(@PathVariable Long id, @RequestBody @Valid PatioRequest request) {
+    public OperadorResponse atualizar(@PathVariable Long id, @RequestBody @Valid OperadorRequest request) {
         return service.atualizar(id, request);
     }
 

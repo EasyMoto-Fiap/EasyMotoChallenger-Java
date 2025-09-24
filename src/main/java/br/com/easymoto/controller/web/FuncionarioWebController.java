@@ -1,53 +1,92 @@
 package br.com.easymoto.controller.web;
 
+import br.com.easymoto.dto.FuncionarioRequest;
+import br.com.easymoto.dto.FuncionarioResponse;
+import br.com.easymoto.enums.TypeCargo;
 import br.com.easymoto.model.Funcionario;
 import br.com.easymoto.repository.FilialRepository;
+import br.com.easymoto.repository.FuncionarioRepository;
 import br.com.easymoto.service.FuncionarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.stream.Collectors;
+
 @Controller
 @RequestMapping("/web/funcionarios")
+@PreAuthorize("hasRole('ADMIN')") // Garante que apenas ADMINs acessem
 public class FuncionarioWebController {
 
-    @Autowired
-    private FuncionarioService funcionarioService;
-
-    @Autowired
-    private FilialRepository filialRepository;
+    @Autowired private FuncionarioService funcionarioService;
+    @Autowired private FuncionarioRepository funcionarioRepository;
+    @Autowired private FilialRepository filialRepository;
 
     @GetMapping
-    public String listarFuncionarios(Model model) {
-        // Aqui seria melhor buscar uma lista e não uma Page, mas para simplificar:
-        model.addAttribute("funcionarios", funcionarioService.listar(null, org.springframework.data.domain.Pageable.unpaged()).getContent());
+    public String listar(Model model) {
+        // CORREÇÃO: Converte a lista de Funcionario para FuncionarioResponse
+        var funcionariosResponse = funcionarioRepository.findAll().stream()
+                .map(f -> new FuncionarioResponse(f.getId(), f.getNomeFunc(), f.getCpfFunc(), f.getCargo(), f.getTelefoneFunc(), f.getEmailFunc(), null, f.getFilial().getId(), f.getFilial().getNomeFilial()))
+                .collect(Collectors.toList());
+        model.addAttribute("funcionarios", funcionariosResponse);
         return "funcionarios/list";
     }
 
     @GetMapping("/novo")
     public String mostrarFormularioNovo(Model model) {
-        model.addAttribute("funcionarioRequest", new br.com.easymoto.dto.FuncionarioRequest(null, null, null, null, null, null, null));
-        model.addAttribute("filiais", filialRepository.findAll()); // Popula o dropdown
-        model.addAttribute("cargos", br.com.easymoto.enums.TypeCargo.values());
+        var request = new FuncionarioRequest(null, null, null, null, null, "", null);
+        model.addAttribute("funcionarioRequest", request);
+        model.addAttribute("filiais", filialRepository.findAll());
+        model.addAttribute("cargos", TypeCargo.values());
         return "funcionarios/form";
     }
 
     @PostMapping("/salvar")
-    public String salvarFuncionario(@Valid @ModelAttribute("funcionarioRequest") br.com.easymoto.dto.FuncionarioRequest funcionarioRequest, BindingResult result, RedirectAttributes redirectAttributes, Model model) {
+    public String salvar(@Valid @ModelAttribute("funcionarioRequest") FuncionarioRequest request, BindingResult result, RedirectAttributes redirectAttributes, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("filiais", filialRepository.findAll());
-            model.addAttribute("cargos", br.com.easymoto.enums.TypeCargo.values());
+            model.addAttribute("cargos", TypeCargo.values());
             return "funcionarios/form";
         }
-        funcionarioService.salvar(funcionarioRequest);
+        funcionarioService.salvar(request);
         redirectAttributes.addFlashAttribute("mensagem", "Funcionário salvo com sucesso!");
         return "redirect:/web/funcionarios";
     }
 
-    // ATENÇÃO: Métodos para Editar e Deletar precisariam de mais lógica,
-    // como buscar o funcionário antes. Ficam como um próximo passo para você.
+    @GetMapping("/editar/{id}")
+    public String mostrarFormularioEditar(@PathVariable Long id, Model model) {
+        Funcionario funcionario = funcionarioRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Funcionário inválido:" + id));
+        var request = new FuncionarioRequest(
+                funcionario.getNomeFunc(),
+                funcionario.getCpfFunc(),
+                funcionario.getCargo(),
+                funcionario.getTelefoneFunc(),
+                funcionario.getEmailFunc(),
+                "", // Deixa a senha em branco por segurança
+                funcionario.getFilial().getId()
+        );
+        model.addAttribute("funcionarioRequest", request);
+        model.addAttribute("funcionarioId", id);
+        model.addAttribute("filiais", filialRepository.findAll());
+        model.addAttribute("cargos", TypeCargo.values());
+        return "funcionarios/form";
+    }
+
+    @PostMapping("/atualizar/{id}")
+    public String atualizar(@PathVariable Long id, @Valid @ModelAttribute("funcionarioRequest") FuncionarioRequest request, BindingResult result, RedirectAttributes redirectAttributes, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("funcionarioId", id);
+            model.addAttribute("filiais", filialRepository.findAll());
+            model.addAttribute("cargos", TypeCargo.values());
+            return "funcionarios/form";
+        }
+        funcionarioService.atualizar(id, request);
+        redirectAttributes.addFlashAttribute("mensagem", "Funcionário atualizado com sucesso!");
+        return "redirect:/web/funcionarios";
+    }
 }

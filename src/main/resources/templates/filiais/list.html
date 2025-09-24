@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}" th:with="titulo='Filiais'" xmlns:th="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.w3.org/1999/xhtml">
+<section layout:fragment="conteudo">
+    <h1 class="mb-3">Filiais (Somente Visualização)</h1>
+    <table class="table table-striped table-hover">
+        <thead class="table-dark"><tr><th>Nome</th><th>Cidade/Estado</th><th>Empresa</th></tr></thead>
+        <tbody>
+        <tr th:each="f : ${filiais}">
+            <td th:text="${f.nomeFilial()}"></td>
+            <td th:text="${f.cidade()} + '/' + ${f.estado()}"></td>
+            <td th:text="${f.empresaNome()}"></td>
+        </tr>
+        </tbody>
+    </table>
+</section>
+</html>

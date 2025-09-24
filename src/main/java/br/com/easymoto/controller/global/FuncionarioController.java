@@ -1,8 +1,8 @@
-package br.com.easymoto.controller;
+package br.com.easymoto.controller.global;
 
-import br.com.easymoto.dto.FilialRequest;
-import br.com.easymoto.dto.FilialResponse;
-import br.com.easymoto.service.FilialService;
+import br.com.easymoto.dto.FuncionarioRequest;
+import br.com.easymoto.dto.FuncionarioResponse;
+import br.com.easymoto.service.FuncionarioService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -11,32 +11,32 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/filiais")
+@RequestMapping("/api/funcionarios")
 @RequiredArgsConstructor
-@Tag(name = "Filial", description = "Endpoints para gerenciamento de filiais")
-public class FilialController {
+@Tag(name = "Funcionario", description = "Endpoints para gerenciamento de funcionários")
+public class FuncionarioController {
 
-    private final FilialService service;
+    private final FuncionarioService service;
 
     @GetMapping
-    public Page<FilialResponse> listar(
+    public Page<FuncionarioResponse> listar(
             @RequestParam(required = false) String nome,
             Pageable pageable) {
         return service.listar(nome, pageable);
     }
 
     @GetMapping("/{id}")
-    public FilialResponse buscarPorId(@PathVariable Long id) {
+    public FuncionarioResponse buscarPorId(@PathVariable Long id) {
         return service.buscarPorId(id);
     }
 
     @PostMapping
-    public FilialResponse salvar(@RequestBody @Valid FilialRequest request) {
+    public FuncionarioResponse salvar(@RequestBody @Valid FuncionarioRequest request) {
         return service.salvar(request);
     }
 
     @PutMapping("/{id}")
-    public FilialResponse atualizar(@PathVariable Long id, @RequestBody @Valid FilialRequest request) {
+    public FuncionarioResponse atualizar(@PathVariable Long id, @RequestBody @Valid FuncionarioRequest request) {
         return service.atualizar(id, request);
     }
 
