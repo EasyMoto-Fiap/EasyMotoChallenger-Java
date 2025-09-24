@@ -45,31 +45,32 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/login", "/forgot-password", "/css/**", "/js/**", "/images/**", "/swagger-ui/**", "/v3/api-docs/**", "/error").permitAll()
+                        .requestMatchers("/login", "/forgot-password", "/css/**", "/js/**", "/images/**", "/swagger-ui/**", "/v3/api-docs/**", "/error/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/login").permitAll()
-                        .loginProcessingUrl("/login")
                         .defaultSuccessUrl("/", true)
-                        .failureUrl("/login?error=true")
                 )
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/login?logout")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID", "remember-me-easymoto")
                         .permitAll()
                 )
                 .rememberMe(remember -> remember
-                        .key("chave-secreta-muito-forte")
-                        .tokenValiditySeconds(86400 * 7)
-                        .useSecureCookie(true)
+                        .key("chave-secreta-super-forte-e-aleatoria")
                         .rememberMeCookieName("remember-me-easymoto")
+                        .tokenValiditySeconds(86400 * 7)
                 )
                 .headers(headers -> headers
+                        .cacheControl(cache -> cache.disable()) // FORÇA o navegador a não usar cache em páginas seguras
                         .addHeaderWriter(new ContentSecurityPolicyHeaderWriter(
                                 "default-src 'self'; " +
                                         "script-src 'self' https://cdn.jsdelivr.net; " +
-                                        "style-src 'self' https://cdn.jsdelivr.net 'unsafe-inline'; " +
+                                        "style-src 'self' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com 'unsafe-inline'; " +
+                                        "font-src 'self' https://cdnjs.cloudflare.com; " + // <-- CORREÇÃO: Permite carregar as fontes dos ícones
                                         "img-src 'self' https://i.giphy.com data:;"
                         ))
                 );

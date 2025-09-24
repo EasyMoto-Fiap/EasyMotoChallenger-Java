@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}" th:with="titulo='Formulário de Vaga'" xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.w3.org/1999/xhtml">
+<section layout:fragment="conteudo">
+    <h1>Formulário de Vaga</h1>
+    <div class="card"><div class="card-body">
+        <form th:action="@{/web/vagas/salvar}" th:object="${vagaRequest}" method="post">
+            <div class="mb-3">
+                <label class="form-label">Pátio</label>
+                <select class="form-select" th:field="*{patioId}" th:errorclass="is-invalid">
+                    <option value="">Selecione um pátio...</option>
+                    <option th:each="p : ${patios}" th:value="${p.id}" th:text="${p.nomePatio}"></option>
+                </select>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('patioId')}" th:errors="*{patioId}"></div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Moto</label>
+                <select class="form-select" th:field="*{motoId}" th:errorclass="is-invalid">
+                    <option value="">Selecione uma moto...</option>
+                    <option th:each="m : ${motos}" th:value="${m.id}" th:text="${m.placa} + ' - ' + ${m.modelo}"></option>
+                </select>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('motoId')}" th:errors="*{motoId}"></div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Status da Vaga</label>
+                <input type="text" class="form-control" th:field="*{statusVaga}" th:errorclass="is-invalid">
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('statusVaga')}" th:errors="*{statusVaga}"></div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Fileira</label>
+                    <input type="text" class="form-control" th:field="*{fileira}" th:errorclass="is-invalid">
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('fileira')}" th:errors="*{fileira}"></div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Coluna</label>
+                    <input type="text" class="form-control" th:field="*{coluna}" th:errorclass="is-invalid">
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('coluna')}" th:errors="*{coluna}"></div>
+                </div>
+            </div>
+            <div class="mt-4">
+                <button type="submit" class="btn btn-success">Salvar</button>
+                <a th:href="@{/web/vagas}" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div></div>
+</section>
+</html>

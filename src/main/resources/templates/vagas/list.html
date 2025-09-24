@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html
+        layout:decorate="~{layout}"
+        th:with="titulo='Gerenciar Vagas'"
+      xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.w3.org/1999/xhtml"
+>
+<section layout:fragment="conteudo">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1>Gerenciar Vagas</h1>
+        <a href="/web/vagas/novo" class="btn btn-primary">Nova Vaga</a>
+    </div>
+    <div th:if="${mensagem}" class="alert alert-success" th:text="${mensagem}"></div>
+    <table class="table table-striped table-hover">
+        <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Pátio</th>
+            <th>Moto (Placa)</th>
+            <th>Status</th>
+            <th class="text-center">Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="vaga : ${vagas}">
+            <td th:text="${vaga.id()}"></td>
+            <td th:text="${vaga.patioNome()}"></td>
+            <td th:text="${vaga.motoPlaca()}"></td>
+            <td th:text="${vaga.statusVaga()}"></td>
+            <td class="text-center">
+                <a href="#" class="btn btn-warning btn-sm" disabled>Editar</a>
+                <a th:href="@{/web/vagas/deletar/{id}(id=${vaga.id()})}" class="btn btn-danger btn-sm" onclick="confirmarExclusao(event)">Excluir</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</section>
+</html>
