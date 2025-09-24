@@ -29,7 +29,7 @@
                 <td th:text="${func.emailFunc()}"></td>
                 <td th:text="${func.cargo()}"></td>
                 <td class="text-center">
-                    <button class="btn btn-warning btn-sm" disabled>Editar</button>
+                    <a th:href="@{/web/funcionarios/editar/{id}(id=${func.id})}" class="btn btn-warning btn-sm">Editar</a>
                     <button class="btn btn-danger btn-sm" disabled>Excluir</button>
                 </td>
             </tr>

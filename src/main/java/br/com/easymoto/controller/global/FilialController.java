@@ -1,8 +1,8 @@
-package br.com.easymoto.controller;
+package br.com.easymoto.controller.global;
 
-import br.com.easymoto.dto.OperadorRequest;
-import br.com.easymoto.dto.OperadorResponse;
-import br.com.easymoto.service.OperadorService;
+import br.com.easymoto.dto.FilialRequest;
+import br.com.easymoto.dto.FilialResponse;
+import br.com.easymoto.service.FilialService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -11,32 +11,32 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/operadores")
+@RequestMapping("/api/filiais")
 @RequiredArgsConstructor
-@Tag(name = "Operador", description = "Endpoints para gerenciamento de operadores")
-public class OperadorController {
+@Tag(name = "Filial", description = "Endpoints para gerenciamento de filiais")
+public class FilialController {
 
-    private final OperadorService service;
+    private final FilialService service;
 
     @GetMapping
-    public Page<OperadorResponse> listar(
+    public Page<FilialResponse> listar(
             @RequestParam(required = false) String nome,
             Pageable pageable) {
         return service.listar(nome, pageable);
     }
 
     @GetMapping("/{id}")
-    public OperadorResponse buscarPorId(@PathVariable Long id) {
+    public FilialResponse buscarPorId(@PathVariable Long id) {
         return service.buscarPorId(id);
     }
 
     @PostMapping
-    public OperadorResponse salvar(@RequestBody @Valid OperadorRequest request) {
+    public FilialResponse salvar(@RequestBody @Valid FilialRequest request) {
         return service.salvar(request);
     }
 
     @PutMapping("/{id}")
-    public OperadorResponse atualizar(@PathVariable Long id, @RequestBody @Valid OperadorRequest request) {
+    public FilialResponse atualizar(@PathVariable Long id, @RequestBody @Valid FilialRequest request) {
         return service.atualizar(id, request);
     }
 

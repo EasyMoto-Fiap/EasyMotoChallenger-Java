@@ -1,4 +1,4 @@
-package br.com.easymoto.controller;
+package br.com.easymoto.controller.global;
 
 import br.com.easymoto.dto.ClienteRequest;
 import br.com.easymoto.dto.ClienteResponse;

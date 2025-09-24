@@ -1,8 +1,8 @@
-package br.com.easymoto.controller;
+package br.com.easymoto.controller.global;
 
-import br.com.easymoto.dto.VagaRequest;
-import br.com.easymoto.dto.VagaResponse;
-import br.com.easymoto.service.VagaService;
+import br.com.easymoto.dto.ClienteLocacaoRequest;
+import br.com.easymoto.dto.ClienteLocacaoResponse;
+import br.com.easymoto.service.ClienteLocacaoService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -11,32 +11,32 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/vagas")
+@RequestMapping("/api/locacoes")
 @RequiredArgsConstructor
-@Tag(name = "Vaga", description = "Endpoints para gerenciamento de vagas")
-public class VagaController {
+@Tag(name = "Locacao", description = "Endpoints para gerenciamento de locações de clientes")
+public class ClienteLocacaoController {
 
-    private final VagaService service;
+    private final ClienteLocacaoService service;
 
     @GetMapping
-    public Page<VagaResponse> listar(
+    public Page<ClienteLocacaoResponse> listar(
             @RequestParam(required = false) String status,
             Pageable pageable) {
         return service.listar(status, pageable);
     }
 
     @GetMapping("/{id}")
-    public VagaResponse buscarPorId(@PathVariable Long id) {
+    public ClienteLocacaoResponse buscarPorId(@PathVariable Long id) {
         return service.buscarPorId(id);
     }
 
     @PostMapping
-    public VagaResponse salvar(@RequestBody @Valid VagaRequest request) {
+    public ClienteLocacaoResponse salvar(@RequestBody @Valid ClienteLocacaoRequest request) {
         return service.salvar(request);
     }
 
     @PutMapping("/{id}")
-    public VagaResponse atualizar(@PathVariable Long id, @RequestBody @Valid VagaRequest request) {
+    public ClienteLocacaoResponse atualizar(@PathVariable Long id, @RequestBody @Valid ClienteLocacaoRequest request) {
         return service.atualizar(id, request);
     }
 

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}" th:with="titulo='Pátios'" xmlns:th="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.w3.org/1999/xhtml">
+<section layout:fragment="conteudo">
+    <h1 class="mb-3">Pátios (Somente Visualização)</h1>
+    <table class="table table-striped table-hover">
+        <thead class="table-dark"><tr><th>Nome</th><th>Andar</th><th>Filial</th></tr></thead>
+        <tbody>
+        <tr th:each="p : ${patios}">
+            <td th:text="${p.nomePatio()}"></td>
+            <td th:text="${p.andar()}"></td>
+            <td th:text="${p.filialNome()}"></td>
+        </tr>
+        </tbody>
+    </table>
+</section>
+</html>
