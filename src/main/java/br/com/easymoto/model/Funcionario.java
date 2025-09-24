@@ -4,6 +4,7 @@ import br.com.easymoto.enums.TypeCargo;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
+import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,6 +31,7 @@ public class Funcionario implements UserDetails {
     @NotBlank
     @Size(min = 11, max = 11)
     @Column(name = "cpf_func", unique = true)
+    @CPF
     private String cpfFunc;
 
     @NotBlank
