@@ -1,4 +1,4 @@
-package br.com.easymoto.controller;
+package br.com.easymoto.controller.web;
 
 import br.com.easymoto.model.Cliente;
 import br.com.easymoto.repository.ClienteRepository;

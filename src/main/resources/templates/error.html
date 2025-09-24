@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{layout}" th:with="titulo='Ocorreu um Erro'"
+      xmlns:layout="http://www.w3.org/1999/xhtml"
+>
+
+<section layout:fragment="conteudo">
+    <div class="py-5 text-center">
+        <div th:if="${status == 404}">
+            <img th:src="@{/images/sad-gif.gif}" alt="Triste" class="mb-4" style="max-width: 200px;"/>
+            <h1 class="display-1">404</h1>
+            <h2>Página Não Encontrada</h2>
+            <p class="lead">
+                A página que você está procurando não existe ou foi movida.
+            </p>
+        </div>
+
+        <div th:unless="${status == 404}">
+            <h1 class="display-1" th:text="${status} ?: 'Erro'">500</h1>
+            <h2 th:text="${error} ?: 'Erro Inesperado'">Erro Inesperado</h2>
+            <p class="lead" th:text="${message} ?: 'Pedimos desculpas, mas algo deu errado.'">
+                Ocorreu um erro inesperado. Tente novamente mais tarde.
+            </p>
+        </div>
+
+        <a th:href="@{/}" class="btn btn-primary mt-3">Voltar para a Página Inicial</a>
+    </div>
+</section>
+</html>

@@ -1,4 +1,4 @@
-package br.com.easymoto.controller;
+package br.com.easymoto.controller.security;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
