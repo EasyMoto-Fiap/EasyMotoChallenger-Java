@@ -2,6 +2,7 @@ package br.com.easymoto.service;
 
 import br.com.easymoto.dto.VagaRequest;
 import br.com.easymoto.dto.VagaResponse;
+import br.com.easymoto.enums.StatusVaga;
 import br.com.easymoto.model.Moto;
 import br.com.easymoto.model.Patio;
 import br.com.easymoto.model.Vaga;
@@ -24,9 +25,9 @@ public class VagaService {
     private final PatioRepository patioRepository;
 
     @Cacheable("vagas")
-    public Page<VagaResponse> listar(String status, Pageable pageable) {
-        if (status != null && !status.isEmpty()) {
-            return vagaRepository.findByStatusVagaContainingIgnoreCase(status, pageable)
+    public Page<VagaResponse> listar(StatusVaga status, Pageable pageable) {
+        if (status != null) {
+            return vagaRepository.findByStatusVaga(status, pageable)
                     .map(this::toResponse);
         } else {
             return vagaRepository.findAll(pageable)

@@ -1,11 +1,11 @@
 package br.com.easymoto.dto;
 
+import br.com.easymoto.enums.StatusVaga;
 import jakarta.validation.constraints.*;
 
 public record VagaRequest(
-        @NotBlank
-        @Size(max = 20)
-        String statusVaga,
+        @NotNull
+        StatusVaga statusVaga,
 
         @NotNull
         Long patioId,

@@ -2,8 +2,9 @@
 <html
         layout:decorate="~{layout}"
         th:with="titulo='Gerenciar Vagas'"
-      xmlns:layout="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.w3.org/1999/xhtml"
+        xmlns:layout="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.w3.org/1999/xhtml"
+        xmlns:sec="http://www.w3.org/1999/xhtml"
 >
 <section layout:fragment="conteudo">
     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -11,6 +12,28 @@
         <a href="/web/vagas/novo" class="btn btn-primary">Nova Vaga</a>
     </div>
     <div th:if="${mensagem}" class="alert alert-success" th:text="${mensagem}"></div>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <form th:action="@{/web/vagas}" method="get" class="row g-3 align-items-center">
+                <div class="col-md-4">
+                    <label for="status" class="form-label">Filtrar por Status</label>
+                    <select id="status" name="status" class="form-select">
+                        <option value="">Todos os Status</option>
+                        <option th:each="s : ${statusOptions}"
+                                th:value="${s}"
+                                th:text="${s.displayName}"
+                                th:selected="${s == selectedStatus}"></option>
+                    </select>
+                </div>
+                <div class="col-md-auto mt-4">
+                    <button type="submit" class="btn btn-primary">Filtrar</button>
+                    <a th:href="@{/web/vagas}" class="btn btn-secondary">Limpar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <table class="table table-striped table-hover">
         <thead class="table-dark">
         <tr>
@@ -28,8 +51,9 @@
             <td th:text="${vaga.motoPlaca()}"></td>
             <td th:text="${vaga.statusVaga()}"></td>
             <td class="text-center">
-                <a href="#" class="btn btn-warning btn-sm" disabled>Editar</a>
-                <a th:href="@{/web/vagas/deletar/{id}(id=${vaga.id()})}" class="btn btn-danger btn-sm" onclick="confirmarExclusao(event)">Excluir</a>
+                <a sec:authorize="hasRole('ADMIN')" th:href="@{/web/vagas/editar/{id}(id=${vaga.id()})}" class="btn btn-warning btn-sm">Editar</a>
+                <a sec:authorize="!hasRole('ADMIN')" href="#" class="btn btn-warning btn-sm" disabled>Editar</a>
+                <a th:href="@{/web/vagas/deletar/{id}(id=${vaga.id()})}" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja excluir esta vaga?');">Excluir</a>
             </td>
         </tr>
         </tbody>

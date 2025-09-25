@@ -2,6 +2,7 @@ package br.com.easymoto.service;
 
 import br.com.easymoto.dto.MotoRequest;
 import br.com.easymoto.dto.MotoResponse;
+import br.com.easymoto.enums.StatusMoto;
 import br.com.easymoto.model.ClienteLocacao;
 import br.com.easymoto.model.Localizacao;
 import br.com.easymoto.model.Moto;
@@ -24,14 +25,16 @@ public class MotoService {
     private final LocalizacaoRepository localizacaoRepository;
 
     @Cacheable("motos")
-    public Page<MotoResponse> listar(String modelo, Pageable pageable) {
+    public Page<MotoResponse> listar(String modelo, StatusMoto status, Pageable pageable) {
+        if (status != null) {
+            return motoRepository.findByStatusMoto(status, pageable).map(this::toResponse);
+        }
         if (modelo != null && !modelo.isEmpty()) {
             return motoRepository.findByModeloContainingIgnoreCase(modelo, pageable)
                     .map(this::toResponse);
-        } else {
-            return motoRepository.findAll(pageable)
-                    .map(this::toResponse);
         }
+        return motoRepository.findAll(pageable)
+                .map(this::toResponse);
     }
 
     public MotoResponse buscarPorId(Long id) {

@@ -1,5 +1,6 @@
 package br.com.easymoto.model;
 
+import br.com.easymoto.enums.StatusLocacao;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -24,10 +25,10 @@ public class ClienteLocacao {
     @Column(name = "data_fim")
     private LocalDate dataFim;
 
-    @NotBlank
-    @Size(max = 20)
+    @NotNull
+    @Enumerated(EnumType.STRING)
     @Column(name = "status_locacao")
-    private String statusLocacao;
+    private StatusLocacao statusLocacao;
 
     @ManyToOne
     @JoinColumn(name = "cliente_id", nullable = false)
