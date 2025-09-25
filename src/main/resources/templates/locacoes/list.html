@@ -6,35 +6,33 @@
         xmlns:th="http://www.w3.org/1999/xhtml"
 >
 <section layout:fragment="conteudo">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h1>Gerenciar Locações</h1>
-        <a href="/web/locacoes/novo" class="btn btn-primary">Nova Locação</a>
+    <div class="card mb-4">
+        <div class="card-body">
+            <form th:action="@{/web/locacoes}" method="get" class="row g-3 align-items-center">
+                <div class="col-md-3">
+                    <label for="status" class="form-label">Status</label>
+                    <select id="status" name="status" class="form-select">
+                        <option value="">Todos</option>
+                        <option th:each="s : ${statusOptions}"
+                                th:value="${s}"
+                                th:text="${s.displayName}"
+                                th:selected="${s == selectedStatus}"></option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="dataInicio" class="form-label">De:</label>
+                    <input type="date" id="dataInicio" name="dataInicio" class="form-control" th:value="${selectedDataInicio}">
+                </div>
+                <div class="col-md-3">
+                    <label for="dataFim" class="form-label">Até:</label>
+                    <input type="date" id="dataFim" name="dataFim" class="form-control" th:value="${selectedDataFim}">
+                </div>
+                <div class="col-md-auto mt-4">
+                    <button type="submit" class="btn btn-primary">Filtrar</button>
+                    <a th:href="@{/web/locacoes}" class="btn btn-secondary">Limpar</a>
+                </div>
+            </form>
+        </div>
     </div>
-    <div th:if="${mensagem}" class="alert alert-success" th:text="${mensagem}"></div>
-    <table class="table table-striped table-hover">
-        <thead class="table-dark">
-            <tr>
-                <th>ID</th>
-                <th>Cliente</th>
-                <th>Data Início</th>
-                <th>Data Fim</th>
-                <th>Status</th>
-                <th class="text-center">Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="loc : ${locacoes}">
-                <td th:text="${loc.id()}"></td>
-                <td th:text="${loc.clienteNome()}"></td>
-                <td th:text="${#temporals.format(loc.dataInicio(), 'dd/MM/yyyy')}"></td>
-                <td th:text="${#temporals.format(loc.dataFim(), 'dd/MM/yyyy')}"></td>
-                <td th:text="${loc.statusLocacao()}"></td>
-                <td class="text-center">
-                    <a href="#" class="btn btn-warning btn-sm" disabled>Editar</a>
-                    <a th:href="@{/web/locacoes/deletar/{id}(id=${loc.id()})}" class="btn btn-danger btn-sm" onclick="confirmarExclusao(event)">Excluir</a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
 </section>
 </html>

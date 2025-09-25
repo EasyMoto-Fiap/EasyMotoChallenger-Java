@@ -1,48 +1,62 @@
 <!DOCTYPE html>
 <html
         layout:decorate="~{layout}"
-        th:with="titulo='Formulário de Moto'"
-      xmlns:layout="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.w3.org/1999/xhtml"
+        th:with="titulo=${isEditMode ? 'Editar Moto' : 'Nova Moto'}"
+        xmlns:layout="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.w3.org/1999/xhtml"
 >
-    <section layout:fragment="conteudo">
-        <h1>Formulário de Moto</h1>
-        <div class="card"><div class="card-body">
-            <form th:action="@{/web/motos/salvar}" th:object="${motoRequest}" method="post">
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Placa</label>
-                        <input type="text" class="form-control" th:field="*{placa}" th:errorclass="is-invalid">
-                        <div class="invalid-feedback" th:if="${#fields.hasErrors('placa')}" th:errors="*{placa}"></div>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Modelo</label>
-                        <input type="text" class="form-control" th:field="*{modelo}" th:errorclass="is-invalid">
-                        <div class="invalid-feedback" th:if="${#fields.hasErrors('modelo')}" th:errors="*{modelo}"></div>
-                    </div>
+<section layout:fragment="conteudo">
+    <h1 th:text="${isEditMode ? 'Editar Moto' : 'Cadastrar Nova Moto'}"></h1>
+    <div class="card"><div class="card-body">
+        <form th:action="${isEditMode} ? @{/web/motos/atualizar/{id}(id=${motoId})} : @{/web/motos/salvar}" th:object="${motoRequest}" method="post">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Placa</label>
+                    <input type="text" class="form-control" th:field="*{placa}" th:errorclass="is-invalid">
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('placa')}" th:errors="*{placa}"></div>
                 </div>
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Locação Associada</label>
-                        <select class="form-select" th:field="*{locacaoId}" th:errorclass="is-invalid">
-                            <option th:each="loc : ${locacoes}" th:value="${loc.id}" th:text="${'ID: ' + loc.id + ' - Cliente: ' + loc.cliente.nomeCliente}"></option>
-                        </select>
-                        <div class="invalid-feedback" th:if="${#fields.hasErrors('locacaoId')}" th:errors="*{locacaoId}"></div>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Localização Inicial</label>
-                        <select class="form-select" th:field="*{localizacaoId}" th:errorclass="is-invalid">
-                            <option th:each="loc : ${localizacoes}" th:value="${loc.id}" th:text="${'ID: ' + loc.id + ' - ' + loc.statusLoc}"></option>
-                        </select>
-                        <div class="invalid-feedback" th:if="${#fields.hasErrors('localizacaoId')}" th:errors="*{localizacaoId}"></div>
-                    </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Modelo</label>
+                    <input type="text" class="form-control" th:field="*{modelo}" th:errorclass="is-invalid">
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('modelo')}" th:errors="*{modelo}"></div>
                 </div>
-                <div class="mt-4">
-                    <button type="submit" class="btn btn-success">Salvar</button>
-                    <a th:href="@{/web/motos}" class="btn btn-secondary">Cancelar</a>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Ano de Fabricação</label>
+                    <input type="number" class="form-control" th:field="*{anoFabricacao}" th:errorclass="is-invalid">
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('anoFabricacao')}" th:errors="*{anoFabricacao}"></div>
                 </div>
-            </form>
-        </div>
-        </div>
-    </section>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Status da Moto</label>
+                    <input type="text" class="form-control" th:field="*{statusMoto}" th:errorclass="is-invalid">
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('statusMoto')}" th:errors="*{statusMoto}"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Locação Associada</label>
+                    <select class="form-select" th:field="*{locacaoId}" th:errorclass="is-invalid">
+                        <option value="">Selecione uma locação...</option>
+                        <option th:each="loc : ${locacoes}" th:value="${loc.id}" th:text="${'ID: ' + loc.id + ' - Cliente: ' + loc.cliente.nomeCliente}"></option>
+                    </select>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('locacaoId')}" th:errors="*{locacaoId}"></div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Localização Inicial</label>
+                    <select class="form-select" th:field="*{localizacaoId}" th:errorclass="is-invalid">
+                        <option value="">Selecione uma localização...</option>
+                        <option th:each="loc : ${localizacoes}" th:value="${loc.id}" th:text="${'ID: ' + loc.id + ' - ' + loc.statusLoc}"></option>
+                    </select>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('localizacaoId')}" th:errors="*{localizacaoId}"></div>
+                </div>
+            </div>
+            <div class="mt-4">
+                <button type="submit" class="btn btn-success">Salvar</button>
+                <a th:href="@{/web/motos}" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+    </div>
+</section>
 </html>

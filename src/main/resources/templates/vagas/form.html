@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html layout:decorate="~{layout}" th:with="titulo='Formulário de Vaga'" xmlns:layout="http://www.w3.org/1999/xhtml"
+<html layout:decorate="~{layout}" th:with="titulo=${isEditMode ? 'Editar Vaga' : 'Nova Vaga'}" xmlns:layout="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.w3.org/1999/xhtml">
 <section layout:fragment="conteudo">
-    <h1>Formulário de Vaga</h1>
+    <h1 th:text="${isEditMode ? 'Editar Vaga' : 'Nova Vaga'}"></h1>
     <div class="card"><div class="card-body">
-        <form th:action="@{/web/vagas/salvar}" th:object="${vagaRequest}" method="post">
+        <form th:action="${isEditMode} ? @{/web/vagas/atualizar/{id}(id=${vagaId})} : @{/web/vagas/salvar}" th:object="${vagaRequest}" method="post">
             <div class="mb-3">
                 <label class="form-label">Pátio</label>
                 <select class="form-select" th:field="*{patioId}" th:errorclass="is-invalid">

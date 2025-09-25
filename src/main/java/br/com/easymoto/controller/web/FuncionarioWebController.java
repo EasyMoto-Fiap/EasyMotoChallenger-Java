@@ -10,6 +10,8 @@ import br.com.easymoto.service.FuncionarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,7 +22,7 @@ import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/web/funcionarios")
-@PreAuthorize("hasRole('ADMIN')") // Garante que apenas ADMINs acessem
+@PreAuthorize("hasRole('ADMIN')")
 public class FuncionarioWebController {
 
     @Autowired private FuncionarioService funcionarioService;
@@ -29,7 +31,6 @@ public class FuncionarioWebController {
 
     @GetMapping
     public String listar(Model model) {
-        // CORREÇÃO: Converte a lista de Funcionario para FuncionarioResponse
         var funcionariosResponse = funcionarioRepository.findAll().stream()
                 .map(f -> new FuncionarioResponse(f.getId(), f.getNomeFunc(), f.getCpfFunc(), f.getCargo(), f.getTelefoneFunc(), f.getEmailFunc(), null, f.getFilial().getId(), f.getFilial().getNomeFilial()))
                 .collect(Collectors.toList());
@@ -67,7 +68,7 @@ public class FuncionarioWebController {
                 funcionario.getCargo(),
                 funcionario.getTelefoneFunc(),
                 funcionario.getEmailFunc(),
-                "", // Deixa a senha em branco por segurança
+                "",
                 funcionario.getFilial().getId()
         );
         model.addAttribute("funcionarioRequest", request);
@@ -87,6 +88,21 @@ public class FuncionarioWebController {
         }
         funcionarioService.atualizar(id, request);
         redirectAttributes.addFlashAttribute("mensagem", "Funcionário atualizado com sucesso!");
+        return "redirect:/web/funcionarios";
+    }
+
+    @GetMapping("/deletar/{id}")
+    public String deletar(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Funcionario funcionarioLogado = (Funcionario) funcionarioRepository.findByEmailFunc(userDetails.getUsername());
+
+        if (funcionarioLogado != null && funcionarioLogado.getId().equals(id)) {
+            redirectAttributes.addFlashAttribute("mensagemErro", "Ação não permitida: Você não pode excluir seu próprio usuário.");
+            return "redirect:/web/funcionarios";
+        }
+
+        funcionarioService.deletar(id);
+        redirectAttributes.addFlashAttribute("mensagem", "Funcionário deletado com sucesso!");
         return "redirect:/web/funcionarios";
     }
 }

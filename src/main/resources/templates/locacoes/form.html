@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html
         layout:decorate="~{layout}"
-        th:with="titulo='Formulário de Locação'"
+        th:with="titulo=${isEditMode ? 'Editar Locação' : 'Nova Locação'}"
         xmlns:layout="http://www.w3.org/1999/xhtml"
         xmlns:th="http://www.w3.org/1999/xhtml"
 >
 <section layout:fragment="conteudo">
-    <h1>Formulário de Locação</h1>
+    <h1 th:text="${isEditMode ? 'Editar Locação' : 'Nova Locação'}"></h1>
     <div class="card"><div class="card-body">
-        <form th:action="@{/web/locacoes/salvar}" th:object="${locacaoRequest}" method="post">
+        <form th:action="${isEditMode} ? @{/web/locacoes/atualizar/{id}(id=${locacaoId})} : @{/web/locacoes/salvar}" th:object="${locacaoRequest}" method="post">
             <div class="mb-3">
                 <label class="form-label">Cliente</label>
                 <select class="form-select" th:field="*{clienteId}" th:errorclass="is-invalid">

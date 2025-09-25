@@ -2,6 +2,7 @@ package br.com.easymoto.controller.global;
 
 import br.com.easymoto.dto.MotoRequest;
 import br.com.easymoto.dto.MotoResponse;
+import br.com.easymoto.enums.StatusMoto;
 import br.com.easymoto.service.MotoService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -21,8 +22,9 @@ public class MotoController {
     @GetMapping
     public Page<MotoResponse> listar(
             @RequestParam(required = false) String modelo,
+            @RequestParam(required = false) StatusMoto status,
             Pageable pageable) {
-        return service.listar(modelo, pageable);
+        return service.listar(modelo, status, pageable);
     }
 
     @GetMapping("/{id}")

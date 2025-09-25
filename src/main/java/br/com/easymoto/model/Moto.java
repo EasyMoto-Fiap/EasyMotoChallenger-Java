@@ -1,5 +1,6 @@
 package br.com.easymoto.model;
 
+import br.com.easymoto.enums.StatusMoto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -29,10 +30,10 @@ public class Moto {
     @Column(name = "ano_fabricacao")
     private Integer anoFabricacao;
 
-    @NotBlank
-    @Size(max = 20)
+    @NotNull
+    @Enumerated(EnumType.STRING)
     @Column(name = "status_moto")
-    private String statusMoto;
+    private StatusMoto statusMoto;
 
     @ManyToOne
     @JoinColumn(name = "locacao_id", nullable = false)

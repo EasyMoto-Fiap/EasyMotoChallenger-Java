@@ -1,5 +1,6 @@
 package br.com.easymoto.dto;
 
+import br.com.easymoto.enums.StatusMoto;
 import jakarta.validation.constraints.*;
 
 public record MotoRequest(
@@ -14,9 +15,8 @@ public record MotoRequest(
         @NotNull
         Integer anoFabricacao,
 
-        @NotBlank
-        @Size(max = 20)
-        String statusMoto,
+        @NotNull
+        StatusMoto statusMoto,
 
         @NotNull
         Long locacaoId,

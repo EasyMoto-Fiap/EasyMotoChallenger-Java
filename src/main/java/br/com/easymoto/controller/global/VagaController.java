@@ -2,6 +2,7 @@ package br.com.easymoto.controller.global;
 
 import br.com.easymoto.dto.VagaRequest;
 import br.com.easymoto.dto.VagaResponse;
+import br.com.easymoto.enums.StatusVaga;
 import br.com.easymoto.service.VagaService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -20,7 +21,7 @@ public class VagaController {
 
     @GetMapping
     public Page<VagaResponse> listar(
-            @RequestParam(required = false) String status,
+            @RequestParam(required = false) StatusVaga status,
             Pageable pageable) {
         return service.listar(status, pageable);
     }

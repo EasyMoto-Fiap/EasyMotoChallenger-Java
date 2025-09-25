@@ -1,5 +1,6 @@
 package br.com.easymoto.model;
 
+import br.com.easymoto.enums.StatusVaga;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -15,10 +16,11 @@ public class Vaga {
     @Column(name = "id_vaga")
     private Long id;
 
-    @NotBlank
-    @Size(max = 20)
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
     @Column(name = "status_vaga")
-    private String statusVaga;
+    private StatusVaga statusVaga;
 
     @ManyToOne
     @JoinColumn(name = "patio_id", nullable = false)
