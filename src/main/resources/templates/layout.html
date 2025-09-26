@@ -23,6 +23,7 @@
                     <li class="nav-item"><a class="nav-link" th:href="@{/web/motos}">Motos</a></li>
                     <li class="nav-item"><a class="nav-link" th:href="@{/web/locacoes}">Locações</a></li>
                     <li class="nav-item"><a class="nav-link" th:href="@{/web/vagas}">Vagas</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/web/noticias}">Notícias</a></li>
                 </ul>
                 <div class="navbar-nav">
                     <li class="nav-item dropdown">
@@ -30,12 +31,17 @@
                             Olá, <span sec:authentication="principal.nomeFunc">Usuário</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarUserDropdown">
-                            <li sec:authorize="hasRole('ADMIN')"><a class="dropdown-item" th:href="@{/web/funcionarios}">Gerenciar Funcionários</a></li>
+                            <li sec:authorize="hasRole('ADMIN')">
+                                <h6 class="dropdown-header">Administração</h6>
+                                <a class="dropdown-item" th:href="@{/web/funcionarios}">Gerenciar Funcionários</a>
+                                <a class="dropdown-item" th:href="@{/web/localizacoes}">Gerenciar Localizações</a>
+                            <li><hr class="dropdown-divider"></li>
+                            <h6 class="dropdown-header">Empresa</h6>
+                            </li>
                             <li><a class="dropdown-item" th:href="@{/web/empresas}">Empresas</a></li>
                             <li><a class="dropdown-item" th:href="@{/web/filiais}">Filiais</a></li>
                             <li><a class="dropdown-item" th:href="@{/web/patios}">Pátios</a></li>
                             <li><a class="dropdown-item" th:href="@{/web/operadores}">Operadores</a></li>
-                            <li sec:authorize="hasRole('ADMIN')"><a class="dropdown-item" th:href="@{/web/localizacoes}">Localizações</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" th:href="@{/web/config}">Configurações da Conta</a></li>
                             <li>
