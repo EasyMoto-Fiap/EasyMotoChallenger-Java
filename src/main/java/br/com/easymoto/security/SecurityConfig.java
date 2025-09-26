@@ -65,12 +65,12 @@ public class SecurityConfig {
                         .tokenValiditySeconds(86400 * 7)
                 )
                 .headers(headers -> headers
-                        .cacheControl(cache -> cache.disable()) // FORÇA o navegador a não usar cache em páginas seguras
+                        .cacheControl(cache -> cache.disable())
                         .addHeaderWriter(new ContentSecurityPolicyHeaderWriter(
                                 "default-src 'self'; " +
                                         "script-src 'self' https://cdn.jsdelivr.net; " +
                                         "style-src 'self' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com 'unsafe-inline'; " +
-                                        "font-src 'self' https://cdnjs.cloudflare.com; " + // <-- CORREÇÃO: Permite carregar as fontes dos ícones
+                                        "font-src 'self' https://cdnjs.cloudflare.com; " +
                                         "img-src 'self' https://i.giphy.com data:;"
                         ))
                 );
