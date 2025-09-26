@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org"
       layout:decorate="~{layout}" th:with="titulo='Lista de Clientes'" xmlns:layout="http://www.w3.org/1999/xhtml">
-
 <section layout:fragment="conteudo">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h1>Clientes Cadastrados</h1>
@@ -9,14 +8,12 @@
     </div>
 
     <div th:if="${mensagem}" class="alert alert-success" th:text="${mensagem}"></div>
+    <div th:if="${mensagemErro}" class="alert alert-danger" th:text="${mensagemErro}"></div>
 
     <table class="table table-striped table-hover">
         <thead class="table-dark">
         <tr>
-            <th>Nome</th>
-            <th>Telefone</th>
-            <th>Email</th>
-            <th class="text-center">Ações</th>
+            <th>Nome</th><th>Telefone</th><th>Email</th><th class="text-center">Ações</th>
         </tr>
         </thead>
         <tbody>
@@ -28,8 +25,7 @@
                 <a th:href="@{/web/clientes/editar/{id}(id=${cliente.id})}" class="btn btn-warning btn-sm">Editar</a>
                 <a th:if="${#authorization.expression('hasRole(''ADMIN'')')}"
                    th:href="@{/web/clientes/deletar/{id}(id=${cliente.id})}"
-                   class="btn btn-danger btn-sm"
-                   onclick="confirmarExclusao(event)">Excluir</a>
+                   class="btn btn-danger btn-sm">Excluir</a>
             </td>
         </tr>
         </tbody>

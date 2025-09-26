@@ -1,4 +1,4 @@
-package br.com.easymoto.controller.error;
+package br.com.easymoto.controller.web;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
