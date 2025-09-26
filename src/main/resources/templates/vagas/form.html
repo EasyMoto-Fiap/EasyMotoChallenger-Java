@@ -6,6 +6,13 @@
     <div class="card"><div class="card-body">
         <form th:action="${isEditMode} ? @{/web/vagas/atualizar/{id}(id=${vagaId})} : @{/web/vagas/salvar}" th:object="${vagaRequest}" method="post">
             <div class="mb-3">
+                <label for="statusVaga" class="form-label">Status da Vaga</label>
+                <select id="statusVaga" class="form-select" th:field="*{statusVaga}" th:errorclass="is-invalid">
+                    <option th:each="s : ${statusOptions}" th:value="${s}" th:text="${s.displayName}"></option>
+                </select>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('statusVaga')}" th:errors="*{statusVaga}"></div>
+            </div>
+            <div class="mb-3">
                 <label class="form-label">Pátio</label>
                 <select class="form-select" th:field="*{patioId}" th:errorclass="is-invalid">
                     <option value="">Selecione um pátio...</option>
@@ -20,11 +27,6 @@
                     <option th:each="m : ${motos}" th:value="${m.id}" th:text="${m.placa} + ' - ' + ${m.modelo}"></option>
                 </select>
                 <div class="invalid-feedback" th:if="${#fields.hasErrors('motoId')}" th:errors="*{motoId}"></div>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Status da Vaga</label>
-                <input type="text" class="form-control" th:field="*{statusVaga}" th:errorclass="is-invalid">
-                <div class="invalid-feedback" th:if="${#fields.hasErrors('statusVaga')}" th:errors="*{statusVaga}"></div>
             </div>
             <div class="row">
                 <div class="col-md-6 mb-3">

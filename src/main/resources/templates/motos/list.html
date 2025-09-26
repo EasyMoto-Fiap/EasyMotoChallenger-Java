@@ -6,6 +6,12 @@
         xmlns:layout="http://www.w3.org/1999/xhtml">
 
 <section layout:fragment="conteudo">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1>Frota de Motos</h1>
+        <a href="/web/motos/novo" class="btn btn-primary">Cadastrar Nova Moto</a>
+    </div>
+    <div th:if="${mensagem}" class="alert alert-success" th:text="${mensagem}"></div>
+
     <div class="card mb-4">
         <div class="card-body">
             <form th:action="@{/web/motos}" method="get" class="row g-3 align-items-center">
@@ -26,5 +32,21 @@
             </form>
         </div>
     </div>
+
+    <table class="table table-striped table-hover">
+        <thead class="table-dark">
+        <tr><th>Placa</th><th>Modelo</th><th>Status</th><th class="text-center">Ações</th></tr>
+        </thead>
+        <tbody>
+        <tr th:each="moto : ${motos}">
+            <td th:text="${moto.placa()}"></td>
+            <td th:text="${moto.modelo()}"></td>
+            <td th:text="${moto.statusMoto().displayName}"></td> <td class="text-center">
+            <a th:href="@{/web/motos/editar/{id}(id=${moto.id()})}" class="btn btn-warning btn-sm">Editar</a>
+            <a th:href="@{/web/motos/deletar/{id}(id=${moto.id()})}" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja excluir esta moto?');">Excluir</a>
+        </td>
+        </tr>
+        </tbody>
+    </table>
 </section>
 </html>
