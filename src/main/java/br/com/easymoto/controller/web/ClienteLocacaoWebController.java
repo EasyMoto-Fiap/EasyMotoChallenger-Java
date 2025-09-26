@@ -3,11 +3,13 @@ package br.com.easymoto.controller.web;
 import br.com.easymoto.dto.ClienteLocacaoRequest;
 import br.com.easymoto.enums.StatusLocacao;
 import br.com.easymoto.model.ClienteLocacao;
+import br.com.easymoto.model.Moto;
 import br.com.easymoto.repository.ClienteLocacaoRepository;
 import br.com.easymoto.repository.ClienteRepository;
 import br.com.easymoto.service.ClienteLocacaoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -95,10 +97,18 @@ public class ClienteLocacaoWebController {
         return "redirect:/web/locacoes";
     }
 
+
+
     @GetMapping("/deletar/{id}")
     public String deletar(@PathVariable Long id, RedirectAttributes redirectAttributes) {
-        locacaoService.deletar(id);
-        redirectAttributes.addFlashAttribute("mensagem", "Locação deletada com sucesso!");
+        try {
+            locacaoService.deletar(id);
+            redirectAttributes.addFlashAttribute("mensagem", "Locação deletada com sucesso!");
+        } catch (DataIntegrityViolationException e) {
+            redirectAttributes.addFlashAttribute("mensagemErro", "Não é possível excluir a locação, pois ela está associada a uma moto.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("mensagemErro", "Ocorreu um erro ao tentar excluir a locação.");
+        }
         return "redirect:/web/locacoes";
     }
 }

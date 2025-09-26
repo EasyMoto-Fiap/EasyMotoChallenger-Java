@@ -9,6 +9,7 @@ import br.com.easymoto.repository.VagaRepository;
 import br.com.easymoto.service.VagaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -98,8 +99,14 @@ public class VagaWebController {
 
     @GetMapping("/deletar/{id}")
     public String deletar(@PathVariable Long id, RedirectAttributes redirectAttributes) {
-        vagaService.deletar(id);
-        redirectAttributes.addFlashAttribute("mensagem", "Vaga deletada com sucesso!");
+        try {
+            vagaService.deletar(id);
+            redirectAttributes.addFlashAttribute("mensagem", "Vaga deletada com sucesso!");
+        } catch (DataIntegrityViolationException e) {
+            redirectAttributes.addFlashAttribute("mensagemErro", "Ocorreu um erro de integridade ao tentar excluir a vaga.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("mensagemErro", "Ocorreu um erro ao tentar excluir a vaga.");
+        }
         return "redirect:/web/vagas";
     }
 }

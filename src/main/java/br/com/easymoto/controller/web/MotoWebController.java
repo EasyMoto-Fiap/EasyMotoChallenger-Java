@@ -9,6 +9,7 @@ import br.com.easymoto.repository.MotoRepository;
 import br.com.easymoto.service.MotoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -96,9 +97,23 @@ public class MotoWebController {
     }
 
     @GetMapping("/deletar/{id}")
+    public String showDeleteConfirmation(@PathVariable Long id, Model model) {
+        Moto moto = motoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("ID inválido"));
+        model.addAttribute("itemName", "Moto");
+        model.addAttribute("itemDetails", moto.getPlaca() + " - " + moto.getModelo());
+        model.addAttribute("deleteUrl", "/web/motos/deletar/" + id);
+        model.addAttribute("cancelUrl", "/web/motos");
+        return "delete-confirm";
+    }
+
+    @PostMapping("/deletar/{id}")
     public String deletar(@PathVariable Long id, RedirectAttributes redirectAttributes) {
-        motoService.deletar(id);
-        redirectAttributes.addFlashAttribute("mensagem", "Moto deletada com sucesso!");
+        try {
+            motoService.deletar(id);
+            redirectAttributes.addFlashAttribute("mensagem", "Moto deletada com sucesso!");
+        } catch (DataIntegrityViolationException e) {
+            redirectAttributes.addFlashAttribute("mensagemErro", "Não é possível excluir a moto, pois ela está associada a uma vaga.");
+        }
         return "redirect:/web/motos";
     }
 }

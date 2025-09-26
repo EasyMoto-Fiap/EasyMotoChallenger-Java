@@ -1,0 +1,22 @@
+:root {
+    --mottu-green: #00B25A;
+    --mottu-dark-green: #008C47;
+}
+
+body {
+    --bs-primary: var(--mottu-green);
+    --bs-primary-rgb: 0, 178, 90;
+    --bs-btn-hover-bg: var(--mottu-dark-green);
+    --bs-btn-hover-border-color: var(--mottu-dark-green);
+    --bs-link-color: var(--mottu-dark-green);
+    --bs-link-hover-color: var(--mottu-dark-green);
+}
+
+.btn-primary {
+    --bs-btn-bg: var(--mottu-green);
+    --bs-btn-border-color: var(--mottu-green);
+}
+
+.bg-primary {
+    background-color: var(--mottu-green) !important;
+}
