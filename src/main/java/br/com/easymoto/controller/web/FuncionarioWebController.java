@@ -9,6 +9,7 @@ import br.com.easymoto.repository.FuncionarioRepository;
 import br.com.easymoto.service.FuncionarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,7 +18,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.util.stream.Collectors;
 
 @Controller
@@ -40,8 +40,7 @@ public class FuncionarioWebController {
 
     @GetMapping("/novo")
     public String mostrarFormularioNovo(Model model) {
-        var request = new FuncionarioRequest(null, null, null, null, null, "", null);
-        model.addAttribute("funcionarioRequest", request);
+        model.addAttribute("funcionarioRequest", new FuncionarioRequest(null, null, null, null, null, "", null));
         model.addAttribute("filiais", filialRepository.findAll());
         model.addAttribute("cargos", TypeCargo.values());
         return "funcionarios/form";
@@ -55,7 +54,7 @@ public class FuncionarioWebController {
             return "funcionarios/form";
         }
         funcionarioService.salvar(request);
-        redirectAttributes.addFlashAttribute("mensagem", "Funcionário salvo com sucesso!");
+        redirectAttributes.addFlashAttribute("mensagem", "Funcionário cadastrado com sucesso!");
         return "redirect:/web/funcionarios";
     }
 
@@ -63,13 +62,8 @@ public class FuncionarioWebController {
     public String mostrarFormularioEditar(@PathVariable Long id, Model model) {
         Funcionario funcionario = funcionarioRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Funcionário inválido:" + id));
         var request = new FuncionarioRequest(
-                funcionario.getNomeFunc(),
-                funcionario.getCpfFunc(),
-                funcionario.getCargo(),
-                funcionario.getTelefoneFunc(),
-                funcionario.getEmailFunc(),
-                "",
-                funcionario.getFilial().getId()
+                funcionario.getNomeFunc(), funcionario.getCpfFunc(), funcionario.getCargo(),
+                funcionario.getTelefoneFunc(), funcionario.getEmailFunc(), "", funcionario.getFilial().getId()
         );
         model.addAttribute("funcionarioRequest", request);
         model.addAttribute("funcionarioId", id);
@@ -86,23 +80,44 @@ public class FuncionarioWebController {
             model.addAttribute("cargos", TypeCargo.values());
             return "funcionarios/form";
         }
-        funcionarioService.atualizar(id, request);
-        redirectAttributes.addFlashAttribute("mensagem", "Funcionário atualizado com sucesso!");
+
+        boolean isPasswordChanged = request.password() != null && !request.password().isEmpty();
+        FuncionarioResponse funcionarioAtualizado = funcionarioService.atualizar(id, request);
+
+        String successMessage = isPasswordChanged
+                ? "Senha de " + funcionarioAtualizado.nomeFunc() + " atualizada com sucesso!"
+                : "Dados de " + funcionarioAtualizado.nomeFunc() + " atualizados com sucesso!";
+
+        redirectAttributes.addFlashAttribute("mensagem", successMessage);
         return "redirect:/web/funcionarios";
     }
 
     @GetMapping("/deletar/{id}")
-    public String deletar(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+    public String showDeleteConfirmation(@PathVariable Long id, RedirectAttributes redirectAttributes, Model model) {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Funcionario funcionarioLogado = (Funcionario) funcionarioRepository.findByEmailFunc(userDetails.getUsername());
+        Funcionario funcionarioLogado = funcionarioRepository.findByEmailFunc(userDetails.getUsername());
 
         if (funcionarioLogado != null && funcionarioLogado.getId().equals(id)) {
             redirectAttributes.addFlashAttribute("mensagemErro", "Ação não permitida: Você não pode excluir seu próprio usuário.");
             return "redirect:/web/funcionarios";
         }
 
-        funcionarioService.deletar(id);
-        redirectAttributes.addFlashAttribute("mensagem", "Funcionário deletado com sucesso!");
+        Funcionario funcionarioParaDeletar = funcionarioRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("ID inválido"));
+        model.addAttribute("itemName", "Funcionário");
+        model.addAttribute("itemDetails", funcionarioParaDeletar.getNomeFunc());
+        model.addAttribute("deleteUrl", "/web/funcionarios/deletar/" + id);
+        model.addAttribute("cancelUrl", "/web/funcionarios");
+        return "delete-confirm";
+    }
+
+    @PostMapping("/deletar/{id}")
+    public String deletar(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        try {
+            funcionarioService.deletar(id);
+            redirectAttributes.addFlashAttribute("mensagem", "Funcionário deletado com sucesso!");
+        } catch (DataIntegrityViolationException e) {
+            redirectAttributes.addFlashAttribute("mensagemErro", "Não é possível excluir o funcionário, pois ele pode ter registros associados.");
+        }
         return "redirect:/web/funcionarios";
     }
 }

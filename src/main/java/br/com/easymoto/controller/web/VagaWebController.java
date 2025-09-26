@@ -98,14 +98,22 @@ public class VagaWebController {
     }
 
     @GetMapping("/deletar/{id}")
+    public String showDeleteConfirmation(@PathVariable Long id, Model model) {
+        Vaga vaga = vagaRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("ID inválido"));
+        model.addAttribute("itemName", "Vaga");
+        model.addAttribute("itemDetails", "ID " + vaga.getId() + " (Pátio: " + vaga.getPatio().getNomePatio() + ")");
+        model.addAttribute("deleteUrl", "/web/vagas/deletar/" + id);
+        model.addAttribute("cancelUrl", "/web/vagas");
+        return "delete-confirm";
+    }
+
+    @PostMapping("/deletar/{id}")
     public String deletar(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         try {
             vagaService.deletar(id);
             redirectAttributes.addFlashAttribute("mensagem", "Vaga deletada com sucesso!");
         } catch (DataIntegrityViolationException e) {
             redirectAttributes.addFlashAttribute("mensagemErro", "Ocorreu um erro de integridade ao tentar excluir a vaga.");
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("mensagemErro", "Ocorreu um erro ao tentar excluir a vaga.");
         }
         return "redirect:/web/vagas";
     }

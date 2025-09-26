@@ -31,8 +31,13 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarUserDropdown">
                             <li sec:authorize="hasRole('ADMIN')"><a class="dropdown-item" th:href="@{/web/funcionarios}">Gerenciar Funcionários</a></li>
-                            <li><a class="dropdown-item" th:href="@{/web/config}">Configurações</a></li>
+                            <li><a class="dropdown-item" th:href="@{/web/empresas}">Empresas</a></li>
+                            <li><a class="dropdown-item" th:href="@{/web/filiais}">Filiais</a></li>
+                            <li><a class="dropdown-item" th:href="@{/web/patios}">Pátios</a></li>
+                            <li><a class="dropdown-item" th:href="@{/web/operadores}">Operadores</a></li>
+                            <li sec:authorize="hasRole('ADMIN')"><a class="dropdown-item" th:href="@{/web/localizacoes}">Localizações</a></li>
                             <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" th:href="@{/web/config}">Configurações da Conta</a></li>
                             <li>
                                 <form th:action="@{/logout}" method="post" class="d-flex">
                                     <button class="dropdown-item" type="submit">Sair</button>
@@ -46,14 +51,13 @@
     </nav>
 
     <main class="container">
-        <div layout:fragment="conteudo">
-        </div>
+        <div layout:fragment="conteudo"></div>
     </main>
 
     <footer class="footer mt-auto py-3 bg-light text-center">
         <div class="container">
             <span class="text-muted">EasyMoto Challenger &copy; 2025 | </span>
-            <a href="https://github.com/EasyMoto-Fiap/EasyMotoChallenger-Java.git" target="_blank" class="text-muted text-decoration-none">Repositório do Grupo</a>
+            <a href="https://github.com/akemilol/EasyMotoChallenger-Java.git" target="_blank" class="text-muted text-decoration-none">Repositório do Grupo</a>
         </div>
     </footer>
 

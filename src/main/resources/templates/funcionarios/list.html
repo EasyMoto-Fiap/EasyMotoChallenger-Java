@@ -1,15 +1,9 @@
 <!DOCTYPE html>
-<html lang="pt-br"
-      xmlns:th="http://www.thymeleaf.org"
-      layout:decorate="~{layout}"
-      th:with="titulo='Lista de Funcionários'"
-      xmlns:layout="http://www.w3.org/1999/xhtml"
->
-
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layout}" th:with="titulo='Lista de Funcionários'" xmlns:layout="http://www.w3.org/1999/xhtml">
 <section layout:fragment="conteudo">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h1>Funcionários Cadastrados</h1>
-        <a href="/web/funcionarios/novo" class="btn btn-primary">Novo Funcionário</a>
+        <a href="/web/funcionarios/novo" class="btn btn-success">Novo Funcionário</a>
     </div>
 
     <div th:if="${mensagem}" class="alert alert-success" th:text="${mensagem}"></div>
@@ -17,32 +11,18 @@
 
     <table class="table table-striped table-hover">
         <thead class="table-dark">
-        <tr>
-            <th>Nome</th>
-            <th>Email</th>
-            <th>Cargo</th>
-            <th class="text-center">Ações</th>
-        </tr>
+        <tr><th>Nome</th><th>Email</th><th>Cargo</th><th class="text-center">Ações</th></tr>
         </thead>
         <tbody>
         <tr th:each="func : ${funcionarios}">
             <td th:text="${func.nomeFunc()}"></td>
             <td th:text="${func.emailFunc()}"></td>
-            <td>
-                <span class="badge" th:classappend="${func.cargo().name() == 'ADMIN' ? 'bg-primary' : 'bg-secondary'}" th:text="${func.cargo()}"></span>
-            </td>
+            <td><span class="badge" th:classappend="${func.cargo().name() == 'ADMIN' ? 'bg-success' : 'bg-secondary'}" th:text="${func.cargo()}"></span></td>
             <td class="text-center">
                 <a th:href="@{/web/funcionarios/editar/{id}(id=${func.id})}" class="btn btn-warning btn-sm">Editar</a>
-
-                <th:block th:if="${#authentication.principal.username != func.emailFunc()}">
-                    <a th:href="@{/web/funcionarios/deletar/{id}(id=${func.id})}"
-                       class="btn btn-danger btn-sm"
-                       onclick="return confirm('Você tem certeza que deseja excluir este funcionário?');">Excluir</a>
-                </th:block>
-
-                <th:block th:if="${#authentication.principal.username == func.emailFunc()}">
-                    <button class="btn btn-danger btn-sm" disabled title="Você não pode excluir seu próprio usuário.">Excluir</button>
-                </th:block>
+                <a th:if="${#authentication.principal.username != func.emailFunc()}"
+                   th:href="@{/web/funcionarios/deletar/{id}(id=${func.id})}"
+                   class="btn btn-danger btn-sm">Excluir</a>
             </td>
         </tr>
         </tbody>

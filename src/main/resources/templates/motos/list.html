@@ -3,7 +3,7 @@
 <section layout:fragment="conteudo">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h1>Frota de Motos</h1>
-        <a href="/web/motos/novo" class="btn btn-primary">Cadastrar Nova Moto</a>
+        <a href="/web/motos/novo" class="btn btn-success">Cadastrar Nova Moto</a>
     </div>
     <div th:if="${mensagem}" class="alert alert-success" th:text="${mensagem}"></div>
     <div th:if="${mensagemErro}" class="alert alert-danger" th:text="${mensagemErro}"></div>
@@ -22,7 +22,7 @@
                     </select>
                 </div>
                 <div class="col-md-auto mt-4">
-                    <button type="submit" class="btn btn-primary">Filtrar</button>
+                    <button type="submit" class="btn btn-success">Filtrar</button>
                     <a th:href="@{/web/motos}" class="btn btn-secondary">Limpar</a>
                 </div>
             </form>

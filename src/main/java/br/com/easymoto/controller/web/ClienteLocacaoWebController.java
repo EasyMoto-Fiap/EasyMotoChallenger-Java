@@ -100,14 +100,22 @@ public class ClienteLocacaoWebController {
 
 
     @GetMapping("/deletar/{id}")
+    public String showDeleteConfirmation(@PathVariable Long id, Model model) {
+        ClienteLocacao locacao = locacaoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("ID inválido"));
+        model.addAttribute("itemName", "Locação");
+        model.addAttribute("itemDetails", "ID " + locacao.getId() + " para o cliente " + locacao.getCliente().getNomeCliente());
+        model.addAttribute("deleteUrl", "/web/locacoes/deletar/" + id);
+        model.addAttribute("cancelUrl", "/web/locacoes");
+        return "delete-confirm";
+    }
+
+    @PostMapping("/deletar/{id}")
     public String deletar(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         try {
             locacaoService.deletar(id);
             redirectAttributes.addFlashAttribute("mensagem", "Locação deletada com sucesso!");
         } catch (DataIntegrityViolationException e) {
             redirectAttributes.addFlashAttribute("mensagemErro", "Não é possível excluir a locação, pois ela está associada a uma moto.");
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("mensagemErro", "Ocorreu um erro ao tentar excluir a locação.");
         }
         return "redirect:/web/locacoes";
     }

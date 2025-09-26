@@ -9,5 +9,5 @@ import org.springframework.security.core.userdetails.UserDetails;
 public interface FuncionarioRepository extends JpaRepository<Funcionario, Long> {
     Page<Funcionario> findByNomeFuncContainingIgnoreCase(String nomeFunc, Pageable pageable);
     boolean existsByCpfFunc(String cpfFunc);
-    UserDetails findByEmailFunc(String email);
+    Funcionario findByEmailFunc(String email);
 }
