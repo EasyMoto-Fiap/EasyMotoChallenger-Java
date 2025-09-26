@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{layout}" th:with="titulo='Ocorreu um Erro'"
+      xmlns:layout="http://www.w3.org/1999/xhtml">
+
+<section layout:fragment="conteudo">
+    <div class="py-5 text-center">
+        <h1 class="display-1 text-warning" th:text="${statusCode} ?: 'Erro'"></h1>
+        <h2 class="text-warning">Oops! Algo deu errado.</h2>
+        <p class="lead">
+            Ocorreu um erro inesperado ao processar sua solicitação.
+        </p>
+        <a th:href="@{/}" class="btn btn-primary mt-3">Voltar para a Página Inicial</a>
+    </div>
+</section>
+</html>
