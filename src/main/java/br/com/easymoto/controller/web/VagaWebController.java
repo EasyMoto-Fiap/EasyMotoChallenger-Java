@@ -27,8 +27,8 @@ public class VagaWebController {
     @Autowired private MotoRepository motoRepository;
 
     @GetMapping
-    public String listar(@RequestParam(required = false) StatusVaga status, Model model) { // Modificado
-        model.addAttribute("vagas", vagaService.listar(status, Pageable.unpaged()).getContent()); // Modificado
+    public String listar(@RequestParam(required = false) StatusVaga status, Model model) {
+        model.addAttribute("vagas", vagaService.listar(status, Pageable.unpaged()).getContent());
         model.addAttribute("statusOptions", StatusVaga.values());
         model.addAttribute("selectedStatus", status);
         return "vagas/list";
@@ -36,9 +36,10 @@ public class VagaWebController {
 
     @GetMapping("/novo")
     public String mostrarFormularioNovo(Model model) {
-        model.addAttribute("vagaRequest", new VagaRequest(null, null, null, null, null));
+        model.addAttribute("vagaRequest", new VagaRequest(StatusVaga.LIVRE, null, null, null, null));
         model.addAttribute("patios", patioRepository.findAll());
         model.addAttribute("motos", motoRepository.findAll());
+        model.addAttribute("statusOptions", StatusVaga.values());
         model.addAttribute("isEditMode", false);
         return "vagas/form";
     }
@@ -48,6 +49,7 @@ public class VagaWebController {
         if (result.hasErrors()) {
             model.addAttribute("patios", patioRepository.findAll());
             model.addAttribute("motos", motoRepository.findAll());
+            model.addAttribute("statusOptions", StatusVaga.values());
             return "vagas/form";
         }
         vagaService.salvar(request);
@@ -73,6 +75,7 @@ public class VagaWebController {
         model.addAttribute("vagaId", id);
         model.addAttribute("patios", patioRepository.findAll());
         model.addAttribute("motos", motoRepository.findAll());
+        model.addAttribute("statusOptions", StatusVaga.values());
         model.addAttribute("isEditMode", true);
         return "vagas/form";
     }
@@ -84,6 +87,7 @@ public class VagaWebController {
             model.addAttribute("vagaId", id);
             model.addAttribute("patios", patioRepository.findAll());
             model.addAttribute("motos", motoRepository.findAll());
+            model.addAttribute("statusOptions", StatusVaga.values());
             model.addAttribute("isEditMode", true);
             return "vagas/form";
         }
