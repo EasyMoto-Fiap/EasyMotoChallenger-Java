@@ -23,7 +23,6 @@ INSERT INTO filial (id_filial, nome_filial, cidade, estado, pais, endereco, empr
 (2, 'Filial RJ', 'Rio de Janeiro', 'RJ', 'Brasil', 'Avenida Rio Branco, 200', 1);
 
 -- Funcionários (Senha para todos é "password")
--- O hash foi gerado usando BCrypt
 INSERT INTO funcionario (id_func, nome_func, cpf_func, telefone_func, email_func, password, cargo, filial_id) VALUES
 (1, 'Ana Administradora', '11122233344', '11988887777', 'admin@easymoto.com', '$2a$10$upnHeELHX/hGNZiWw3Wum.1vpq9DeIZxoafRj5kywxfzlhYG74ely', 'ADMIN', 1),
 (2, 'Carlos Usuário', '55566677788', '11955554444', 'user@easymoto.com', '$2a$10$upnHeELHX/hGNZiWw3Wum.1vpq9DeIZxoafRj5kywxfzlhYG74ely', 'USER', 2);
@@ -53,19 +52,19 @@ INSERT INTO localizacao (id_localizacao, status_loc, data_hora, zona_virtual, la
 (2, 'Em Uso', '2025-09-24 10:05:00', 'Zona Sul SP', -23.6000, -46.6800),
 (3, 'Manutenção', '2025-09-24 10:10:00', 'Pátio RJ', -22.9068, -43.1729);
 
--- Locações
+-- Locações (STATUS CORRIGIDOS)
 INSERT INTO cliente_locacao (id_locacao, data_inicio, data_fim, status_locacao, cliente_id) VALUES
 (1, '2025-09-20', '2025-09-27', 'ATIVA', 1),
 (2, '2025-09-22', '2025-09-29', 'ATIVA', 2),
 (3, '2025-08-10', '2025-08-17', 'FINALIZADA', 3);
 
--- Motos
+-- Motos (STATUS CORRIGIDOS)
 INSERT INTO moto (id_moto, placa, modelo, ano_fabricacao, status_moto, locacao_id, localizacao_id) VALUES
-(1, 'ABC1D23', 'Honda CG 160', 2023, 'Disponível', 3, 1),
-(2, 'DEF4E56', 'Yamaha Fazer 250', 2022, 'Em Locação', 2, 2),
-(3, 'GHI7F89', 'Honda PCX', 2024, 'Em Manutenção', 1, 3);
+(1, 'ABC1D23', 'Honda CG 160', 2023, 'DISPONIVEL', 3, 1),
+(2, 'DEF4E56', 'Yamaha Fazer 250', 2022, 'EM_LOCACAO', 2, 2),
+(3, 'GHI7F89', 'Honda PCX', 2024, 'EM_MANUTENCAO', 1, 3);
 
--- Vagas
+-- Vagas (STATUS CORRIGIDOS)
 INSERT INTO vaga (id_vaga, status_vaga, patio_id, moto_id, fileira, coluna) VALUES
-(1, 'Ocupada', 1, 1, 'A', '1'),
-(2, 'Ocupada', 3, 3, 'B', '5');
+(1, 'OCUPADA', 1, 1, 'A', '1'),
+(2, 'OCUPADA', 3, 3, 'B', '5');

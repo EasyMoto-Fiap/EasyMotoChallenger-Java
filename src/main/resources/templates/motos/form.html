@@ -28,8 +28,12 @@
                     <div class="invalid-feedback" th:if="${#fields.hasErrors('anoFabricacao')}" th:errors="*{anoFabricacao}"></div>
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label class="form-label">Status da Moto</label>
-                    <input type="text" class="form-control" th:field="*{statusMoto}" th:errorclass="is-invalid">
+                    <label for="statusMoto" class="form-label">Status da Moto</label>
+                    <select id="statusMoto" class="form-select" th:field="*{statusMoto}" th:errorclass="is-invalid">
+                        <option th:each="s : ${statusOptions}"
+                                th:value="${s}"
+                                th:text="${s.displayName}"></option>
+                    </select>
                     <div class="invalid-feedback" th:if="${#fields.hasErrors('statusMoto')}" th:errors="*{statusMoto}"></div>
                 </div>
             </div>

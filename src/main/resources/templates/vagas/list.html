@@ -49,12 +49,11 @@
             <td th:text="${vaga.id()}"></td>
             <td th:text="${vaga.patioNome()}"></td>
             <td th:text="${vaga.motoPlaca()}"></td>
-            <td th:text="${vaga.statusVaga()}"></td>
-            <td class="text-center">
-                <a sec:authorize="hasRole('ADMIN')" th:href="@{/web/vagas/editar/{id}(id=${vaga.id()})}" class="btn btn-warning btn-sm">Editar</a>
-                <a sec:authorize="!hasRole('ADMIN')" href="#" class="btn btn-warning btn-sm" disabled>Editar</a>
-                <a th:href="@{/web/vagas/deletar/{id}(id=${vaga.id()})}" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja excluir esta vaga?');">Excluir</a>
-            </td>
+            <td th:text="${vaga.statusVaga().displayName}"></td> <td class="text-center">
+            <a sec:authorize="hasRole('ADMIN')" th:href="@{/web/vagas/editar/{id}(id=${vaga.id()})}" class="btn btn-warning btn-sm">Editar</a>
+            <a sec:authorize="!hasRole('ADMIN')" href="#" class="btn btn-warning btn-sm" disabled>Editar</a>
+            <a th:href="@{/web/vagas/deletar/{id}(id=${vaga.id()})}" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja excluir esta vaga?');">Excluir</a>
+        </td>
         </tr>
         </tbody>
     </table>
