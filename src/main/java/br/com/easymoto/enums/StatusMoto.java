@@ -2,8 +2,8 @@ package br.com.easymoto.enums;
 
 public enum StatusMoto {
     DISPONIVEL("Disponível"),
-    EM_LOCACAO("Em Locação"),
-    EM_MANUTENCAO("Em Manutenção");
+    EM_USO("Em uso"),
+    MANUTENCAO("Manutenção");
 
     private final String displayName;
 
