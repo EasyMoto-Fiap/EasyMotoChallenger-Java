@@ -10,6 +10,9 @@ import br.com.easymoto.service.FuncionarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,14 +32,6 @@ public class FuncionarioWebController {
     @Autowired private FuncionarioRepository funcionarioRepository;
     @Autowired private FilialRepository filialRepository;
 
-    @GetMapping
-    public String listar(Model model) {
-        var funcionariosResponse = funcionarioRepository.findAll().stream()
-                .map(f -> new FuncionarioResponse(f.getId(), f.getNomeFunc(), f.getCpfFunc(), f.getCargo(), f.getTelefoneFunc(), f.getEmailFunc(), null, f.getFilial().getId(), f.getFilial().getNomeFilial()))
-                .collect(Collectors.toList());
-        model.addAttribute("funcionarios", funcionariosResponse);
-        return "funcionarios/list";
-    }
 
     @GetMapping("/novo")
     public String mostrarFormularioNovo(Model model) {
@@ -44,6 +39,23 @@ public class FuncionarioWebController {
         model.addAttribute("filiais", filialRepository.findAll());
         model.addAttribute("cargos", TypeCargo.values());
         return "funcionarios/form";
+    }
+
+    @GetMapping
+    public String listar(
+            @RequestParam(required = false) String nome,
+            @RequestParam(required = false) TypeCargo cargo,
+            Model model,
+            @PageableDefault(size = 10, sort = "nomeFunc") Pageable pageable) {
+
+        Page<FuncionarioResponse> funcionariosPage = funcionarioService.listar(nome, cargo, pageable);
+        model.addAttribute("funcionarios", funcionariosPage.getContent());
+        model.addAttribute("cargos", TypeCargo.values());
+
+        model.addAttribute("selectedNome", nome);
+        model.addAttribute("selectedCargo", cargo);
+
+        return "funcionarios/list";
     }
 
     @PostMapping("/salvar")

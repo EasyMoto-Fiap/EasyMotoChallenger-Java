@@ -4,18 +4,20 @@
 <section layout:fragment="conteudo">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h1>Auditoria de Alterações - Motos</h1>
-        <a th:href="@{/web/auditoria/motos/novo}" class="btn btn-success" sec:authorize="hasRole('ADMIN')">
+        <a th:href="@{/web/auditoria/motos/novo}" class="btn btn-primary" sec:authorize="hasRole('ADMIN')">
             <i class="fas fa-plus me-1"></i> Novo Registro Manual
         </a>
     </div>
 
     <p>Histórico de todas as inserções, atualizações e exclusões realizadas na tabela de motos.</p>
 
-    <div class="card mb-4">
-        <div class="card-header fw-bold">
-            <i class="fas fa-filter me-1"></i> Filtros de Auditoria
-        </div>
-        <div class="card-body">
+    <p>
+        <a class="btn btn-outline-secondary" data-bs-toggle="collapse" href="#filtroCollapse" role="button">
+            <i class="fas fa-filter"></i> Mostrar/Ocultar Filtros
+        </a>
+    </p>
+    <div class="collapse" id="filtroCollapse">
+        <div class="card card-body mb-4">
             <form th:action="@{/web/auditoria/motos}" method="get" class="row g-3 align-items-end">
                 <div class="col-lg-3 col-md-6">
                     <label for="userName" class="form-label">Usuário (Email)</label>
@@ -38,11 +40,9 @@
                     <label for="dataFim" class="form-label">Até:</label>
                     <input type="datetime-local" id="dataFim" name="dataFim" class="form-control" th:value="${dataFim != null ? #temporals.format(dataFim, 'yyyy-MM-dd''T''HH:mm') : ''}">
                 </div>
-                <div class="col-lg-2 col-md-12">
-                    <div class="d-flex mt-3 mt-md-0">
-                        <button type="submit" class="btn btn-success w-100 me-2">Filtrar</button>
-                        <a th:href="@{/web/auditoria/motos}" class="btn btn-secondary w-100">Limpar</a>
-                    </div>
+                <div class="col-lg-2 col-md-12 d-flex mt-3 mt-lg-0">
+                    <button type="submit" class="btn btn-success me-2">Filtrar</button>
+                    <a th:href="@{/web/auditoria/motos}" class="btn btn-secondary">Limpar</a>
                 </div>
             </form>
         </div>
@@ -87,5 +87,4 @@
         </table>
     </div>
 </section>
-</html>
 </html>

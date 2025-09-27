@@ -65,3 +65,7 @@ a:not(.btn):not(.nav-link):not(.dropdown-item):hover {
     justify-content: center;
     align-items: center;
 }
+
+.btn-warning, .btn-info {
+    color: #000 !important;
+}
