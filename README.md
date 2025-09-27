@@ -1,109 +1,115 @@
-# 🚦 EasyMoto API – FIAP Challenger (Java / Spring Boot)
+# 🚦 EasyMoto - Sistema de Gerenciamento de Frotas (FIAP Challenge)
 
-EasyMoto é uma API RESTful desenvolvida como solução para um desafio real da Mottu.  
-O objetivo é facilitar o mapeamento inteligente de pátios, o gerenciamento de motos e toda a jornada de aluguel e localização em múltiplas filiais, trazendo escalabilidade, performance e integração real.
+Bem-vindo ao repositório do EasyMoto, uma solução completa desenvolvida em **Java e Spring Boot** para o desafio da Mottu proposto pela FIAP. Este projeto consiste em uma aplicação web com uma API RESTful para o gerenciamento inteligente de frotas de motocicletas, locações, clientes e pátios.
+
+O sistema foi projetado com foco em boas práticas de desenvolvimento, separação de responsabilidades e uma arquitetura robusta, incluindo uma interface web administrativa construída com Thymeleaf e uma API segura para integrações.
+
+---
+
+## ✨ Funcionalidades Principais
+
+A aplicação é dividida em duas frentes principais: uma interface web para administração e uma API RESTful para consumo de dados.
+
+### Interface Web (Thymeleaf & Spring Security)
+- **Dashboard Inicial:** Visão geral com atalhos para as principais funcionalidades.
+- **Login Seguro:** Autenticação de usuários com Spring Security, com perfis de `ADMIN` e `USER`.
+- **Gerenciamento de Clientes:** CRUD completo para clientes.
+- **Gerenciamento de Motos:** CRUD completo para a frota, com opção de filtro por status (`Disponível`, `Em Uso`, `Manutenção`).
+- **Gerenciamento de Locações:** CRUD completo para os contratos de locação, com filtros por cliente, status e datas.
+- **Gerenciamento de Vagas:** CRUD e listagem de vagas nos pátios.
+- **Administração (Acesso Restrito):**
+    - **Gerenciamento de Funcionários:** CRUD de usuários do sistema, com atribuição de cargos (`ADMIN`, `USER`).
+    - **Auditoria de Motos:** Tela para visualizar o histórico de alterações (INSERT, UPDATE, DELETE) na frota de motos, com filtros avançados.
+- **Configurações de Conta:** Permite que o usuário logado altere sua própria senha.
+
+### API RESTful (Spring Web & Swagger)
+- **Endpoints Seguros:** Todas as rotas da API (exceto autenticação) são protegidas com JWT (JSON Web Tokens).
+- **CRUD Completo:** Endpoints RESTful para todas as principais entidades da aplicação:
+    - `Cliente`
+    - `Moto`
+    - `Locacao`
+    - `Vaga`
+    - `Funcionario`
+    - `Empresa`, `Filial`, `Patio`, `Operador`
+- **Documentação Interativa:** A API é 100% documentada com Swagger (OpenAPI), permitindo testar os endpoints diretamente pelo navegador.
 
 ---
 
 ## 🛠️ Tecnologias Utilizadas
 
-- ☕ Java 21
-- 🌱 Spring Boot 3
-- 🟦 Spring Data JPA
-- 🟩 Bean Validation
-- 📦 Spring Cache
-- 📄 Swagger/OpenAPI
-- 🛢️ Banco de Dados Oracle 
-- 🐳 Docker (containerização da API)
+| Backend                               | Frontend (Web Admin)                | Banco de Dados & Persistência     | Segurança                      | DevOps                      |
+| ------------------------------------- | ----------------------------------- | --------------------------------- | ------------------------------ | --------------------------- |
+| ☕ Java 21                            | 🍃 Thymeleaf                        | 💾 H2 (Banco em Memória)          | 🔐 Spring Security             | 🐳 Docker                   |
+| 🌱 Spring Boot 3                      | 🎨 Bootstrap 5                      | 🐘 Spring Data JPA (Hibernate)    | 🔑 JWT (JSON Web Tokens)       | 🚀 GitHub Actions (CI/CD)   |
+| 📦 Gradle                             | 🌐 HTML5 / CSS3                     | 🦋 Flyway (Migrations)            | 🔑 BCrypt (Password Encoding)  |                             |
+| ✅ Spring Validation                  |                                     | ⚡ Spring Cache (Caching Simples) |                                |                             |
+| 📄 SpringDoc (Swagger/OpenAPI)        |                                     |                                   |                                |                             |
 
 ---
 
-## 🗂️ Entidades e Relacionamentos
-
-O projeto implementa as seguintes entidades, todas com CRUD completo (GET, GET/{id}, POST, PUT, DELETE) e relacionamentos via chave estrangeira conforme modelagem Oracle:
-
-- Cliente
-- Empresa
-- Filial (relacionada a Empresa)
-- Funcionario (relacionado a Filial)
-- Operador (relacionado a Filial)
-- Patio (relacionado a Filial)
-- ClienteLocacao (relacionada a Cliente)
-- Localizacao
-- Moto (relacionada a ClienteLocacao e Localizacao)
-- Vaga (relacionada a Moto e Patio)
-
----
-
-## 🔗 Rotas Principais (Exemplo Cliente)
-- `GET    /api/Cliente`
-- `GET    /api/Cliente/{id}`
-- `POST   /api/Cliente`
-- `PUT    /api/Cliente/{id}`
-- `DELETE /api/Cliente/{id}`
-
-### Demais entidades seguem o mesmo padrão RESTful, trocando "clientes" pelo nome da entidade.
----
-
-## 🚀 Como rodar o projeto (Java)
-
-1. **Clone o repositório:**
-    ```bash
-   git clone https://github.com/akemilol/EasyMotoChallenger-Java.git
-    
-2. **Configure o banco de dados em `src/main/resources/application.properties`:**
-
-3. **Usando Oracle (SQL Developer):**
-   - Abra o Oracle SQL Developer
-   - Conecte-se ao seu banco
-
-4. **Rode a aplicação pela sua IDE (IntelliJ/Eclipse):**
-    - Encontre a classe principal `EasyMotoApplication.java`
-    - Clique com o direito e selecione "Run" ou utilize o botão de execução da IDE
-
-5. **Acesse a documentação Swagger:**
-    - [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
-      
-## 👩‍💻 Integrantes
-
-- 💁‍♀️ Valéria Conceição Dos Santos — RM: 557177  
-- 💁‍♀️ Mirela Pinheiro Silva Rodrigues — RM: 558191
----
-
-# 🐳 Parte 2: Docker & Cloud — Containerização da API
-
-## 📦 Como subir o projeto via Docker
+## 🚀 Como Executar o Projeto Localmente
 
 **Pré-requisitos:**
-- Docker instalado na máquina/servidor.
-- Banco de dados Oracle acessível.
+- JDK 21 instalado.
+- IntelliJ IDEA, Eclipse ou outra IDE de sua preferência.
 
-### Build e execução
+### Passo a Passo:
 
-1. **Gere o JAR (obrigatório para Docker):**
-    ```sh
-    ./gradlew clean build -x test
+1.  **Clone o repositório:**
+    ```bash
+    git clone [https://github.com/akemilol/EasyMotoChallenger-Java.git](https://github.com/akemilol/EasyMotoChallenger-Java.git)
+    cd EasyMotoChallenger-Java
     ```
 
-2. **Construa a imagem Docker:**
+2.  **Abra o projeto na sua IDE:**
+    - Abra o projeto como um projeto Gradle. A IDE irá baixar todas as dependências automaticamente.
+
+3.  **Execute a aplicação:**
+    - Encontre a classe principal `EasyMotoApplication.java`.
+    - Clique com o botão direito e selecione "Run".
+
+4.  **Acesse a aplicação web:**
+    - Abra o navegador em: **[http://localhost:8080](http://localhost:8080)**
+    - Utilize um dos usuários de teste para fazer login (a senha para ambos é `123456`):
+        - **Admin:** `admin@easymoto.com`
+        - **Usuário Comum:** `user@easymoto.com`
+
+5.  **Acesse o console do banco de dados H2 (Opcional):**
+    - Para visualizar o banco de dados em memória, acesse: **[http://localhost:8080/h2-console](http://localhost:8080/h2-console)**
+    - Use as seguintes credenciais definidas em `application.properties`:
+        - **JDBC URL:** `jdbc:h2:mem:easymoto`
+        - **User Name:** `sa`
+        - **Password:** `password`
+
+6.  **Acesse a documentação da API (Swagger):**
+    - Para explorar e testar a API RESTful, acesse: **[http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)**
+
+---
+
+## 🐳 Executando com Docker
+
+1.  **Gere o arquivo `.jar` da aplicação:**
+    ```sh
+    ./gradlew clean bootJar
+    ```
+
+2.  **Construa a imagem Docker:**
     ```sh
     docker build -t easymoto-api .
     ```
 
-3. **Rode o container (ajuste as variáveis conforme necessário):**
+3.  **Rode o container:**
     ```sh
-    docker run -p 8080:8080 \
-      -e DB_URL="URL" \
-      -e DB_USERNAME="SEU_USUARIO" \
-      -e DB_PASSWORD="SUA_SENHA" \
-      easymoto-api
+    docker run -p 8080:8080 --name easymoto-container easymoto-api
     ```
+    A aplicação estará acessível em `http://localhost:8080`.
 
-4. **Acesse a aplicação:**
-    - [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
-
-### Observações importantes:
-- Para deploy em nuvem (Azure/AWS), basta subir o Docker na VM e garantir o acesso externo à porta 8080.
-- os inserts estão no src/main em `DataSeeder.java`
-  
 ---
+
+## 👩‍💻 Equipe
+
+| Nome                              | RM      |
+| --------------------------------- | ------- |
+| Valéria Conceição Dos Santos      | 557177  |
+| Mirela Pinheiro Silva Rodrigues   | 558191  |
+| Luiz Eduaro Da Silva Pinto        | 55213   |
