@@ -28,9 +28,9 @@
                         <option th:each="c : ${cargos}" th:value="${c}" th:text="${c}" th:selected="${c == selectedCargo}"></option>
                     </select>
                 </div>
-                <div class="col-md-3 d-flex">
-                    <button type="submit" class="btn btn-success me-2">Filtrar</button>
-                    <a th:href="@{/web/funcionarios}" class="btn btn-secondary">Limpar</a>
+                <div class="col-md-3 d-flex pt-3 pt-md-0">
+                    <button type="submit" class="btn btn-success me-2 flex-grow-1">Filtrar</button>
+                    <a th:href="@{/web/funcionarios}" class="btn btn-secondary flex-grow-1">Limpar</a>
                 </div>
             </form>
         </div>

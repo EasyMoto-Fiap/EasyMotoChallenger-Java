@@ -9,10 +9,8 @@
         </a>
     </div>
 
-    <p>Histórico de todas as inserções, atualizações e exclusões realizadas na tabela de motos.</p>
-
     <p>
-        <a class="btn btn-outline-secondary" data-bs-toggle="collapse" href="#filtroCollapse" role="button">
+        <a class="btn btn-outline-secondary btn-sm" data-bs-toggle="collapse" href="#filtroCollapse" role="button">
             <i class="fas fa-filter"></i> Mostrar/Ocultar Filtros
         </a>
     </p>
@@ -41,8 +39,8 @@
                     <input type="datetime-local" id="dataFim" name="dataFim" class="form-control" th:value="${dataFim != null ? #temporals.format(dataFim, 'yyyy-MM-dd''T''HH:mm') : ''}">
                 </div>
                 <div class="col-lg-2 col-md-12 d-flex mt-3 mt-lg-0">
-                    <button type="submit" class="btn btn-success me-2">Filtrar</button>
-                    <a th:href="@{/web/auditoria/motos}" class="btn btn-secondary">Limpar</a>
+                    <button type="submit" class="btn btn-success me-2 flex-grow-1">Filtrar</button>
+                    <a th:href="@{/web/auditoria/motos}" class="btn btn-secondary flex-grow-1">Limpar</a>
                 </div>
             </form>
         </div>
@@ -62,16 +60,16 @@
             </thead>
             <tbody>
             <tr th:if="${auditorias.empty}">
-                <td colspan="6" class="text-center">Nenhum registro encontrado para os filtros aplicados.</td>
+                <td colspan="6" class="text-center">Nenhum registro encontrado.</td>
             </tr>
             <tr th:each="log : ${auditorias.content}">
                 <td class="text-center-middle" th:text="${#temporals.format(log.dataHora(), 'dd/MM/yyyy HH:mm:ss')}"></td>
                 <td class="text-center-middle" th:text="${log.userName()}"></td>
                 <td class="text-center-middle">
                     <div class="badge-container">
-                        <span class="badge"
-                              th:classappend="${log.operacao() == 'INSERT' ? 'bg-success text-dark' : (log.operacao() == 'UPDATE' ? 'bg-warning text-dark' : 'bg-danger text-dark')}"
-                              th:text="${log.operacao()}"></span>
+                            <span class="badge"
+                                  th:classappend="${log.operacao() == 'INSERT' ? 'bg-success text-dark' : (log.operacao() == 'UPDATE' ? 'bg-warning' : 'bg-danger text-dark')}"
+                                  th:text="${log.operacao()}"></span>
                     </div>
                 </td>
                 <td style="word-break: break-all;"><small th:text="${log.oldValues()}"></small></td>

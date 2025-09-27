@@ -9,16 +9,15 @@ import br.com.easymoto.model.Filial;
 import br.com.easymoto.model.Funcionario;
 import br.com.easymoto.repository.FilialRepository;
 import br.com.easymoto.repository.FuncionarioRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -29,25 +28,14 @@ public class FuncionarioService {
     private final PasswordEncoder passwordEncoder;
 
     @Cacheable("funcionarios")
-    public Page<FuncionarioResponse> listar(String nome, Pageable pageable) {
-        if (nome != null && !nome.isEmpty()) {
-            return funcionarioRepository.findByNomeFuncContainingIgnoreCase(nome, pageable)
-                    .map(this::toResponse);
-        } else {
-            return funcionarioRepository.findAll(pageable)
-                    .map(this::toResponse);
-        }
+    public Page<FuncionarioResponse> listar(String nome, TypeCargo cargo, Pageable pageable) {
+        return funcionarioRepository.findWithFilters(nome, cargo, pageable)
+                .map(this::toResponse);
     }
 
     public FuncionarioResponse buscarPorId(Long id) {
         Funcionario funcionario = funcionarioRepository.findById(id).orElseThrow();
         return toResponse(funcionario);
-    }
-
-    @Cacheable("funcionarios")
-    public Page<FuncionarioResponse> listar(String nome, TypeCargo cargo, Pageable pageable) {
-        return funcionarioRepository.findWithFilters(nome, cargo, pageable)
-                .map(this::toResponse);
     }
 
     @CacheEvict(value = "funcionarios", allEntries = true)

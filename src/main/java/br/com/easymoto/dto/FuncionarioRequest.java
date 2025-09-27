@@ -24,7 +24,6 @@ public record FuncionarioRequest(
         @Size(max = 100)
         String emailFunc,
 
-        @NotBlank
         String password,
 
         @NotNull
