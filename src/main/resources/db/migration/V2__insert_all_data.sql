@@ -1,13 +1,4 @@
-DELETE FROM vaga;
-DELETE FROM moto;
-DELETE FROM localizacao;
-DELETE FROM cliente_locacao;
-DELETE FROM patio;
-DELETE FROM operador;
-DELETE FROM funcionario;
-DELETE FROM filial;
-DELETE FROM empresa;
-DELETE FROM cliente;
+-- V2: Script unificado para inserção de todos os dados mock no banco
 
 INSERT INTO empresa (id_empresa, nome_empresa, cnpj) VALUES (1, 'EasyMoto S.A.', '11222333000144');
 
@@ -39,15 +30,26 @@ INSERT INTO localizacao (id_localizacao, status_loc, data_hora, zona_virtual, la
 (3, 'Manutenção', '2025-09-24 10:10:00', 'Pátio RJ', -22.9068, -43.1729);
 
 INSERT INTO cliente_locacao (id_locacao, data_inicio, data_fim, status_locacao, cliente_id) VALUES
-(1, '2025-09-20', '2025-09-27', 'ATIVA', 1),
-(2, '2025-09-22', '2025-09-29', 'ATIVA', 2),
+(1, '2025-09-20', '2025-09-27', 'ABERTA', 1),
+(2, '2025-09-22', '2025-09-29', 'ABERTA', 2),
 (3, '2025-08-10', '2025-08-17', 'FINALIZADA', 3);
 
 INSERT INTO moto (id_moto, placa, modelo, ano_fabricacao, status_moto, locacao_id, localizacao_id) VALUES
 (1, 'ABC1D23', 'Honda CG 160', 2023, 'DISPONIVEL', 3, 1),
-(2, 'DEF4E56', 'Yamaha Fazer 250', 2022, 'EM_LOCACAO', 2, 2),
-(3, 'GHI7F89', 'Honda PCX', 2024, 'EM_MANUTENCAO', 1, 3);
+(2, 'DEF4E56', 'Yamaha Fazer 250', 2022, 'EM_USO', 2, 2),
+(3, 'GHI7F89', 'Honda PCX', 2024, 'MANUTENCAO', 1, 3);
 
 INSERT INTO vaga (id_vaga, status_vaga, patio_id, moto_id, fileira, coluna) VALUES
 (1, 'OCUPADA', 1, 1, 'A', '1'),
 (2, 'OCUPADA', 3, 3, 'B', '5');
+
+INSERT INTO auditoria_moto (user_name, operacao, data_hora, old_values, new_values) VALUES
+('admin@easymoto.com', 'INSERT', '2025-09-25 10:00:00', NULL, 'placa=XYZ1A23, modelo=Honda Biz, ano=2024, status=DISPONIVEL'),
+('user@easymoto.com', 'UPDATE', '2025-09-25 11:30:00', 'status=DISPONIVEL', 'status=EM_USO'),
+('admin@easymoto.com', 'UPDATE', '2025-09-26 09:05:00', 'placa=ABC1D23, status=EM_USO','placa=ABC1D23, status=MANUTENCAO'),
+('admin@easymoto.com', 'DELETE', '2025-09-26 15:00:00', 'placa=DEF4E56, modelo=Yamaha Fazer 250, ano=2022, status=MANUTENCAO', NULL),
+('user@easymoto.com', 'INSERT', '2025-09-27 08:45:00', NULL, 'placa=MNO3P45, modelo=Suzuki GSX-S750, ano=2023, status=DISPONIVEL');
+
+INSERT INTO noticia (titulo, conteudo, data_publicacao, autor, categoria) VALUES
+('Nova Geração de Motos Elétricas', 'Conteúdo sobre as novas motos elétricas...', '2025-09-26', 'Equipe EasyMoto', 'TECNOLOGIA'),
+('Dicas de Segurança para Entregas', 'Conteúdo sobre dicas de segurança...', '2025-09-25', 'João Especialista', 'SEGURANCA');
