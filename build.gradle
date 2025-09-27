@@ -50,6 +50,8 @@ dependencies {
     //implementation 'org.flywaydb:flyway-database-postgresql'
     // implementation 'org.flywaydb:flyway-database-oracle'
 
+    // --- Email ---
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
 
     // --- Cache ---
     implementation 'org.springframework.boot:spring-boot-starter-cache'

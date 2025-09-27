@@ -9,10 +9,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Optional;
+
 public interface FuncionarioRepository extends JpaRepository<Funcionario, Long> {
     Page<Funcionario> findByNomeFuncContainingIgnoreCase(String nomeFunc, Pageable pageable);
     boolean existsByCpfFunc(String cpfFunc);
     Funcionario findByEmailFunc(String email);
+    Optional<Funcionario> findByResetPasswordToken(String token);
+
 
     @Query("SELECT f FROM Funcionario f WHERE " +
             "(:nome IS NULL OR LOWER(f.nomeFunc) LIKE LOWER(CONCAT('%', :nome, '%'))) AND " +

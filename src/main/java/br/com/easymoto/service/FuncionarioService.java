@@ -19,6 +19,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 public class FuncionarioService {
@@ -26,6 +29,7 @@ public class FuncionarioService {
     private final FuncionarioRepository funcionarioRepository;
     private final FilialRepository filialRepository;
     private final PasswordEncoder passwordEncoder;
+    private final EmailService emailService;
 
     @Cacheable("funcionarios")
     public Page<FuncionarioResponse> listar(String nome, TypeCargo cargo, Pageable pageable) {
@@ -71,6 +75,46 @@ public class FuncionarioService {
         }
 
         return toResponse(funcionarioRepository.save(funcionario));
+    }
+
+    @Transactional
+    public void generatePasswordResetToken(String email) {
+        Funcionario funcionario = funcionarioRepository.findByEmailFunc(email);
+        if (funcionario != null) {
+            String token = UUID.randomUUID().toString();
+            funcionario.setResetPasswordToken(token);
+            funcionario.setTokenExpiryDate(LocalDateTime.now().plusHours(1));
+            funcionarioRepository.save(funcionario);
+            emailService.sendPasswordResetEmail(funcionario.getEmailFunc(), token);
+        }
+    }
+
+    @Transactional
+    public void resetPassword(String token, String newPassword) {
+        Funcionario funcionario = funcionarioRepository.findByResetPasswordToken(token)
+                .orElseThrow(() -> new ResourceNotFoundException("Token de redefinição inválido ou expirado."));
+
+        if (funcionario.getTokenExpiryDate().isBefore(LocalDateTime.now())) {
+            throw new InvalidPasswordException("Token de redefinição expirado.");
+        }
+
+        funcionario.setPassword(passwordEncoder.encode(newPassword));
+        funcionario.setResetPasswordToken(null);
+        funcionario.setTokenExpiryDate(null);
+
+        funcionarioRepository.save(funcionario);
+    }
+
+    @Transactional(readOnly = true)
+    public Funcionario buscarPorToken(String token) {
+        Funcionario funcionario = funcionarioRepository.findByResetPasswordToken(token)
+                .orElseThrow(() -> new ResourceNotFoundException("O link para redefinição de senha é inválido ou já foi utilizado."));
+
+        if (funcionario.getTokenExpiryDate().isBefore(LocalDateTime.now())) {
+            throw new InvalidPasswordException("O token para redefinição de senha expirou. Por favor, solicite um novo.");
+        }
+
+        return funcionario;
     }
 
     @Transactional

@@ -39,7 +39,6 @@ CREATE TABLE noticia (
     categoria VARCHAR(50) NOT NULL
 );
 
--- Tabelas com dependências
 CREATE TABLE filial (
     id_filial BIGSERIAL PRIMARY KEY,
     nome_filial VARCHAR(50) NOT NULL,
