@@ -45,7 +45,6 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-                        // ADICIONADO /error/** AQUI
                         .requestMatchers("/login", "/forgot-password", "/css/**", "/js/**", "/images/**", "/swagger-ui/**", "/v3/api-docs/**", "/error/**").permitAll()
                         .anyRequest().authenticated()
                 )
@@ -53,7 +52,6 @@ public class SecurityConfig {
                         .loginPage("/login").permitAll()
                         .defaultSuccessUrl("/", true)
                 )
-                // ... (resto do método sem alterações)
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/login?logout")
