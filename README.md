@@ -39,9 +39,9 @@ A aplicação é dividida em duas frentes principais: uma interface web para adm
 
 | Backend                               | Frontend (Web Admin)                | Banco de Dados & Persistência     | Segurança                      | DevOps                      |
 | ------------------------------------- | ----------------------------------- | --------------------------------- | ------------------------------ | --------------------------- |
-| ☕ Java 21                            | 🍃 Thymeleaf                        | 💾 H2 (Banco em Memória)          | 🔐 Spring Security             | 🐳 Docker                   |
+| ☕ Java 21                            | 🍃 Thymeleaf                        | 💾 Oracle (Banco em Memória)      | 🔐 Spring Security             | 🐳 Docker                   |
 | 🌱 Spring Boot 3                      | 🎨 Bootstrap 5                      | 🐘 Spring Data JPA (Hibernate)    | 🔑 JWT (JSON Web Tokens)       | 🚀 GitHub Actions (CI/CD)   |
-| 📦 Gradle                             | 🌐 HTML5 / CSS3                     | 🦋 Flyway (Migrations)            | 🔑 BCrypt (Password Encoding)  |                             |
+| 📦 Gradle                             | 🌐 HTML5 / CSS3                     | 🦋 Flyway (Migrations)            | 🔑 BCrypt (Password Encoding)  | 🖥️ Azure                    |
 | ✅ Spring Validation                  |                                     | ⚡ Spring Cache (Caching Simples) |                                |                             |
 | 📄 SpringDoc (Swagger/OpenAPI)        |                                     |                                   |                                |                             |
 
@@ -57,7 +57,7 @@ A aplicação é dividida em duas frentes principais: uma interface web para adm
 
 1.  **Clone o repositório:**
     ```bash
-    git clone [https://github.com/akemilol/EasyMotoChallenger-Java.git](https://github.com/akemilol/EasyMotoChallenger-Java.git)
+    git clone https://github.com/akemilol/EasyMotoChallenger-Java.git
     cd EasyMotoChallenger-Java
     ```
 
@@ -70,18 +70,11 @@ A aplicação é dividida em duas frentes principais: uma interface web para adm
 
 4.  **Acesse a aplicação web:**
     - Abra o navegador em: **[http://localhost:8080](http://localhost:8080)**
-    - Utilize um dos usuários de teste para fazer login (a senha para ambos é `123456`):
+    - Utilize um dos usuários de teste para fazer login (a senha para ambos é `password`):
         - **Admin:** `admin@easymoto.com`
         - **Usuário Comum:** `user@easymoto.com`
 
-5.  **Acesse o console do banco de dados H2 (Opcional):**
-    - Para visualizar o banco de dados em memória, acesse: **[http://localhost:8080/h2-console](http://localhost:8080/h2-console)**
-    - Use as seguintes credenciais definidas em `application.properties`:
-        - **JDBC URL:** `jdbc:h2:mem:easymoto`
-        - **User Name:** `sa`
-        - **Password:** `password`
-
-6.  **Acesse a documentação da API (Swagger):**
+5.  **Acesse a documentação da API (Swagger):**
     - Para explorar e testar a API RESTful, acesse: **[http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)**
 
 ---
