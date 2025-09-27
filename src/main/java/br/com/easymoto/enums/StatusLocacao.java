@@ -1,9 +1,9 @@
 package br.com.easymoto.enums;
 
 public enum StatusLocacao {
-    ATIVA("Ativa"),
+    ABERTA("Aberta"),
     FINALIZADA("Finalizada"),
-    PENDENTE("Pendente");
+    CANCELADA("Cancelada");
 
     private final String displayName;
 

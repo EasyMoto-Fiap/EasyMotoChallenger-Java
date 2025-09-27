@@ -54,3 +54,14 @@ a:not(.btn):not(.nav-link):not(.dropdown-item):hover {
 .dropdown-item.active, .dropdown-item:active {
     background-color: var(--mottu-green) !important;
 }
+
+.table .text-center-middle {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.table .badge-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

@@ -2,6 +2,7 @@ package br.com.easymoto.enums;
 
 public enum StatusVaga {
     OCUPADA("Ocupada"),
+    INDEFINIDA("Indefinida"),
     LIVRE("Livre");
 
     private final String displayName;

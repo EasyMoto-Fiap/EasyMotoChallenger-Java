@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}" th:with="titulo=${isEditMode ? 'Editar Auditoria' : 'Nova Auditoria'}"
+      xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<section layout:fragment="conteudo">
+    <h1 th:text="${isEditMode ? 'Editar Registro de Auditoria' : 'Criar Novo Registro de Auditoria'}"></h1>
+    <div class="alert alert-warning">
+        <strong>Atenção:</strong> A criação ou edição manual de registros de auditoria não é uma prática recomendada em sistemas de produção.
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <form th:action="@{/web/auditoria/motos/salvar}" th:object="${auditoriaRequest}" method="post">
+                <input type="hidden" th:field="*{id}" th:if="${isEditMode}" />
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="userName" class="form-label">Usuário (Email)</label>
+                        <input type="text" id="userName" class="form-control" th:field="*{userName}" th:errorclass="is-invalid"
+                               th:readonly="${isEditMode}">
+                        <div class="form-text" th:if="${isEditMode}">O usuário não pode ser alterado na edição.</div>
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}"></div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="operacao" class="form-label">Operação</label>
+                        <select id="operacao" class="form-select" th:field="*{operacao}" th:errorclass="is-invalid">
+                            <option value="">Selecione...</option>
+                            <option value="INSERT">INSERT</option>
+                            <option value="UPDATE">UPDATE</option>
+                            <option value="DELETE">DELETE</option>
+                        </select>
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('operacao')}" th:errors="*{operacao}"></div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="oldValues" class="form-label">Valores Antigos</label>
+                    <textarea id="oldValues" class="form-control" rows="4" th:field="*{oldValues}"></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label for="newValues" class="form-label">Valores Novos</label>
+                    <textarea id="newValues" class="form-control" rows="4" th:field="*{newValues}"></textarea>
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-success">Salvar</button>
+                    <a th:href="@{/web/auditoria/motos}" class="btn btn-secondary">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+</html>

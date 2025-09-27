@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}" th:with="titulo='Detalhes da Auditoria'" xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<section layout:fragment="conteudo">
+    <h1>Detalhes do Registro de Auditoria</h1>
+    <div class="card">
+        <div class="card-header" th:text="'ID do Registro: ' + ${auditoria.id()}"></div>
+        <div class="card-body">
+            <div class="mb-3">
+                <label class="form-label fw-bold">Usuário:</label>
+                <input type="text" class="form-control" th:value="${auditoria.userName()}" readonly>
+            </div>
+            <div class="mb-3">
+                <label class="form-label fw-bold">Data e Hora:</label>
+                <input type="text" class="form-control" th:value="${#temporals.format(auditoria.dataHora(), 'dd/MM/yyyy HH:mm:ss')}" readonly>
+            </div>
+            <div class="mb-3">
+                <label class="form-label fw-bold">Operação:</label>
+                <input type="text" class="form-control" th:value="${auditoria.operacao()}" readonly>
+            </div>
+            <div class="mb-3">
+                <label class="form-label fw-bold">Valores Antigos:</label>
+                <textarea class="form-control" rows="5" readonly th:text="${auditoria.oldValues()}"></textarea>
+            </div>
+            <div class="mb-3">
+                <label class="form-label fw-bold">Valores Novos:</label>
+                <textarea class="form-control" rows="5" readonly th:text="${auditoria.newValues()}"></textarea>
+            </div>
+            <div class="mt-4">
+                <a th:href="@{/web/auditoria/motos}" class="btn btn-secondary">Voltar para a Lista</a>
+            </div>
+        </div>
+    </div>
+</section>
+</html>

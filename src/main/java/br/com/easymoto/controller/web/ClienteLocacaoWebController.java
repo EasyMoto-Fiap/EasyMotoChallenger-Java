@@ -45,7 +45,7 @@ public class ClienteLocacaoWebController {
 
     @GetMapping("/novo")
     public String mostrarFormularioNovo(Model model) {
-        var request = new ClienteLocacaoRequest(LocalDate.now(), LocalDate.now().plusDays(7), StatusLocacao.ATIVA, null);
+        var request = new ClienteLocacaoRequest(LocalDate.now(), LocalDate.now().plusDays(7), StatusLocacao.ABERTA, null);
         model.addAttribute("locacaoRequest", request);
         model.addAttribute("clientes", clienteRepository.findAll());
         model.addAttribute("statusOptions", StatusLocacao.values());
