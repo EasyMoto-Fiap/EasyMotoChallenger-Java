@@ -6,8 +6,8 @@ INSERT INTO filial (id_filial, nome_filial, cidade, estado, pais, endereco, empr
 (2, 'Filial RJ', 'Rio de Janeiro', 'RJ', 'Brasil', 'Avenida Rio Branco, 200', 1);
 
 INSERT INTO funcionario (id_func, nome_func, cpf_func, telefone_func, email_func, password, cargo, filial_id) VALUES
-(1, 'Ana Administradora', '78933804054', '64257864001', 'admin@easymoto.com', '$2a$10$upnHeELHX/hGNZiWw3Wum.1vpq9DeIZxoafRj5kywxfzlhYG74ely', 'ADMIN', 1),
-(2, 'Carlos Usuário', '01917713079', '53347754042', 'user@easymoto.com', '$2a$10$upnHeELHX/hGNZiWw3Wum.1vpq9DeIZxoafRj5kywxfzlhYG74ely', 'USER', 2);
+(1, 'Ana Administradora', '85590920033', '11988887777', 'admin@easymoto.com', '$2a$10$upnHeELHX/hGNZiWw3Wum.1vpq9DeIZxoafRj5kywxfzlhYG74ely', 'ADMIN', 1),
+(2, 'Carlos Usuário', '83313837059', '11955554444', 'user@easymoto.com', '$2a$10$upnHeELHX/hGNZiWw3Wum.1vpq9DeIZxoafRj5kywxfzlhYG74ely', 'USER', 2);
 
 INSERT INTO operador (id_operador, nome_opr, cpf_opr, telefone_opr, email_opr, filial_id) VALUES
 (1, 'Marcos Operador SP', '70633131031', '11977776666', 'operador.sp@easymoto.com', 1),
