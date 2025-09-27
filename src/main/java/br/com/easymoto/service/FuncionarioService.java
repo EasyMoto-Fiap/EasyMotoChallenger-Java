@@ -2,6 +2,7 @@ package br.com.easymoto.service;
 
 import br.com.easymoto.dto.FuncionarioRequest;
 import br.com.easymoto.dto.FuncionarioResponse;
+import br.com.easymoto.enums.TypeCargo;
 import br.com.easymoto.exception.InvalidPasswordException;
 import br.com.easymoto.exception.ResourceNotFoundException;
 import br.com.easymoto.model.Filial;
@@ -43,7 +44,11 @@ public class FuncionarioService {
         return toResponse(funcionario);
     }
 
-
+    @Cacheable("funcionarios")
+    public Page<FuncionarioResponse> listar(String nome, TypeCargo cargo, Pageable pageable) {
+        return funcionarioRepository.findWithFilters(nome, cargo, pageable)
+                .map(this::toResponse);
+    }
 
     @CacheEvict(value = "funcionarios", allEntries = true)
     public FuncionarioResponse salvar(FuncionarioRequest dto) {

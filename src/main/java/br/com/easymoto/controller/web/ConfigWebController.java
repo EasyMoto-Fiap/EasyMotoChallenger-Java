@@ -43,7 +43,8 @@ public class ConfigWebController {
             redirectAttributes.addFlashAttribute("success", "Senha alterada com sucesso!");
         } catch (InvalidPasswordException e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
-        } catch (Exception e) {
+        }catch (Exception e) {
+            e.printStackTrace();
             redirectAttributes.addFlashAttribute("error", "Ocorreu um erro ao tentar alterar a senha.");
         }
 

@@ -30,12 +30,14 @@ public class ClienteLocacaoWebController {
 
     @GetMapping
     public String listar(
+            @RequestParam(required = false) String clienteNome,
             @RequestParam(required = false) StatusLocacao status,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicio,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFim,
             Model model) {
 
         model.addAttribute("locacoes", locacaoService.listar(status, dataInicio, dataFim, Pageable.unpaged()).getContent());
+        model.addAttribute("selectedClienteNome", clienteNome);
         model.addAttribute("statusOptions", StatusLocacao.values());
         model.addAttribute("selectedStatus", status);
         model.addAttribute("selectedDataInicio", dataInicio);
