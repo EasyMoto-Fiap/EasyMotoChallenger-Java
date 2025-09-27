@@ -8,6 +8,7 @@ import br.com.easymoto.model.Filial;
 import br.com.easymoto.model.Funcionario;
 import br.com.easymoto.repository.FilialRepository;
 import br.com.easymoto.repository.FuncionarioRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -24,7 +25,7 @@ public class FuncionarioService {
 
     private final FuncionarioRepository funcionarioRepository;
     private final FilialRepository filialRepository;
-    private final PasswordEncoder passwordEncoder; // Injete o encoder
+    private final PasswordEncoder passwordEncoder;
 
     @Cacheable("funcionarios")
     public Page<FuncionarioResponse> listar(String nome, Pageable pageable) {
@@ -79,19 +80,16 @@ public class FuncionarioService {
         return toResponse(funcionarioRepository.save(funcionario));
     }
 
+    @Transactional
     public void changePassword(String oldPassword, String newPassword) {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username = ((UserDetails) principal).getUsername();
-
-        Funcionario funcionario = (Funcionario) funcionarioRepository.findByEmailFunc(username);
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Funcionario funcionario = funcionarioRepository.findByEmailFunc(username);
         if (funcionario == null) {
             throw new ResourceNotFoundException("Usuário não encontrado.");
         }
-
         if (!passwordEncoder.matches(oldPassword, funcionario.getPassword())) {
             throw new InvalidPasswordException("A senha antiga está incorreta.");
         }
-
         funcionario.setPassword(passwordEncoder.encode(newPassword));
         funcionarioRepository.save(funcionario);
     }
