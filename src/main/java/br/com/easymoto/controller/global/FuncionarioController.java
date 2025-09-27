@@ -18,12 +18,8 @@ public class FuncionarioController {
 
     private final FuncionarioService service;
 
-    @GetMapping
-    public Page<FuncionarioResponse> listar(
-            @RequestParam(required = false) String nome,
-            Pageable pageable) {
-        return service.listar(nome, pageable);
-    }
+    //@GetMapping
+    //public Page<FuncionarioResponse> listar(@RequestParam(required = false) String nome, Pageable pageable) {return service.listar(nome, pageable);}
 
     @GetMapping("/{id}")
     public FuncionarioResponse buscarPorId(@PathVariable Long id) {

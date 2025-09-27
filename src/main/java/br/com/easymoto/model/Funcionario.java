@@ -31,7 +31,7 @@ public class Funcionario implements UserDetails {
     @NotBlank
     @Size(min = 11, max = 11)
     @Column(name = "cpf_func", unique = true)
-    @CPF
+    @Pattern( regexp = "^\\d{11}$")
     private String cpfFunc;
 
     @NotBlank
