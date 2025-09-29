@@ -38,14 +38,8 @@ public class Funcionario implements UserDetails {
     @NotBlank
     private String password;
 
-    @Column(name = "reset_password_token")
-    private String resetPasswordToken;
-
-    @Column(name = "token_expiry_date")
-    private LocalDateTime tokenExpiryDate;
-
     @NotNull
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     @Column(name = "cargo")
     private TypeCargo cargo;
 
@@ -59,6 +53,12 @@ public class Funcionario implements UserDetails {
     @Size(max = 100)
     @Column(name = "email_func", unique = true)
     private String emailFunc;
+
+    @Column(name = "reset_password_token")
+    private String resetPasswordToken;
+
+    @Column(name = "token_expiry_date")
+    private LocalDateTime tokenExpiryDate;
 
     @ManyToOne
     @JoinColumn(name = "filial_id", nullable = false)

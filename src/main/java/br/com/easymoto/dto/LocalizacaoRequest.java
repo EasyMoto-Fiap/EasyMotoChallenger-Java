@@ -1,12 +1,12 @@
 package br.com.easymoto.dto;
 
+import br.com.easymoto.enums.StatusLocalizacao;
 import jakarta.validation.constraints.*;
 import java.time.LocalDateTime;
 
 public record LocalizacaoRequest(
-        @NotBlank
-        @Size(max = 20)
-        String statusLoc,
+        @NotNull
+        StatusLocalizacao statusLoc,
 
         @NotNull
         LocalDateTime dataHora,

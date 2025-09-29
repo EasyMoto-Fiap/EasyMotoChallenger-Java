@@ -18,7 +18,7 @@ public class Vaga {
 
 
     @NotNull
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     @Column(name = "status_vaga")
     private StatusVaga statusVaga;
 

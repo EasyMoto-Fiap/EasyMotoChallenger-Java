@@ -29,7 +29,6 @@ public class FuncionarioService {
     private final FuncionarioRepository funcionarioRepository;
     private final FilialRepository filialRepository;
     private final PasswordEncoder passwordEncoder;
-    private final EmailService emailService;
 
     @Cacheable("funcionarios")
     public Page<FuncionarioResponse> listar(String nome, TypeCargo cargo, Pageable pageable) {
@@ -85,7 +84,12 @@ public class FuncionarioService {
             funcionario.setResetPasswordToken(token);
             funcionario.setTokenExpiryDate(LocalDateTime.now().plusHours(1));
             funcionarioRepository.save(funcionario);
-            emailService.sendPasswordResetEmail(funcionario.getEmailFunc(), token);
+
+            String resetUrl = "http://localhost:8080/reset-password?token=" + token;
+            System.out.println("==================================================================");
+            System.out.println("LINK DE REDEFINIÇÃO DE SENHA (Copie e cole no navegador):");
+            System.out.println(resetUrl);
+            System.out.println("==================================================================");
         }
     }
 

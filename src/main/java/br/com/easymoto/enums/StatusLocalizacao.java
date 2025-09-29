@@ -2,16 +2,17 @@ package br.com.easymoto.enums;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum StatusLocacao {
-    ABERTA("Aberta", 1),
-    FINALIZADA("Finalizada", 2),
-    CANCELADA("Cancelada", 3);
+public enum StatusLocalizacao {
+    DISPONIVEL("Disponível", 1),
+    EM_USO("Em uso", 2),
+    MANUTENCAO("Manutenção", 3);
 
     private final String displayName;
     private final int code;
 
 
-    StatusLocacao(String displayName , int code) {
+
+    StatusLocalizacao(String displayName , int code) {
         this.displayName = displayName;
         this.code = code;
     }

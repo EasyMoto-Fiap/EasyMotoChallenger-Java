@@ -1,9 +1,14 @@
 package br.com.easymoto.model;
 
+import br.com.easymoto.enums.StatusLocalizacao;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
-import lombok.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
@@ -16,10 +21,10 @@ public class Localizacao {
     @Column(name = "id_localizacao")
     private Long id;
 
-    @NotBlank
-    @Size(max = 20)
+    @NotNull
+    @Enumerated(EnumType.ORDINAL)
     @Column(name = "status_loc")
-    private String statusLoc;
+    private StatusLocalizacao statusLoc;
 
     @NotNull
     @Column(name = "data_hora")

@@ -1,3 +1,5 @@
+// Em: src/main/java/br/com/easymoto/controller/web/PasswordResetController.java
+
 package br.com.easymoto.controller.web;
 
 import br.com.easymoto.exception.InvalidPasswordException;
@@ -29,7 +31,7 @@ public class PasswordResetController {
         } catch (Exception e) {
             System.err.println("Erro ao processar recuperação de senha: " + e.getMessage());
         }
-        redirectAttributes.addFlashAttribute("mensagem", "Se um usuário com este email existir em nosso sistema, um link de recuperação de senha foi enviado.");
+        redirectAttributes.addFlashAttribute("mensagem", "Se um usuário com este email existir, o link de redefinição foi gerado no console da aplicação.");
         return "redirect:/login";
     }
 

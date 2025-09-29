@@ -31,7 +31,7 @@ public class Moto {
     private Integer anoFabricacao;
 
     @NotNull
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     @Column(name = "status_moto")
     private StatusMoto statusMoto;
 

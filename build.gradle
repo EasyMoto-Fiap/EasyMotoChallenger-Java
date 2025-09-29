@@ -47,11 +47,8 @@ dependencies {
     // --- Persistência de Dados (JPA & Flyway) ---
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.flywaydb:flyway-core'
-    //implementation 'org.flywaydb:flyway-database-postgresql'
     // implementation 'org.flywaydb:flyway-database-oracle'
 
-    // --- Email ---
-    implementation 'org.springframework.boot:spring-boot-starter-mail'
 
     // --- Cache ---
     implementation 'org.springframework.boot:spring-boot-starter-cache'
@@ -67,7 +64,6 @@ dependencies {
 
     // --- Banco de Dados ---
     // runtimeOnly 'com.oracle.database.jdbc:ojdbc11' // Comente ou remova esta linha
-    //runtimeOnly 'org.postgresql:postgresql' // Adicione esta linha
     runtimeOnly 'com.h2database:h2'
 
     // --- Testes ---

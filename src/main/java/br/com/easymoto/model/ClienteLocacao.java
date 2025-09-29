@@ -26,7 +26,7 @@ public class ClienteLocacao {
     private LocalDate dataFim;
 
     @NotNull
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     @Column(name = "status_locacao")
     private StatusLocacao statusLocacao;
 
