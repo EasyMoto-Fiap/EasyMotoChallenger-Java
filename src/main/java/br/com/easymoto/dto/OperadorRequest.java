@@ -8,7 +8,7 @@ public record OperadorRequest(
         String nomeOpr,
 
         @NotBlank
-        @Size(min = 11, max = 11)
+        @Pattern(regexp = "^\\d{11}$", message = "O CPF deve conter apenas 11 dígitos numéricos.")
         String cpfOpr,
 
         @NotBlank

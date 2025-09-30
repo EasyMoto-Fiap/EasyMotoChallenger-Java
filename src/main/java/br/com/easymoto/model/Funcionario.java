@@ -4,7 +4,6 @@ import br.com.easymoto.enums.TypeCargo;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
-import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,9 +29,8 @@ public class Funcionario implements UserDetails {
     private String nomeFunc;
 
     @NotBlank
-    @Size(min = 11, max = 11)
+    @Pattern(regexp = "^\\d{11}$", message = "O CPF deve conter apenas 11 dígitos numéricos.")
     @Column(name = "cpf_func", unique = true)
-    @Pattern( regexp = "^\\d{11}$")
     private String cpfFunc;
 
     @NotBlank
@@ -83,7 +81,6 @@ public class Funcionario implements UserDetails {
         return this.emailFunc;
     }
 
-    // Métodos de status da conta
     @Override
     public boolean isAccountNonExpired() { return true; }
     @Override

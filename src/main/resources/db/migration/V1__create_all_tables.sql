@@ -1,7 +1,5 @@
--- Remove tabelas existentes (se houver) para garantir uma criação limpa
 DROP TABLE IF EXISTS vaga, moto, cliente_locacao, patio, operador, funcionario, filial, noticia, auditoria_moto, localizacao, empresa, cliente CASCADE;
 
--- Criação das tabelas principais
 CREATE TABLE cliente (
     id_cliente BIGSERIAL PRIMARY KEY,
     nome_cliente VARCHAR(100) NOT NULL,
@@ -43,7 +41,6 @@ CREATE TABLE noticia (
     categoria VARCHAR(50) NOT NULL
 );
 
--- Criação de tabelas com chaves estrangeiras
 CREATE TABLE filial (
     id_filial BIGSERIAL PRIMARY KEY,
     nome_filial VARCHAR(50) NOT NULL,

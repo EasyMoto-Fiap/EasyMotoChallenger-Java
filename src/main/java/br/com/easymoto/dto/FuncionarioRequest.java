@@ -9,7 +9,7 @@ public record FuncionarioRequest(
         String nomeFunc,
 
         @NotBlank
-        @Size(min = 11, max = 11)
+        @Pattern(regexp = "^\\d{11}$", message = "O CPF deve conter apenas 11 dígitos numéricos.")
         String cpfFunc,
 
         @NotNull

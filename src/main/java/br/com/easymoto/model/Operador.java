@@ -22,9 +22,8 @@ public class Operador {
     private String nomeOpr;
 
     @NotBlank
-    @Size(min = 11, max = 11)
+    @Pattern(regexp = "^\\d{11}$", message = "O CPF deve conter apenas 11 dígitos numéricos.")
     @Column(name = "cpf_opr", unique = true)
-    @CPF
     private String cpfOpr;
 
     @NotBlank
