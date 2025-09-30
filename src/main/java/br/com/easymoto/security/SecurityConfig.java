@@ -17,6 +17,9 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.header.writers.ContentSecurityPolicyHeaderWriter;
 
+import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
+
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -25,10 +28,21 @@ public class SecurityConfig {
     private SecurityFilter securityFilter;
 
     @Bean
+    @Order(0)
+    public SecurityFilterChain h2ConsoleFilterChain(HttpSecurity http) throws Exception {
+        http
+                .securityMatcher(toH2Console())
+                .authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll())
+                .csrf(AbstractHttpConfigurer::disable)
+                .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()));
+        return http.build();
+    }
+
+    @Bean
     @Order(1)
     public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
         http
-                .securityMatcher("/api/**", "/error")
+                .securityMatcher("/api/**")
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
@@ -43,14 +57,12 @@ public class SecurityConfig {
     @Order(2)
     public SecurityFilterChain webFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(AbstractHttpConfigurer::disable)
-                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/login", "/forgot-password", "/reset-password", "/css/**", "/js/**", "/images/**", "/swagger-ui/**", "/v3/api-docs/**", "/error/**", "/h2-console/**").permitAll()
-                        
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/login", "/forgot-password", "/reset-password", "/css/**", "/js/**", "/images/**", "/error/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+
                         .requestMatchers("/web/funcionarios/**", "/web/auditoria/**").hasRole("ADMIN")
-                        
                         .requestMatchers("/web/clientes/**", "/web/motos/**", "/web/locacoes/**", "/web/vagas/**").hasAnyRole("USER", "ADMIN")
-                        
+
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

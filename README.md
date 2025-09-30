@@ -37,13 +37,13 @@ A aplicação é dividida em duas frentes principais: uma interface web para adm
 
 ## 🛠️ Tecnologias Utilizadas
 
-| Backend                               | Frontend (Web Admin)                | Banco de Dados & Persistência     | Segurança                      | DevOps                      |
-| ------------------------------------- | ----------------------------------- | --------------------------------- | ------------------------------ | --------------------------- |
-| ☕ Java 21                            | 🍃 Thymeleaf                        | 💾 Oracle (Banco em Memória)      | 🔐 Spring Security             | 🐳 Docker                   |
-| 🌱 Spring Boot 3                      | 🎨 Bootstrap 5                      | 🐘 Spring Data JPA (Hibernate)    | 🔑 JWT (JSON Web Tokens)       | 🚀 GitHub Actions (CI/CD)   |
-| 📦 Gradle                             | 🌐 HTML5 / CSS3                     | 🦋 Flyway (Migrations)            | 🔑 BCrypt (Password Encoding)  | 🖥️ Azure                    |
-| ✅ Spring Validation                  |                                     | ⚡ Spring Cache (Caching Simples) |                                |                             |
-| 📄 SpringDoc (Swagger/OpenAPI)        |                                     |                                   |                                |                             |
+| Backend                               | Frontend (Web Admin)                | Banco de Dados & Persistência    | Segurança                      | DevOps                    |
+| ------------------------------------- | ----------------------------------- |----------------------------------| ------------------------------ |---------------------------|
+| ☕ Java 21                            | 🍃 Thymeleaf                        | 💾 H2 (Banco em Memória)         | 🔐 Spring Security             | 🐳 Docker                 |
+| 🌱 Spring Boot 3                      | 🎨 Bootstrap 5                      | 🐘 Spring Data JPA (Hibernate)   | 🔑 JWT (JSON Web Tokens)       | 🚀 GitHub Actions (CI/CD) |
+| 📦 Gradle                             | 🌐 HTML5 / CSS3                     | 🦋 Flyway (Migrations)           | 🔑 BCrypt (Password Encoding)  |                           |
+| ✅ Spring Validation                  |                                     | ⚡ Spring Cache (Caching Simples) |                                |                           |
+| 📄 SpringDoc (Swagger/OpenAPI)        |                                     |                                  |                                |                           |
 
 ---
 

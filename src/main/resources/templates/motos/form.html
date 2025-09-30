@@ -43,8 +43,11 @@
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Locação Associada</label>
                         <select class="form-select" th:field="*{locacaoId}" th:errorclass="is-invalid">
-                            <option value="">Selecione um cliente...</option>
-                            <option th:each="cli : ${clientes}" th:value="${cli.id}" th:text="${cli.nomeCliente}"></option>
+                            <option value="">Selecione uma locação...</option>
+                            <option th:each="locacao : ${locacoes}"
+                                    th:value="${locacao.id}"
+                                    th:text="${'ID ' + locacao.id + ' - ' + locacao.cliente.nomeCliente}">
+                            </option>
                         </select>
                         <div class="invalid-feedback" th:if="${#fields.hasErrors('locacaoId')}" th:errors="*{locacaoId}"></div>
                     </div>
@@ -52,7 +55,10 @@
                         <label class="form-label">Localização Inicial</label>
                         <select class="form-select" th:field="*{localizacaoId}" th:errorclass="is-invalid">
                             <option value="">Selecione uma localização...</option>
-                            <option th:each="loc : ${localizacoes}" th:value="${loc.id}" th:text="${'ID: ' + loc.id + ' - ' + loc.statusLoc}"></option>
+                            <option th:each="local : ${localizacoes}"
+                                    th:value="${local.id}"
+                                    th:text="${'ID: ' + local.id + ' - ' + local.statusLoc}">
+                            </option>
                         </select>
                         <div class="invalid-feedback" th:if="${#fields.hasErrors('localizacaoId')}" th:errors="*{localizacaoId}"></div>
                     </div>
