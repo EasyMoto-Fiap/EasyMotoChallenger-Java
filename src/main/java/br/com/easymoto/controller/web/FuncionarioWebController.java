@@ -21,7 +21,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/web/funcionarios")
@@ -38,6 +37,7 @@ public class FuncionarioWebController {
         model.addAttribute("funcionarioRequest", new FuncionarioRequest(null, null, null, null, null, "", null));
         model.addAttribute("filiais", filialRepository.findAll());
         model.addAttribute("cargos", TypeCargo.values());
+        model.addAttribute("isEditMode", false); // Adicionado para consistência
         return "funcionarios/form";
     }
 
@@ -63,11 +63,20 @@ public class FuncionarioWebController {
         if (result.hasErrors()) {
             model.addAttribute("filiais", filialRepository.findAll());
             model.addAttribute("cargos", TypeCargo.values());
+            model.addAttribute("isEditMode", false);
             return "funcionarios/form";
         }
-        funcionarioService.salvar(request);
-        redirectAttributes.addFlashAttribute("mensagem", "Funcionário cadastrado com sucesso!");
-        return "redirect:/web/funcionarios";
+        try {
+            funcionarioService.salvar(request);
+            redirectAttributes.addFlashAttribute("mensagem", "Funcionário cadastrado com sucesso!");
+            return "redirect:/web/funcionarios";
+        } catch (DataIntegrityViolationException e) {
+            model.addAttribute("mensagemErro", "Não foi possível salvar. O CPF ou Email informado já está cadastrado.");
+            model.addAttribute("filiais", filialRepository.findAll());
+            model.addAttribute("cargos", TypeCargo.values());
+            model.addAttribute("isEditMode", false);
+            return "funcionarios/form";
+        }
     }
 
     @GetMapping("/editar/{id}")
@@ -81,6 +90,7 @@ public class FuncionarioWebController {
         model.addAttribute("funcionarioId", id);
         model.addAttribute("filiais", filialRepository.findAll());
         model.addAttribute("cargos", TypeCargo.values());
+        model.addAttribute("isEditMode", true);
         return "funcionarios/form";
     }
 
@@ -90,18 +100,28 @@ public class FuncionarioWebController {
             model.addAttribute("funcionarioId", id);
             model.addAttribute("filiais", filialRepository.findAll());
             model.addAttribute("cargos", TypeCargo.values());
+            model.addAttribute("isEditMode", true);
             return "funcionarios/form";
         }
 
-        boolean isPasswordChanged = request.password() != null && !request.password().isEmpty();
-        FuncionarioResponse funcionarioAtualizado = funcionarioService.atualizar(id, request);
+        try {
+            boolean isPasswordChanged = request.password() != null && !request.password().isEmpty();
+            FuncionarioResponse funcionarioAtualizado = funcionarioService.atualizar(id, request);
 
-        String successMessage = isPasswordChanged
-                ? "Senha de " + funcionarioAtualizado.nomeFunc() + " atualizada com sucesso!"
-                : "Dados de " + funcionarioAtualizado.nomeFunc() + " atualizados com sucesso!";
+            String successMessage = isPasswordChanged
+                    ? "Senha de " + funcionarioAtualizado.nomeFunc() + " atualizada com sucesso!"
+                    : "Dados de " + funcionarioAtualizado.nomeFunc() + " atualizados com sucesso!";
 
-        redirectAttributes.addFlashAttribute("mensagem", successMessage);
-        return "redirect:/web/funcionarios";
+            redirectAttributes.addFlashAttribute("mensagem", successMessage);
+            return "redirect:/web/funcionarios";
+        } catch (DataIntegrityViolationException e) {
+            model.addAttribute("mensagemErro", "Não foi possível atualizar. O CPF ou Email informado já está cadastrado.");
+            model.addAttribute("funcionarioId", id);
+            model.addAttribute("filiais", filialRepository.findAll());
+            model.addAttribute("cargos", TypeCargo.values());
+            model.addAttribute("isEditMode", true);
+            return "funcionarios/form";
+        }
     }
 
     @GetMapping("/deletar/{id}")

@@ -44,8 +44,14 @@ public class SecurityConfig {
     public SecurityFilterChain webFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/login", "/forgot-password", "/reset-password", "/css/**", "/js/**", "/images/**", "/swagger-ui/**", "/v3/api-docs/**", "/error/**").permitAll()                        .anyRequest().authenticated()
+                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/login", "/forgot-password", "/reset-password", "/css/**", "/js/**", "/images/**", "/swagger-ui/**", "/v3/api-docs/**", "/error/**").permitAll()
+                        
+                        .requestMatchers("/web/funcionarios/**", "/web/auditoria/**").hasRole("ADMIN")
+                        
+                        .requestMatchers("/web/clientes/**", "/web/motos/**", "/web/locacoes/**", "/web/vagas/**").hasAnyRole("USER", "ADMIN")
+                        
+                        .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/login").permitAll()

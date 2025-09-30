@@ -49,9 +49,9 @@ INSERT INTO moto (id_moto, placa, modelo, ano_fabricacao, status_moto, locacao_i
 (3, 'GHI7F89', 'Honda PCX', 2024, 2, 1, 3);
 
 -- status_vaga: 0=OCUPADA, 1=INDEFINIDA, 2=LIVRE
-INSERT INTO vaga (id_vaga, status_vaga, patio_id, moto_id, fileira, coluna) VALUES
-(1, 0, 1, 1, 'A', '1'),
-(2, 0, 3, 3, 'B', '5');
+INSERT INTO vaga (status_vaga, patio_id, moto_id, fileira, coluna) VALUES
+(0, 1, 1, 'A', '1'),
+(0, 3, 3, 'B', '5');
 
 -- As demais tabelas não precisam de alteração
 INSERT INTO auditoria_moto (user_name, operacao, data_hora, old_values, new_values) VALUES
@@ -64,3 +64,5 @@ INSERT INTO auditoria_moto (user_name, operacao, data_hora, old_values, new_valu
 INSERT INTO noticia (titulo, conteudo, data_publicacao, autor, categoria) VALUES
 ('Nova Geração de Motos Elétricas', 'Conteúdo sobre as novas motos elétricas...', '2025-09-26', 'Equipe EasyMoto', 'TECNOLOGIA'),
 ('Dicas de Segurança para Entregas', 'Conteúdo sobre dicas de segurança...', '2025-09-25', 'João Especialista', 'SEGURANCA');
+
+ALTER TABLE moto ALTER COLUMN id_moto RESTART WITH 4;

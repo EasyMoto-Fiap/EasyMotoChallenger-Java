@@ -42,8 +42,15 @@ public class VagaService {
 
     @CacheEvict(value = "vagas", allEntries = true)
     public VagaResponse salvar(VagaRequest dto) {
-        Patio patio = patioRepository.findById(dto.patioId()).orElseThrow();
-        Moto moto = motoRepository.findById(dto.motoId()).orElseThrow();
+        Patio patio = patioRepository.findById(dto.patioId())
+                .orElseThrow(() -> new IllegalArgumentException("Pátio inválido"));
+
+        Moto moto = null;
+        if (dto.motoId() != null) {
+            moto = motoRepository.findById(dto.motoId())
+                    .orElseThrow(() -> new IllegalArgumentException("Moto inválida"));
+        }
+
         Vaga vaga = new Vaga(
                 null,
                 dto.statusVaga(),
@@ -52,19 +59,30 @@ public class VagaService {
                 dto.fileira(),
                 dto.coluna()
         );
+
         return toResponse(vagaRepository.save(vaga));
     }
 
     @CacheEvict(value = "vagas", allEntries = true)
     public VagaResponse atualizar(Long id, VagaRequest dto) {
-        Vaga vaga = vagaRepository.findById(id).orElseThrow();
-        Patio patio = patioRepository.findById(dto.patioId()).orElseThrow();
-        Moto moto = motoRepository.findById(dto.motoId()).orElseThrow();
+        Vaga vaga = vagaRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Vaga inválida"));
+
+        Patio patio = patioRepository.findById(dto.patioId())
+                .orElseThrow(() -> new IllegalArgumentException("Pátio inválido"));
+
+        Moto moto = null;
+        if (dto.motoId() != null) {
+            moto = motoRepository.findById(dto.motoId())
+                    .orElseThrow(() -> new IllegalArgumentException("Moto inválida"));
+        }
+
         vaga.setStatusVaga(dto.statusVaga());
         vaga.setPatio(patio);
-        vaga.setMoto(moto);
+        vaga.setMoto(moto); // aceita null
         vaga.setFileira(dto.fileira());
         vaga.setColuna(dto.coluna());
+
         return toResponse(vagaRepository.save(vaga));
     }
 

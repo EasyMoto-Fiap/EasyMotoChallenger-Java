@@ -36,19 +36,34 @@ public class ClienteWebController {
         return "clientes/form";
     }
 
-      @PostMapping("/salvar")
-    public String salvarCliente(@Valid @ModelAttribute("cliente") Cliente cliente, BindingResult result, RedirectAttributes redirectAttributes) {
+    @PostMapping("/salvar")
+    public String salvarCliente(@Valid @ModelAttribute("cliente") Cliente cliente, BindingResult result, RedirectAttributes redirectAttributes, Model model) {
         if (result.hasErrors()) {
             return "clientes/form";
         }
         try {
             clienteRepository.save(cliente);
-            redirectAttributes.addFlashAttribute("mensagem", "Dados do cliente salvos com sucesso!");
+            redirectAttributes.addFlashAttribute("mensagem", "Cliente cadastrado com sucesso!");
         } catch (DataIntegrityViolationException e) {
-            redirectAttributes.addFlashAttribute("mensagemErro", "Não foi possível salvar. O CPF informado já está cadastrado no sistema.");
-            return "redirect:/web/clientes/novo";
+            model.addAttribute("mensagemErro", "Não foi possível salvar. O CPF informado já está cadastrado no sistema.");
+            return "clientes/form";
         }
-        
+        return "redirect:/web/clientes";
+    }
+
+    @PostMapping("/atualizar/{id}")
+    public String atualizarCliente(@PathVariable("id") Long id, @Valid @ModelAttribute("cliente") Cliente cliente, BindingResult result, RedirectAttributes redirectAttributes, Model model) {
+        if (result.hasErrors()) {
+            return "clientes/form";
+        }
+        try {
+            cliente.setId(id); // Garante que o ID correto está sendo atualizado
+            clienteRepository.save(cliente);
+            redirectAttributes.addFlashAttribute("mensagem", "Cliente atualizado com sucesso!");
+        } catch (DataIntegrityViolationException e) {
+            model.addAttribute("mensagemErro", "Não foi possível atualizar. Ocorreu um erro de integridade de dados.");
+            return "clientes/form";
+        }
         return "redirect:/web/clientes";
     }
 

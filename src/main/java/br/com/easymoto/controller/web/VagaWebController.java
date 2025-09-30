@@ -51,11 +51,21 @@ public class VagaWebController {
             model.addAttribute("patios", patioRepository.findAll());
             model.addAttribute("motos", motoRepository.findAll());
             model.addAttribute("statusOptions", StatusVaga.values());
+            model.addAttribute("isEditMode", false);
             return "vagas/form";
         }
-        vagaService.salvar(request);
-        redirectAttributes.addFlashAttribute("mensagem", "Vaga salva com sucesso!");
-        return "redirect:/web/vagas";
+        try {
+            vagaService.salvar(request);
+            redirectAttributes.addFlashAttribute("mensagem", "Vaga salva com sucesso!");
+            return "redirect:/web/vagas";
+        } catch (DataIntegrityViolationException e) {
+            model.addAttribute("mensagemErro", "Não foi possível salvar. A moto selecionada já está ocupando outra vaga.");
+            model.addAttribute("patios", patioRepository.findAll());
+            model.addAttribute("motos", motoRepository.findAll());
+            model.addAttribute("statusOptions", StatusVaga.values());
+            model.addAttribute("isEditMode", false);
+            return "vagas/form";
+        }
     }
 
     @GetMapping("/editar/{id}")

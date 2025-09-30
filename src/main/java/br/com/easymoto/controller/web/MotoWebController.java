@@ -53,9 +53,18 @@ public class MotoWebController {
             model.addAttribute("statusOptions", StatusMoto.values());
             return "motos/form";
         }
-        motoService.salvar(request);
-        redirectAttributes.addFlashAttribute("mensagem", "Moto salva com sucesso!");
-        return "redirect:/web/motos";
+        try {
+            motoService.salvar(request);
+            redirectAttributes.addFlashAttribute("mensagem", "Moto salva com sucesso!");
+            return "redirect:/web/motos";
+        } catch (DataIntegrityViolationException e) {
+            model.addAttribute("mensagemErro", "Não foi possível salvar. A placa informada já está cadastrada no sistema.");
+            model.addAttribute("locacoes", locacaoRepository.findAll());
+            model.addAttribute("localizacoes", localizacaoRepository.findAll());
+            model.addAttribute("statusOptions", StatusMoto.values());
+            model.addAttribute("isEditMode", false);
+            return "motos/form";
+        }
     }
 
     @GetMapping("/editar/{id}")

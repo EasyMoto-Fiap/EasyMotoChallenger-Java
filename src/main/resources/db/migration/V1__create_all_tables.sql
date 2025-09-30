@@ -110,7 +110,7 @@ CREATE TABLE moto (
 );
 
 CREATE TABLE vaga (
-    id_vaga BIGSERIAL PRIMARY KEY,
+    id_vaga BIGINT AUTO_INCREMENT PRIMARY KEY,    
     status_vaga SMALLINT NOT NULL,
     patio_id BIGINT NOT NULL,
     moto_id BIGINT NOT NULL UNIQUE,

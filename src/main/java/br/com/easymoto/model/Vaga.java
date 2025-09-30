@@ -17,6 +17,7 @@ public class Vaga {
     private Long id;
 
 
+
     @NotNull
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "status_vaga")
@@ -28,9 +29,9 @@ public class Vaga {
     private Patio patio;
 
     @OneToOne
-    @JoinColumn(name = "moto_id", unique = true, nullable = false)
-    @NotNull
+    @JoinColumn(name = "moto_id", unique = true, nullable = true)
     private Moto moto;
+
 
     @NotBlank
     @Size(max = 1)

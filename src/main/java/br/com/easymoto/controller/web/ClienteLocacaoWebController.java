@@ -3,7 +3,6 @@ package br.com.easymoto.controller.web;
 import br.com.easymoto.dto.ClienteLocacaoRequest;
 import br.com.easymoto.enums.StatusLocacao;
 import br.com.easymoto.model.ClienteLocacao;
-import br.com.easymoto.model.Moto;
 import br.com.easymoto.repository.ClienteLocacaoRepository;
 import br.com.easymoto.repository.ClienteRepository;
 import br.com.easymoto.service.ClienteLocacaoService;
@@ -59,11 +58,21 @@ public class ClienteLocacaoWebController {
     public String salvar(@Valid @ModelAttribute("locacaoRequest") ClienteLocacaoRequest request, BindingResult result, RedirectAttributes redirectAttributes, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("clientes", clienteRepository.findAll());
+            model.addAttribute("statusOptions", StatusLocacao.values());
+            model.addAttribute("isEditMode", false);
             return "locacoes/form";
         }
-        locacaoService.salvar(request);
-        redirectAttributes.addFlashAttribute("mensagem", "Locação salva com sucesso!");
-        return "redirect:/web/locacoes";
+        try {
+            locacaoService.salvar(request);
+            redirectAttributes.addFlashAttribute("mensagem", "Locação salva com sucesso!");
+            return "redirect:/web/locacoes";
+        } catch (DataIntegrityViolationException e) {
+            model.addAttribute("mensagemErro", "Não foi possível salvar a locação. Verifique se os dados estão corretos e não violam nenhuma regra de negócio (ex: duplicidade).");
+            model.addAttribute("clientes", clienteRepository.findAll());
+            model.addAttribute("statusOptions", StatusLocacao.values());
+            model.addAttribute("isEditMode", false);
+            return "locacoes/form";
+        }
     }
 
 
@@ -82,6 +91,7 @@ public class ClienteLocacaoWebController {
         model.addAttribute("locacaoRequest", request);
         model.addAttribute("locacaoId", id);
         model.addAttribute("clientes", clienteRepository.findAll());
+        model.addAttribute("statusOptions", StatusLocacao.values());
         model.addAttribute("isEditMode", true);
         return "locacoes/form";
     }
@@ -91,12 +101,22 @@ public class ClienteLocacaoWebController {
         if (result.hasErrors()) {
             model.addAttribute("locacaoId", id);
             model.addAttribute("clientes", clienteRepository.findAll());
+            model.addAttribute("statusOptions", StatusLocacao.values());
             model.addAttribute("isEditMode", true);
             return "locacoes/form";
         }
-        locacaoService.atualizar(id, request);
-        redirectAttributes.addFlashAttribute("mensagem", "Locação atualizada com sucesso!");
-        return "redirect:/web/locacoes";
+        try {
+            locacaoService.atualizar(id, request);
+            redirectAttributes.addFlashAttribute("mensagem", "Locação atualizada com sucesso!");
+            return "redirect:/web/locacoes";
+        } catch (DataIntegrityViolationException e) {
+            model.addAttribute("mensagemErro", "Não foi possível atualizar a locação. Verifique os dados.");
+            model.addAttribute("locacaoId", id);
+            model.addAttribute("clientes", clienteRepository.findAll());
+            model.addAttribute("statusOptions", StatusLocacao.values());
+            model.addAttribute("isEditMode", true);
+            return "locacoes/form";
+        }
     }
 
 
