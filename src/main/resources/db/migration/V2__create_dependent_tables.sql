@@ -1,5 +1,3 @@
--- Migration 2: Criação das tabelas com chaves estrangeiras
-
 CREATE TABLE filial (
     id_filial BIGSERIAL PRIMARY KEY,
     nome_filial VARCHAR(50) NOT NULL,
