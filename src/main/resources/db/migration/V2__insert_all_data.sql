@@ -62,7 +62,3 @@ INSERT INTO auditoria_moto (user_name, operacao, data_hora, old_values, new_valu
 ('admin@easymoto.com', 'DELETE', '2025-09-26 15:00:00', 'placa=DEF4E56, modelo=Yamaha Fazer 250, ano=2022, status=2', NULL),
 ('user@easymoto.com', 'INSERT', '2025-09-27 08:45:00', NULL, 'placa=MNO3P45, modelo=Suzuki GSX-S750, ano=2023, status=0');
 
-INSERT INTO noticia (titulo, conteudo, data_publicacao, autor, categoria) VALUES
-('Nova Geração de Motos Elétricas', 'Conteúdo sobre as novas motos elétricas...', '2025-09-26', 'Equipe EasyMoto', 'TECNOLOGIA'),
-('Dicas de Segurança para Entregas', 'Conteúdo sobre dicas de segurança...', '2025-09-25', 'João Especialista', 'SEGURANCA');
-
