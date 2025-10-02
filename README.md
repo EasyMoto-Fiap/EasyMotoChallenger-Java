@@ -108,7 +108,7 @@ A aplicação é dividida em duas frentes principais: uma interface web para adm
 
 Um vídeo demonstrando as principais funcionalidades da aplicação está disponível no YouTube.
 
-**[>> Link para o Vídeo <<](https://www.youtube.com/seu-link-aqui)**
+**[>> Link para o Vídeo <<](https://youtu.be/qMUVv4Dqu7A)**
 
 **Pontos demonstrados no vídeo:**
 - **Autenticação:**
