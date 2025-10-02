@@ -107,6 +107,29 @@ A aplicação é dividida em duas frentes principais: uma interface web para adm
 
 ---
 
+## 🎥 Vídeo de Demonstração (YouTube)
+
+Um vídeo demonstrando as principais funcionalidades da aplicação está disponível no YouTube.
+
+**[>> Link para o Vídeo <<](https://www.youtube.com/seu-link-aqui)**
+
+**Pontos demonstrados no vídeo:**
+- **Autenticação:**
+    - Login com usuário `ADMIN` e `USER`, mostrando as diferenças de permissão.
+    - Processo de logout.
+- **Gerenciamento (CRUDs):**
+    - Criação, listagem, edição e exclusão de Clientes, Motos e Locações.
+    - Demonstração dos filtros nas telas de listagem.
+- **Funcionalidades de Administrador (`ADMIN`):**
+    - Acesso à área de Gerenciamento de Funcionários.
+    - Acesso à tela de Auditoria de Motos, explicando como os filtros funcionam.
+- **Configurações de Conta:**
+    - Demonstração da funcionalidade de alteração de senha pelo próprio usuário.
+- **API (Swagger):**
+    - Breve navegação pela documentação da API no Swagger-UI.
+
+---
+
 ## 👩‍💻 Equipe
 
 | Nome | RM |
