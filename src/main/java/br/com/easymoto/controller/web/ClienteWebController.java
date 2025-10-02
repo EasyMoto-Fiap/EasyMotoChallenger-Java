@@ -38,16 +38,15 @@ public class ClienteWebController {
 
     @PostMapping("/salvar")
     public String salvarCliente(@Valid @ModelAttribute("cliente") Cliente cliente, BindingResult result, RedirectAttributes redirectAttributes, Model model) {
+
+        if (clienteRepository.existsByCpfCliente(cliente.getCpfCliente())) {
+            result.rejectValue("cpfCliente", "duplicate", "Este CPF já está cadastrado no sistema.");
+        }
         if (result.hasErrors()) {
             return "clientes/form";
         }
-        try {
-            clienteRepository.save(cliente);
-            redirectAttributes.addFlashAttribute("mensagem", "Cliente cadastrado com sucesso!");
-        } catch (DataIntegrityViolationException e) {
-            model.addAttribute("mensagemErro", "Não foi possível salvar. O CPF informado já está cadastrado no sistema.");
-            return "clientes/form";
-        }
+        clienteRepository.save(cliente);
+        redirectAttributes.addFlashAttribute("mensagem", "Cliente cadastrado com sucesso!");
         return "redirect:/web/clientes";
     }
 
