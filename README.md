@@ -44,7 +44,7 @@ A aplicação é dividida em duas frentes principais: uma interface web para adm
 | 🌱 Spring Boot 3.4.5 | 🎨 Bootstrap 5 | 🐘 Spring Data JPA (Hibernate) | 🔑 JWT (JSON Web Tokens) | 🚀 GitHub Actions (CI/CD) |
 | 📦 Gradle | 🌐 HTML5 / CSS3 | 🦋 Flyway (Migrations) | 🔑 BCrypt (Password Encoding) | |
 | ✅ Spring Validation | | ⚡ Spring Cache (Caching Simples) | | |
-| 📄 SpringDoc (Swagger/OpenAPI) | | | | |
+
 
 ---
 
@@ -75,10 +75,7 @@ A aplicação é dividida em duas frentes principais: uma interface web para adm
         - **Admin:** `admin@easymoto.com`
         - **Usuário Comum:** `user@easymoto.com`
 
-5.  **Acesse a documentação da API (Swagger):**
-    - Para explorar e testar a API RESTful, acesse: **[http://localhost:8081/swagger-ui.html](http://localhost:8081/swagger-ui.html)**
-
-6.  **Acesse o Console do Banco de Dados H2:**
+5.  **Acesse o Console do Banco de Dados H2:**
     - Para visualizar e interagir com o banco de dados em memória, acesse: **[http://localhost:8081/h2-console](http://localhost:8081/h2-console)**
     - Utilize as seguintes credenciais para conectar:
         - **JDBC URL:** `jdbc:h2:mem:easymoto`
@@ -125,8 +122,6 @@ Um vídeo demonstrando as principais funcionalidades da aplicação está dispon
     - Acesso à tela de Auditoria de Motos, explicando como os filtros funcionam.
 - **Configurações de Conta:**
     - Demonstração da funcionalidade de alteração de senha pelo próprio usuário.
-- **API (Swagger):**
-    - Breve navegação pela documentação da API no Swagger-UI.
 
 ---
 
