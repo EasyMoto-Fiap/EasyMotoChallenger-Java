@@ -12,15 +12,16 @@ A aplicação é dividida em duas frentes principais: uma interface web para adm
 
 ### Interface Web (Thymeleaf & Spring Security)
 - **Dashboard Inicial:** Visão geral com atalhos para as principais funcionalidades.
-- **Login Seguro:** Autenticação de usuários com Spring Security, com perfis de `ADMIN` e `USER`.
+- **Login Seguro:** Autenticação de usuários com Spring Security, com perfis de `ADMIN` e `USER`. Inclui sistema de "Lembrar de mim" e recuperação de senha.
 - **Gerenciamento de Clientes:** CRUD completo para clientes.
 - **Gerenciamento de Motos:** CRUD completo para a frota, com opção de filtro por status (`Disponível`, `Em Uso`, `Manutenção`).
 - **Gerenciamento de Locações:** CRUD completo para os contratos de locação, com filtros por cliente, status e datas.
-- **Gerenciamento de Vagas:** CRUD e listagem de vagas nos pátios.
-- **Administração (Acesso Restrito):**
+- **Gerenciamento de Vagas:** CRUD e listagem de vagas nos pátios, com filtros por status.
+- **Administração (Acesso Restrito - `ADMIN`):**
     - **Gerenciamento de Funcionários:** CRUD de usuários do sistema, com atribuição de cargos (`ADMIN`, `USER`).
-    - **Auditoria de Motos:** Tela para visualizar o histórico de alterações (INSERT, UPDATE, DELETE) na frota de motos, com filtros avançados.
+    - **Auditoria de Motos:** Tela para visualizar o histórico de alterações (INSERT, UPDATE, DELETE) na frota de motos, com filtros avançados por usuário, operação e data.
 - **Configurações de Conta:** Permite que o usuário logado altere sua própria senha.
+- **Visualização de Dados da Empresa:** Telas para visualização de Empresas, Filiais, Pátios e Operadores.
 
 ### API RESTful (Spring Web & Swagger)
 - **Endpoints Seguros:** Todas as rotas da API (exceto autenticação) são protegidas com JWT (JSON Web Tokens).
@@ -37,13 +38,13 @@ A aplicação é dividida em duas frentes principais: uma interface web para adm
 
 ## 🛠️ Tecnologias Utilizadas
 
-| Backend                               | Frontend (Web Admin)                | Banco de Dados & Persistência    | Segurança                      | DevOps                    |
-| ------------------------------------- | ----------------------------------- |----------------------------------| ------------------------------ |---------------------------|
-| ☕ Java 21                            | 🍃 Thymeleaf                        | 💾 H2 (Banco em Memória)         | 🔐 Spring Security             | 🐳 Docker                 |
-| 🌱 Spring Boot 3                      | 🎨 Bootstrap 5                      | 🐘 Spring Data JPA (Hibernate)   | 🔑 JWT (JSON Web Tokens)       | 🚀 GitHub Actions (CI/CD) |
-| 📦 Gradle                             | 🌐 HTML5 / CSS3                     | 🦋 Flyway (Migrations)           | 🔑 BCrypt (Password Encoding)  |                           |
-| ✅ Spring Validation                  |                                     | ⚡ Spring Cache (Caching Simples) |                                |                           |
-| 📄 SpringDoc (Swagger/OpenAPI)        |                                     |                                  |                                |                           |
+| Backend | Frontend (Web Admin) | Banco de Dados & Persistência | Segurança | DevOps |
+|---|---|---|---|---|
+| ☕ Java 21 | 🍃 Thymeleaf | 💾 H2 (Banco em Memória) | 🔐 Spring Security | 🐳 Docker |
+| 🌱 Spring Boot 3.4.5 | 🎨 Bootstrap 5 | 🐘 Spring Data JPA (Hibernate) | 🔑 JWT (JSON Web Tokens) | 🚀 GitHub Actions (CI/CD) |
+| 📦 Gradle | 🌐 HTML5 / CSS3 | 🦋 Flyway (Migrations) | 🔑 BCrypt (Password Encoding) | |
+| ✅ Spring Validation | | ⚡ Spring Cache (Caching Simples) | | |
+| 📄 SpringDoc (Swagger/OpenAPI) | | | | |
 
 ---
 
@@ -57,7 +58,7 @@ A aplicação é dividida em duas frentes principais: uma interface web para adm
 
 1.  **Clone o repositório:**
     ```bash
-    git clone https://github.com/akemilol/EasyMotoChallenger-Java.git
+    git clone [https://github.com/akemilol/EasyMotoChallenger-Java.git](https://github.com/akemilol/EasyMotoChallenger-Java.git)
     cd EasyMotoChallenger-Java
     ```
 
@@ -69,13 +70,20 @@ A aplicação é dividida em duas frentes principais: uma interface web para adm
     - Clique com o botão direito e selecione "Run".
 
 4.  **Acesse a aplicação web:**
-    - Abra o navegador em: **[http://localhost:8080](http://localhost:8080)**
+    - Abra o navegador em: **[http://localhost:8081](http://localhost:8081)**
     - Utilize um dos usuários de teste para fazer login (a senha para ambos é `password`):
         - **Admin:** `admin@easymoto.com`
         - **Usuário Comum:** `user@easymoto.com`
 
 5.  **Acesse a documentação da API (Swagger):**
-    - Para explorar e testar a API RESTful, acesse: **[http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)**
+    - Para explorar e testar a API RESTful, acesse: **[http://localhost:8081/swagger-ui.html](http://localhost:8081/swagger-ui.html)**
+
+6.  **Acesse o Console do Banco de Dados H2:**
+    - Para visualizar e interagir com o banco de dados em memória, acesse: **[http://localhost:8081/h2-console](http://localhost:8081/h2-console)**
+    - Utilize as seguintes credenciais para conectar:
+        - **JDBC URL:** `jdbc:h2:mem:easymoto`
+        - **User Name:** `sa`
+        - **Password:** `password`
 
 ---
 
@@ -93,16 +101,16 @@ A aplicação é dividida em duas frentes principais: uma interface web para adm
 
 3.  **Rode o container:**
     ```sh
-    docker run -p 8080:8080 --name easymoto-container easymoto-api
+    docker run -p 8081:8080 --name easymoto-container easymoto-api
     ```
-    A aplicação estará acessível em `http://localhost:8080`.
+    A aplicação estará acessível em `http://localhost:8081`.
 
 ---
 
 ## 👩‍💻 Equipe
 
-| Nome                              | RM      |
-| --------------------------------- | ------- |
-| Valéria Conceição Dos Santos      | 557177  |
-| Mirela Pinheiro Silva Rodrigues   | 558191  |
-| Luiz Eduaro Da Silva Pinto        | 55213   |
+| Nome | RM |
+|---|---|
+| Valéria Conceição Dos Santos | 557177 |
+| Mirela Pinheiro Silva Rodrigues | 558191 |
+| Luiz Eduardo Da Silva Pinto | 55213 |
