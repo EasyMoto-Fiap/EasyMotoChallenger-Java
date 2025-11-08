@@ -1,6 +1,7 @@
 package br.com.easymoto.model;
 
 import br.com.easymoto.enums.StatusMoto;
+import br.com.easymoto.converter.StatusMotoConverter;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -31,7 +32,7 @@ public class Moto {
     private Integer anoFabricacao;
 
     @NotNull
-    @Enumerated(EnumType.ORDINAL)
+    @Convert(converter = StatusMotoConverter.class)
     @Column(name = "status_moto")
     private StatusMoto statusMoto;
 

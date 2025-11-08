@@ -24,49 +24,42 @@ repositories {
 }
 
 dependencies {
-    // --- Spring Web ---
+    // ===========================
+    //   SPRING BOOT STARTERS
+    // ===========================
     implementation 'org.springframework.boot:spring-boot-starter-web'
-
-    // --- Spring Security ---
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-
-    // --- JWT (JSON Web Token) ---
-    implementation 'com.auth0:java-jwt:4.4.0'
-    implementation 'io.jsonwebtoken:jjwt-api:0.12.5'
-    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.5'
-    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.5'
-
-    // --- Interface Web com Thymeleaf ---
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
-    implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
-
-    // --- Documentação (Swagger/OpenAPI) ---
-    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
-
-    // --- Persistência de Dados (JPA & Flyway) ---
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.flywaydb:flyway-core'
-    // implementation 'org.flywaydb:flyway-database-oracle'
-
-
-    // --- Cache ---
-    implementation 'org.springframework.boot:spring-boot-starter-cache'
-
-    // --- Validação ---
+    implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-cache'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.3.0'
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
 
-    // --- Utilitários ---
+    // ===========================
+    //   OPENAPI / SWAGGER
+    // ===========================
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0'
+
+    // ===========================
+    //   JWT (Auth0)
+    // ===========================
+    implementation 'com.auth0:java-jwt:4.4.0'
+
+    // ===========================
+    //   LOMBOK
+    // ===========================
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+
+    // ===========================
+    //   DEVTOOLS
+    // ===========================
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
-    // --- Banco de Dados ---
-    // runtimeOnly 'com.oracle.database.jdbc:ojdbc11' // Comente ou remova esta linha
-    runtimeOnly 'com.h2database:h2'
-
-    // --- Testes ---
+    //   BANCO DE DADOS
+    runtimeOnly 'com.oracle.database.jdbc:ojdbc11'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
