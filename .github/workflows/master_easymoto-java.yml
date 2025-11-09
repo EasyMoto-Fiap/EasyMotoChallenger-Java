@@ -1,7 +1,7 @@
 name: Build and deploy EasyMoto Java to Azure Web App
 
 on: 
-  push:
+  push: 
     branches:
       - master
   workflow_dispatch:
