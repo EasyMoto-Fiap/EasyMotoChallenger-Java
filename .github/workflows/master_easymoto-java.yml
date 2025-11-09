@@ -1,33 +1,27 @@
-name: 'Build and deploy JAR app to Azure Web App: easymoto-java'
+spring:
+  application:
+    name: easymoto
 
-on:
-  push:
-    branches:
-      - master
-  workflow_dispatch:
+  datasource:
+    driver-class-name: oracle.jdbc.OracleDriver
+    url: jdbc:oracle:thin:@oracle.fiap.com.br:1521/orcl
+    username: rm557177
+    password: 170403
 
-jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
+  jpa:
+    database-platform: org.hibernate.dialect.OracleDialect
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
 
-      - name: Set up Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '21'
+flyway:
+  enabled: false
 
-      - name: Grant execute permission to gradlew
-        run: chmod +x ./gradlew
-
-      - name: Build with Gradle
-        run: ./gradlew clean build --stacktrace
-
-      - name: Deploy to Azure Web App
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: 'easymoto-java'
-          slot-name: 'production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_XXXX }}
-          package: 'build/libs/*.jar'
+logging:
+  level:
+    com.zaxxer.hikari: DEBUG
+    org.hibernate.engine.jdbc.spi.SqlExceptionHelper: DEBUG
+    org.springframework.boot.autoconfigure.orm.jpa: DEBUG
