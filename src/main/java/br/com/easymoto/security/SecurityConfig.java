@@ -15,10 +15,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.header.writers.ContentSecurityPolicyHeaderWriter;
-
-import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
-
 
 @Configuration
 @EnableWebSecurity
@@ -27,42 +23,69 @@ public class SecurityConfig {
     @Autowired
     private SecurityFilter securityFilter;
 
-    @Bean
-    @Order(0)
-    public SecurityFilterChain h2ConsoleFilterChain(HttpSecurity http) throws Exception {
-        http
-                .securityMatcher(toH2Console())
-                .authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll())
-                .csrf(AbstractHttpConfigurer::disable)
-                .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()));
-        return http.build();
-    }
-
+    // ============================
+    //  API / JWT (/api/**)
+    // ============================
     @Bean
     @Order(1)
     public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
         http
                 .securityMatcher("/api/**")
                 .csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
 
+    // ============================
+    //  WEB (Thymeleaf)
+    // ============================
     @Bean
     @Order(2)
     public SecurityFilterChain webFilterChain(HttpSecurity http) throws Exception {
         http
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/login", "/forgot-password", "/reset-password", "/css/**", "/js/**", "/images/**", "/error/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        // Páginas públicas
+                        .requestMatchers(
+                                "/login",
+                                "/forgot-password",
+                                "/reset-password",
+                                "/css/**",
+                                "/js/**",
+                                "/images/**",
+                                "/error/**",
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**"
+                        ).permitAll()
 
-                        .requestMatchers("/web/funcionarios/**", "/web/auditoria/**").hasRole("ADMIN")
-                        .requestMatchers("/web/clientes/**", "/web/motos/**", "/web/locacoes/**", "/web/vagas/**").hasAnyRole("USER", "ADMIN")
+                        // Acesso só ADMIN
+                        .requestMatchers(
+                                "/web/funcionarios/**",
+                                "/web/auditoria/**"
+                        ).hasRole("ADMIN")
 
+                        // Acesso USER ou ADMIN
+                        .requestMatchers(
+                                "/web/clientes/**",
+                                "/web/empresas/**",
+                                "/web/filiais/**",
+                                "/web/localizacoes/**",
+                                "/web/motos/**",
+                                "/web/operadores/**",
+                                "/web/patios/**",
+                                "/web/locacoes/**",
+                                "/web/vagas/**"
+                        ).hasAnyRole("USER", "ADMIN")
+
+                        // Qualquer outra rota precisa estar logada
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
@@ -72,30 +95,14 @@ public class SecurityConfig {
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/login?logout")
-                        .invalidateHttpSession(true)
-                        .deleteCookies("JSESSIONID", "remember-me-easymoto")
-                        .permitAll()
-                )
-                .rememberMe(remember -> remember
-                        .key("chave-secreta-super-forte-e-aleatoria")
-                        .rememberMeCookieName("remember-me-easymoto")
-                        .tokenValiditySeconds(86400 * 7)
-                )
-                .headers(headers -> headers
-                        .cacheControl(cache -> cache.disable())
-                        .addHeaderWriter(new ContentSecurityPolicyHeaderWriter(
-                                "default-src 'self'; " +
-                                        "script-src 'self' https://cdn.jsdelivr.net; " +
-                                        "style-src 'self' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com 'unsafe-inline'; " +
-                                        "font-src 'self' https://cdnjs.cloudflare.com; " +
-                                        "img-src 'self' https://i.giphy.com data:;"
-                        ))
                 );
 
         return http.build();
     }
 
-
+    // ============================
+    //  Beans auxiliares
+    // ============================
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();

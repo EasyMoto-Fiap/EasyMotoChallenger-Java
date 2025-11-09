@@ -46,7 +46,10 @@ public class VagaWebController {
     }
 
     @PostMapping("/salvar")
-    public String salvar(@Valid @ModelAttribute("vagaRequest") VagaRequest request, BindingResult result, RedirectAttributes redirectAttributes, Model model) {
+    public String salvar(@Valid @ModelAttribute("vagaRequest") VagaRequest request,
+                         BindingResult result,
+                         RedirectAttributes redirectAttributes,
+                         Model model) {
         if (result.hasErrors()) {
             model.addAttribute("patios", patioRepository.findAll());
             model.addAttribute("motos", motoRepository.findAll());
@@ -73,11 +76,12 @@ public class VagaWebController {
     public String mostrarFormularioEditar(@PathVariable Long id, Model model) {
         Vaga vaga = vagaRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("ID de Vaga inválido:" + id));
+        Long motoId = vaga.getMoto() != null ? vaga.getMoto().getId() : null;
 
         var request = new VagaRequest(
                 vaga.getStatusVaga(),
                 vaga.getPatio().getId(),
-                vaga.getMoto().getId(),
+                motoId,
                 vaga.getFileira(),
                 vaga.getColuna()
         );
@@ -93,7 +97,11 @@ public class VagaWebController {
 
     @PostMapping("/atualizar/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public String atualizar(@PathVariable Long id, @Valid @ModelAttribute("vagaRequest") VagaRequest request, BindingResult result, RedirectAttributes redirectAttributes, Model model) {
+    public String atualizar(@PathVariable Long id,
+                            @Valid @ModelAttribute("vagaRequest") VagaRequest request,
+                            BindingResult result,
+                            RedirectAttributes redirectAttributes,
+                            Model model) {
         if (result.hasErrors()) {
             model.addAttribute("vagaId", id);
             model.addAttribute("patios", patioRepository.findAll());

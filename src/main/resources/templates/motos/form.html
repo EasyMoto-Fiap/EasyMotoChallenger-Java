@@ -9,36 +9,55 @@
     <h1 th:text="${isEditMode ? 'Editar Moto' : 'Cadastrar Nova Moto'}"></h1>
     <div class="card">
         <div class="card-body">
+
             <div th:if="${mensagemErro}" class="alert alert-danger" th:text="${mensagemErro}"></div>
-            <form th:action="${isEditMode} ? @{/web/motos/atualizar/{id}(id=${motoId})} : @{/web/motos/salvar}" th:object="${motoRequest}" method="post">
+
+            <form th:action="${isEditMode} ? @{/web/motos/atualizar/{id}(id=${motoId})} : @{/web/motos/salvar}"
+                  th:object="${motoRequest}"
+                  method="post">
+
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Placa</label>
                         <input type="text" class="form-control" th:field="*{placa}" th:errorclass="is-invalid">
-                        <div class="invalid-feedback" th:if="${#fields.hasErrors('placa')}" th:errors="*{placa}"></div>
+                        <div class="invalid-feedback"
+                             th:if="${#fields.hasErrors('placa')}"
+                             th:errors="*{placa}"></div>
                     </div>
+
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Modelo</label>
                         <input type="text" class="form-control" th:field="*{modelo}" th:errorclass="is-invalid">
-                        <div class="invalid-feedback" th:if="${#fields.hasErrors('modelo')}" th:errors="*{modelo}"></div>
+                        <div class="invalid-feedback"
+                             th:if="${#fields.hasErrors('modelo')}"
+                             th:errors="*{modelo}"></div>
                     </div>
                 </div>
+
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Ano de Fabricação</label>
                         <input type="number" class="form-control" th:field="*{anoFabricacao}" th:errorclass="is-invalid">
-                        <div class="invalid-feedback" th:if="${#fields.hasErrors('anoFabricacao')}" th:errors="*{anoFabricacao}"></div>
+                        <div class="invalid-feedback"
+                             th:if="${#fields.hasErrors('anoFabricacao')}"
+                             th:errors="*{anoFabricacao}"></div>
                     </div>
+
                     <div class="col-md-6 mb-3">
                         <label for="statusMoto" class="form-label">Status da Moto</label>
-                        <select id="statusMoto" class="form-select" th:field="*{statusMoto}" th:errorclass="is-invalid">
+                        <select id="statusMoto" class="form-select"
+                                th:field="*{status}"
+                                th:errorclass="is-invalid">
                             <option th:each="s : ${statusOptions}"
                                     th:value="${s}"
                                     th:text="${s.displayName}"></option>
                         </select>
-                        <div class="invalid-feedback" th:if="${#fields.hasErrors('statusMoto')}" th:errors="*{statusMoto}"></div>
+                        <div class="invalid-feedback"
+                             th:if="${#fields.hasErrors('status')}"
+                             th:errors="*{status}"></div>
                     </div>
                 </div>
+
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Locação Associada</label>
@@ -49,10 +68,13 @@
                                     th:text="${'ID ' + locacao.id + ' - ' + locacao.cliente.nomeCliente}">
                             </option>
                         </select>
-                        <div class="invalid-feedback" th:if="${#fields.hasErrors('locacaoId')}" th:errors="*{locacaoId}"></div>
+                        <div class="invalid-feedback"
+                             th:if="${#fields.hasErrors('locacaoId')}"
+                             th:errors="*{locacaoId}"></div>
                     </div>
+
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">Localização Inicial</label>
+                        <label class="form-label">Localização Atual</label>
                         <select class="form-select" th:field="*{localizacaoId}" th:errorclass="is-invalid">
                             <option value="">Selecione uma localização...</option>
                             <option th:each="local : ${localizacoes}"
@@ -60,9 +82,12 @@
                                     th:text="${'ID: ' + local.id + ' - ' + local.statusLoc}">
                             </option>
                         </select>
-                        <div class="invalid-feedback" th:if="${#fields.hasErrors('localizacaoId')}" th:errors="*{localizacaoId}"></div>
+                        <div class="invalid-feedback"
+                             th:if="${#fields.hasErrors('localizacaoId')}"
+                             th:errors="*{localizacaoId}"></div>
                     </div>
                 </div>
+
                 <div class="mt-4">
                     <button type="submit" class="btn btn-success">Salvar</button>
                     <a th:href="@{/web/motos}" class="btn btn-secondary">Cancelar</a>

@@ -60,7 +60,8 @@ public class VagaService {
                 dto.coluna()
         );
 
-        return toResponse(vagaRepository.save(vaga));
+        Vaga vagaSalva = vagaRepository.save(vaga);
+        return toResponse(vagaSalva);
     }
 
     @CacheEvict(value = "vagas", allEntries = true)
@@ -79,7 +80,7 @@ public class VagaService {
 
         vaga.setStatusVaga(dto.statusVaga());
         vaga.setPatio(patio);
-        vaga.setMoto(moto); // aceita null
+        vaga.setMoto(moto);
         vaga.setFileira(dto.fileira());
         vaga.setColuna(dto.coluna());
 
@@ -92,13 +93,21 @@ public class VagaService {
     }
 
     private VagaResponse toResponse(Vaga vaga) {
+        Patio patio = vaga.getPatio();
+        Long patioId = patio != null ? patio.getId() : null;
+        String patioNome = patio != null ? patio.getNomePatio() : null;
+
+        Moto moto = vaga.getMoto();
+        Long motoId = moto != null ? moto.getId() : null;
+        String motoPlaca = moto != null ? moto.getPlaca() : null;
+
         return new VagaResponse(
                 vaga.getId(),
                 vaga.getStatusVaga(),
-                vaga.getPatio().getId(),
-                vaga.getPatio().getNomePatio(),
-                vaga.getMoto().getId(),
-                vaga.getMoto().getPlaca(),
+                patioId,
+                patioNome,
+                motoId,
+                motoPlaca,
                 vaga.getFileira(),
                 vaga.getColuna()
         );

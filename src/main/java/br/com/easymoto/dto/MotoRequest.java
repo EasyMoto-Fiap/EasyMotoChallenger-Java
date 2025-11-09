@@ -1,26 +1,35 @@
 package br.com.easymoto.dto;
 
 import br.com.easymoto.enums.StatusMoto;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.Data;
 
-public record MotoRequest(
+@Data
+public class MotoRequest {
+
+        private Long id;
+
         @NotBlank
         @Size(max = 10)
-        String placa,
+        private String placa;
 
         @NotBlank
         @Size(max = 50)
-        String modelo,
+        private String modelo;
 
         @NotNull
-        Integer anoFabricacao,
+        @Min(1980)
+        private Integer anoFabricacao;
 
         @NotNull
-        StatusMoto statusMoto,
+        private StatusMoto status;
 
         @NotNull
-        Long locacaoId,
+        private Long locacaoId;
 
         @NotNull
-        Long localizacaoId
-) {}
+        private Long localizacaoId;
+}

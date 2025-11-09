@@ -1,35 +1,155 @@
-INSERT INTO filial (nome_filial, cidade, estado, pais, endereco, empresa_id) VALUES
-('Matriz SP', 'São Paulo', 'SP', 'Brasil', 'Avenida Paulista, 1000', 1),
-('Filial RJ', 'Rio de Janeiro', 'RJ', 'Brasil', 'Avenida Rio Branco, 200', 1);
+INSERT INTO filial (nome_filial, cidade, estado, pais, endereco, empresa_id)
+VALUES (
+           'Filial São Paulo',
+           'São Paulo',
+           'SP',
+           'Brasil',
+           'Avenida Paulista, 1000',
+           (SELECT id_empresa FROM empresa WHERE cnpj = '11222333000144')
+       );
 
-INSERT INTO funcionario (nome_func, cpf_func, telefone_func, email_func, password, cargo, filial_id) VALUES
-('Ana Administradora', '85590920033', '11988887777', 'admin@easymoto.com', '$2a$10$upnHeELHX/hGNZiWw3Wum.1vpq9DeIZxoafRj5kywxfzlhYG74ely', 1, 1),
-('Carlos Usuário', '83313837059', '11955554444', 'user@easymoto.com', '$2a$10$upnHeELHX/hGNZiWw3Wum.1vpq9DeIZxoafRj5kywxfzlhYG74ely', 0, 2);
+INSERT INTO filial (nome_filial, cidade, estado, pais, endereco, empresa_id)
+VALUES (
+           'Filial Rio de Janeiro',
+           'Rio de Janeiro',
+           'RJ',
+           'Brasil',
+           'Avenida Rio Branco, 200',
+           (SELECT id_empresa FROM empresa WHERE cnpj = '11222333000144')
+       );
 
-INSERT INTO operador (nome_opr, cpf_opr, telefone_opr, email_opr, filial_id) VALUES
-('Marcos Operador SP', '70633131031', '11977776666', 'operador.sp@easymoto.com', 1),
-('Julia Operadora RJ', '50374353005', '21988885555', 'operador.rj@easymoto.com', 2);
+INSERT INTO funcionario (nome_func, cpf_func, telefone_func, email_func, password, cargo, filial_id)
+VALUES (
+           'Administrador SP',
+           '11111111111',
+           '11999990000',
+           'admin@easymoto.com',
+           '$2a$10$upnHeELHX/hGNZiWw3Wum.1vpq9DeIZxoafRj5kywxfzlhYG74ely',
+           1,
+           (SELECT id_filial FROM filial WHERE nome_filial = 'Filial São Paulo')
+       );
 
-INSERT INTO patio (nome_patio, tamanho_patio, andar, filial_id) VALUES
-('Pátio Principal SP', 'Grande', '1', 1),
-('Garagem Subsolo SP', 'Médio', 'S', 1),
-('Pátio Principal RJ', 'Grande', '1', 2);
+INSERT INTO funcionario (nome_func, cpf_func, telefone_func, email_func, password, cargo, filial_id)
+VALUES (
+           'Operador SP',
+           '22222222222',
+           '11988880000',
+           'operador@easymoto.com',
+           '$2a$10$upnHeELHX/hGNZiWw3Wum.1vpq9DeIZxoafRj5kywxfzlhYG74ely',
+           0,
+           (SELECT id_filial FROM filial WHERE nome_filial = 'Filial São Paulo')
+       );
 
-INSERT INTO cliente_locacao (data_inicio, data_fim, status_locacao, cliente_id) VALUES
-('2025-09-20', '2025-09-27', 0, 1),
-('2025-09-22', '2025-09-29', 0, 2),
-('2025-08-10', '2025-08-17', 1, 3);
+INSERT INTO operador (nome_opr, cpf_opr, telefone_opr, email_opr, filial_id)
+VALUES (
+           'Carlos Admin',
+           '33333333333',
+           '11999990000',
+           'carlos.admin@easymoto.com',
+           (SELECT id_filial FROM filial WHERE nome_filial = 'Filial São Paulo')
+       );
 
-INSERT INTO moto (placa, modelo, ano_fabricacao, status_moto, locacao_id, localizacao_id) VALUES
-('ABC1D23', 'Honda CG 160', 2023, 0, 3, 1),
-('DEF4E56', 'Yamaha Fazer 250', 2022, 1, 2, 2),
-('GHI7F89', 'Honda PCX', 2024, 2, 1, 3);
+INSERT INTO operador (nome_opr, cpf_opr, telefone_opr, email_opr, filial_id)
+VALUES (
+           'Fernanda Operadora',
+           '44444444444',
+           '11988880000',
+           'fernanda.op@easymoto.com',
+           (SELECT id_filial FROM filial WHERE nome_filial = 'Filial São Paulo')
+       );
 
-INSERT INTO vaga (status_vaga, patio_id, moto_id, fileira, coluna) VALUES
-(0, 1, 1, 'A', '1'),
-(0, 3, 3, 'B', '5');
+INSERT INTO patio (nome_patio, tamanho_patio, andar, filial_id)
+VALUES (
+           'Pátio Principal',
+           'Grande',
+           '1',
+           (SELECT id_filial FROM filial WHERE nome_filial = 'Filial São Paulo')
+       );
 
-INSERT INTO auditoria_moto (user_name, operacao, data_hora, old_values, new_values) VALUES
-('admin@easymoto.com', 'INSERT', '2025-09-25 10:00:00', NULL, 'placa=XYZ1A23, modelo=Honda Biz, ano=2024, status=0'),
-('user@easymoto.com', 'UPDATE', '2025-09-25 11:30:00', 'status=0', 'status=1'),
-('admin@easymoto.com', 'DELETE', '2025-09-26 15:00:00', 'placa=DEF4E56, modelo=Yamaha Fazer 250, ano=2022, status=2', NULL);
+INSERT INTO vaga (status_vaga, patio_id, moto_id, fileira, coluna)
+VALUES (
+           1,
+           (SELECT id_patio FROM patio WHERE nome_patio = 'Pátio Principal'),
+           NULL,
+           'A',
+           '1'
+       );
+
+INSERT INTO vaga (status_vaga, patio_id, moto_id, fileira, coluna)
+VALUES (
+           1,
+           (SELECT id_patio FROM patio WHERE nome_patio = 'Pátio Principal'),
+           NULL,
+           'A',
+           '2'
+       );
+
+INSERT INTO vaga (status_vaga, patio_id, moto_id, fileira, coluna)
+VALUES (
+           1,
+           (SELECT id_patio FROM patio WHERE nome_patio = 'Pátio Principal'),
+           NULL,
+           'B',
+           '1'
+       );
+
+INSERT INTO vaga (status_vaga, patio_id, moto_id, fileira, coluna)
+VALUES (
+           1,
+           (SELECT id_patio FROM patio WHERE nome_patio = 'Pátio Principal'),
+           NULL,
+           'B',
+           '2'
+       );
+
+INSERT INTO locacao (data_inicio, data_fim, status_locacao, cliente_id)
+VALUES (
+           TO_DATE('2024-01-10', 'YYYY-MM-DD'),
+           TO_DATE('2024-01-17', 'YYYY-MM-DD'),
+           0,
+           (SELECT id_cliente FROM cliente WHERE cpf_cliente = '84406286098')
+       );
+
+INSERT INTO locacao (data_inicio, data_fim, status_locacao, cliente_id)
+VALUES (
+           TO_DATE('2024-01-11', 'YYYY-MM-DD'),
+           TO_DATE('2024-01-18', 'YYYY-MM-DD'),
+           1,
+           (SELECT id_cliente FROM cliente WHERE cpf_cliente = '58556870074')
+       );
+
+INSERT INTO moto (placa, modelo, ano_fabricacao, status_moto, locacao_id, localizacao_id)
+VALUES (
+           'ABC1D23',
+           'Honda CG 160',
+           2022,
+           1,
+           (SELECT id_locacao
+            FROM locacao
+            WHERE data_inicio = TO_DATE('2024-01-10', 'YYYY-MM-DD')
+              AND cliente_id = (SELECT id_cliente FROM cliente WHERE cpf_cliente = '84406286098')),
+           (SELECT id_localizacao FROM localizacao WHERE zona_virtual = 'Pátio SP')
+       );
+
+INSERT INTO moto (placa, modelo, ano_fabricacao, status_moto, locacao_id, localizacao_id)
+VALUES (
+           'DEF4G56',
+           'Yamaha Fazer 250',
+           2021,
+           1,
+           (SELECT id_locacao
+            FROM locacao
+            WHERE data_inicio = TO_DATE('2024-01-11', 'YYYY-MM-DD')
+              AND cliente_id = (SELECT id_cliente FROM cliente WHERE cpf_cliente = '58556870074')),
+           (SELECT id_localizacao FROM localizacao WHERE zona_virtual = 'Zona Sul SP')
+       );
+
+INSERT INTO moto (placa, modelo, ano_fabricacao, status_moto, locacao_id, localizacao_id)
+VALUES (
+           'GHI7J89',
+           'Honda PCX 150',
+           2020,
+           0,
+           NULL,
+           (SELECT id_localizacao FROM localizacao WHERE zona_virtual = 'Pátio RJ')
+       );

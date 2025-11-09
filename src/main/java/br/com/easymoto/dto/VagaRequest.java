@@ -10,7 +10,6 @@ public record VagaRequest(
         @NotNull
         Long patioId,
 
-        @NotNull
         Long motoId,
 
         @NotBlank

@@ -1,5 +1,6 @@
 package br.com.easymoto.model;
 
+import br.com.easymoto.converter.StatusLocalizacaoConverter;
 import br.com.easymoto.enums.StatusLocalizacao;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -22,7 +23,7 @@ public class Localizacao {
     private Long id;
 
     @NotNull
-    @Enumerated(EnumType.ORDINAL)
+    @Convert(converter = StatusLocalizacaoConverter.class)
     @Column(name = "status_loc")
     private StatusLocalizacao statusLoc;
 

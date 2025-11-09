@@ -1,48 +1,39 @@
 <!DOCTYPE html>
-<html layout:decorate="~{layout}" th:with="titulo='Motos'" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml">
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layout}" th:with="titulo='Lista de Motos'">
+
 <section layout:fragment="conteudo">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h1>Frota de Motos</h1>
+        <h1>Motos Cadastradas</h1>
         <a href="/web/motos/novo" class="btn btn-success">Cadastrar Nova Moto</a>
     </div>
+
     <div th:if="${mensagem}" class="alert alert-success" th:text="${mensagem}"></div>
     <div th:if="${mensagemErro}" class="alert alert-danger" th:text="${mensagemErro}"></div>
 
-    <p>
-        <a class="btn btn-outline-secondary" data-bs-toggle="collapse" href="#filtroCollapse" role="button">
-            <i class="fas fa-filter"></i> Mostrar/Ocultar Filtros
-        </a>
-    </p>
-    <div class="collapse" id="filtroCollapse">
-        <div class="card card-body mb-4">
-            <form th:action="@{/web/motos}" method="get" class="row g-3 align-items-end">
-                <div class="col-md-9">
-                    <label for="status" class="form-label">Filtrar por Status</label>
-                    <select id="status" name="status" class="form-select">
-                        <option value="">Todos os Status</option>
-                        <option th:each="s : ${statusOptions}" th:value="${s}" th:text="${s.displayName}" th:selected="${s == selectedStatus}"></option>
-                    </select>
-                </div>
-                <div class="col-md-3 d-flex">
-                    <button type="submit" class="btn btn-success me-2">Filtrar</button>
-                    <a th:href="@{/web/motos}" class="btn btn-secondary">Limpar</a>
-                </div>
-            </form>
-        </div>
-    </div>
-
     <table class="table table-striped table-hover">
         <thead class="table-dark">
-        <tr><th>Placa</th><th>Modelo</th><th>Status</th><th class="text-center">Ações</th></tr>
+        <tr>
+            <th>Placa</th>
+            <th>Modelo</th>
+            <th>Ano Fabricação</th>
+            <th>Status</th>
+            <th class="text-center">Ações</th>
+        </tr>
         </thead>
         <tbody>
         <tr th:each="moto : ${motos}">
-            <td th:text="${moto.placa()}"></td>
-            <td th:text="${moto.modelo()}"></td>
-            <td th:text="${moto.statusMoto().displayName}"></td>
+            <td th:text="${moto.placa}"></td>
+            <td th:text="${moto.modelo}"></td>
+            <td th:text="${moto.anoFabricacao}"></td>
+            <td th:text="${moto.statusMoto}"></td>
             <td class="text-center">
-                <a th:href="@{/web/motos/editar/{id}(id=${moto.id()})}" class="btn btn-warning btn-sm">Editar</a>
-                <a th:href="@{/web/motos/deletar/{id}(id=${moto.id()})}" class="btn btn-danger btn-sm">Excluir</a>
+                <a th:href="@{/web/motos/editar/{id}(id=${moto.id})}"
+                   class="btn btn-warning btn-sm">Editar</a>
+                <a th:if="${#authorization.expression('hasRole(''ADMIN'')')}"
+                   th:href="@{/web/motos/deletar/{id}(id=${moto.id})}"
+                   class="btn btn-danger btn-sm">Excluir</a>
             </td>
         </tr>
         </tbody>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+
+<head>
+    <title>Ferramentas de Banco</title>
+</head>
+
+<body>
+<section layout:fragment="conteudo" class="container mt-4">
+
+    <h2>Ferramentas de Banco (Procedures e Mongo)</h2>
+
+    <div class="mt-3">
+        <a th:href="@{/web/db/resumo-locacoes}" class="btn btn-primary">
+            Executar Procedure (Resumo Locações)
+        </a>
+
+        <a th:href="@{/web/db/exportar-motos-mongo}" class="btn btn-secondary ms-2">
+            Exportar Motos para MongoDB
+        </a>
+    </div>
+
+    <div th:if="${mensagem}" class="alert alert-success mt-3" th:text="${mensagem}"></div>
+
+    <div th:if="${resumo != null}" class="mt-4">
+        <h5>Resultado da Procedure RESUMO_LOCACAO</h5>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Cliente</th>
+                <th>Status</th>
+                <th>Dias</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="linha : ${resumo}">
+                <td th:text="${linha['CLIENTE']}"></td>
+                <td th:text="${linha['STATUS']}"></td>
+                <td th:text="${linha['DIAS']}"></td>
+            </tr>
+
+            <div class="mt-3">
+                <a th:href="@{/web/db/resumo-locacoes}" class="btn btn-primary">
+                    Executar Procedure (Resumo Locações)
+                </a>
+
+                <a th:href="@{/web/db/exportar-motos-mongo}" class="btn btn-secondary ms-2">
+                    Exportar Motos para MongoDB
+                </a>
+
+                <a th:href="@{/web/db/motos-json}" class="btn btn-info ms-2">
+                    Ver JSON das Motos (MongoDB)
+                </a>
+            </div>
+
+            </tbody>
+        </table>
+    </div>
+
+</section>
+</body>
+</html>

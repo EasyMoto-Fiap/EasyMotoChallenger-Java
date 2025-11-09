@@ -1,5 +1,6 @@
 package br.com.easymoto.model;
 
+import br.com.easymoto.converter.TypeCargoConverter;
 import br.com.easymoto.enums.TypeCargo;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
@@ -37,7 +38,7 @@ public class Funcionario implements UserDetails {
     private String password;
 
     @NotNull
-    @Enumerated(EnumType.ORDINAL)
+    @Convert(converter = TypeCargoConverter.class)
     @Column(name = "cargo")
     private TypeCargo cargo;
 
@@ -66,7 +67,10 @@ public class Funcionario implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if (this.cargo == TypeCargo.ADMIN) {
-            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+            return List.of(
+                    new SimpleGrantedAuthority("ROLE_ADMIN"),
+                    new SimpleGrantedAuthority("ROLE_USER")
+            );
         }
         return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
@@ -83,10 +87,13 @@ public class Funcionario implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() { return true; }
+
     @Override
     public boolean isAccountNonLocked() { return true; }
+
     @Override
     public boolean isCredentialsNonExpired() { return true; }
+
     @Override
     public boolean isEnabled() { return true; }
 }
