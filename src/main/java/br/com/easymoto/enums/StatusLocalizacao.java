@@ -1,28 +1,34 @@
 package br.com.easymoto.enums;
 
-import com.fasterxml.jackson.annotation.JsonValue;
+
+import java.util.Arrays;
 
 public enum StatusLocalizacao {
-    DISPONIVEL("Disponível", 1),
-    EM_USO("Em uso", 2),
-    MANUTENCAO("Manutenção", 3);
 
-    private final String displayName;
-    private final int code;
+    DENTRO_DA_ZONA_VIRTUAL(0, "Dentro da Zona Virtual"),
+    FORA_DA_ZONA_VIRTUAL(1, "Fora da Zona Virtual"),
+    EM_ALERTA(2, "Em Alerta");
 
+    private final int codigo;
+    private final String descricao;
 
-
-    StatusLocalizacao(String displayName , int code) {
-        this.displayName = displayName;
-        this.code = code;
+    StatusLocalizacao(int codigo, String descricao) {
+        this.codigo = codigo;
+        this.descricao = descricao;
     }
 
-    public String getDisplayName() {
-        return displayName;
+    public int getCodigo() {
+        return codigo;
     }
 
-    @JsonValue
-    public int getCode() {
-        return code;
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public static StatusLocalizacao fromCodigo(int codigo) {
+        return Arrays.stream(values())
+                .filter(status -> status.codigo == codigo)
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Código inválido para StatusLocalizacao: " + codigo));
     }
 }

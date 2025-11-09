@@ -3,9 +3,9 @@ package br.com.easymoto.enums;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum StatusVaga {
+    LIVRE("Livre", 0),
     OCUPADA("Ocupada", 1),
-    INDEFINIDA("Indefinida", 2),
-    LIVRE("Livre", 3);
+    INDEFINIDA("Indefinida", 2);
 
     private final String displayName;
     private final int code;

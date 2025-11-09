@@ -3,25 +3,42 @@ package br.com.easymoto.enums;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum StatusMoto {
-    DISPONIVEL("Disponível", 1),
-    EM_USO("Em uso", 2),
-    MANUTENCAO("Manutenção", 3);
 
-    private final String displayName;
+    DISPONIVEL("Disponível", 0),
+    EM_USO("Em uso", 1),
+    MANUTENCAO("Manutenção", 2);
+
+    private final String descricao;
+
+    @JsonValue
     private final int code;
 
-
-    StatusMoto(String displayName , int code) {
-        this.displayName = displayName;
+    StatusMoto(String descricao, int code) {
+        this.descricao = descricao;
         this.code = code;
     }
 
-    public String getDisplayName() {
-        return displayName;
+    public String getDescricao() {
+        return descricao;
     }
 
-    @JsonValue
+    public String getDisplayName() {
+        return descricao;
+    }
+
     public int getCode() {
         return code;
+    }
+
+    public static StatusMoto fromCode(Integer code) {
+        if (code == null) {
+            return null;
+        }
+        for (StatusMoto status : StatusMoto.values()) {
+            if (status.getCode() == code) {
+                return status;
+            }
+        }
+        throw new IllegalArgumentException("Código inválido para StatusMoto: " + code);
     }
 }

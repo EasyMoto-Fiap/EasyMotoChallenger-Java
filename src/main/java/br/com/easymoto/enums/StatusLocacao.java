@@ -1,23 +1,20 @@
 package br.com.easymoto.enums;
 
 import com.fasterxml.jackson.annotation.JsonValue;
+import lombok.Getter;
 
 public enum StatusLocacao {
-    ABERTA("Aberta", 1),
-    FINALIZADA("Finalizada", 2),
-    CANCELADA("Cancelada", 3);
+    ABERTA("Aberta", 0),
+    FINALIZADA("Finalizada", 1),
+    CANCELADA("Cancelada", 2);
 
+    @Getter
     private final String displayName;
     private final int code;
 
-
-    StatusLocacao(String displayName , int code) {
+    StatusLocacao(String displayName, int code) {
         this.displayName = displayName;
         this.code = code;
-    }
-
-    public String getDisplayName() {
-        return displayName;
     }
 
     @JsonValue

@@ -9,17 +9,14 @@ public class StatusLocalizacaoConverter implements AttributeConverter<StatusLoca
 
     @Override
     public Integer convertToDatabaseColumn(StatusLocalizacao attribute) {
-        return attribute != null ? attribute.getCode() : null;
+        return attribute != null ? attribute.getCodigo() : null;
     }
 
     @Override
     public StatusLocalizacao convertToEntityAttribute(Integer dbData) {
-        if (dbData == null) return null;
-        for (StatusLocalizacao value : StatusLocalizacao.values()) {
-            if (value.getCode() == dbData) {
-                return value;
-            }
+        if (dbData == null) {
+            return null;
         }
-        throw new IllegalArgumentException("Código inválido para StatusLocalizacao: " + dbData);
+        return StatusLocalizacao.fromCodigo(dbData);
     }
 }

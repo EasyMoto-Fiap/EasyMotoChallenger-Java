@@ -14,12 +14,6 @@ public class StatusMotoConverter implements AttributeConverter<StatusMoto, Integ
 
     @Override
     public StatusMoto convertToEntityAttribute(Integer dbData) {
-        if (dbData == null) return null;
-        for (StatusMoto value : StatusMoto.values()) {
-            if (value.getCode() == dbData) {
-                return value;
-            }
-        }
-        throw new IllegalArgumentException("Código inválido para StatusMoto: " + dbData);
+        return StatusMoto.fromCode(dbData);
     }
 }
