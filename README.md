@@ -109,7 +109,7 @@ A partir da Sprint 4, o projeto passou a contar com deploy em ambiente de nuvem,
 
 Um vídeo demonstrando as principais funcionalidades da aplicação está disponível no YouTube.
 
-**[>> Link para o Vídeo Final da Sprint 4 <<](COLE_AQUI_O_LINK_DO_VIDEO_FINAL)**
+**[>> Link para o Vídeo Final da Sprint 4 <<](https://youtu.be/xxXqfxA5bcg)**
 
 ---
 
