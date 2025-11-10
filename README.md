@@ -40,7 +40,7 @@ A aplicação é dividida em duas frentes principais: uma interface web para adm
 
 | Backend | Frontend (Web Admin) | Banco de Dados & Persistência | Segurança | DevOps |
 |---|---|---|---|---|
-| ☕ Java 21 | 🍃 Thymeleaf | 💾 H2 (Banco em Memória) | 🔐 Spring Security | 🐳 Docker |
+| ☕ Java 21 | 🍃 Thymeleaf | 💾 Oracle Database (SQL Developer) | 🔐 Spring Security | 🐳 Docker |
 | 🌱 Spring Boot 3.4.5 | 🎨 Bootstrap 5 | 🐘 Spring Data JPA (Hibernate) | 🔑 JWT (JSON Web Tokens) | 🚀 GitHub Actions (CI/CD) |
 | 📦 Gradle | 🌐 HTML5 / CSS3 | 🦋 Flyway (Migrations) | 🔑 BCrypt (Password Encoding) | |
 | ✅ Spring Validation | | ⚡ Spring Cache (Caching Simples) | | |
@@ -75,32 +75,33 @@ A aplicação é dividida em duas frentes principais: uma interface web para adm
         - **Admin:** `admin@easymoto.com`
         - **Usuário Comum:** `user@easymoto.com`
 
-5.  **Acesse o Console do Banco de Dados H2:**
-    - Para visualizar e interagir com o banco de dados em memória, acesse: **[http://localhost:8081/h2-console](http://localhost:8081/h2-console)**
-    - Utilize as seguintes credenciais para conectar:
-        - **JDBC URL:** `jdbc:h2:mem:easymoto`
-        - **User Name:** `sa`
-        - **Password:** `password`
+5.  **Configure o Banco de Dados Oracle (SQL Developer):**
+    - A partir da Sprint 4, o banco de dados principal da aplicação passou a ser o **Oracle Database**, administrado via **Oracle SQL Developer**.
+    - Atualize o arquivo `src/main/resources/application.properties` (ou `application.yml`) com as credenciais do seu schema Oracle, por exemplo:
+
+      ```properties
+      spring.datasource.url=jdbc:oracle:thin:@<HOST>:<PORTA>/<SERVICE_NAME>
+      spring.datasource.username=<SEU_USUARIO_ORACLE>
+      spring.datasource.password=<SUA_SENHA_ORACLE>
+      spring.datasource.driver-class-name=oracle.jdbc.OracleDriver
+
+      spring.jpa.hibernate.ddl-auto=none
+      spring.jpa.show-sql=true
+      spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.OracleDialect
+      ```
+
+    - No **Oracle SQL Developer**, crie uma conexão usando o mesmo usuário e senha e verifique se as tabelas foram criadas corretamente pelas migrations (Flyway) ao subir a aplicação.
 
 ---
 
-## 🐳 Executando com Docker
+## 🌐 Deploy em Nuvem (Sprint 4)
 
-1.  **Gere o arquivo `.jar` da aplicação:**
-    ```sh
-    ./gradlew clean bootJar
-    ```
+A partir da Sprint 4, o projeto passou a contar com deploy em ambiente de nuvem, permitindo acesso externo para avaliação.
 
-2.  **Construa a imagem Docker:**
-    ```sh
-    docker build -t easymoto-api .
-    ```
+**[>> Link do Deploy (Sprint 4) <<](COLE_AQUI_O_LINK_DO_DEPLOY)**
 
-3.  **Rode o container:**
-    ```sh
-    docker run -p 8081:8080 --name easymoto-container easymoto-api
-    ```
-    A aplicação estará acessível em `http://localhost:8081`.
+- **Ambiente:** descreva aqui onde a aplicação está publicada (por exemplo: Azure Web App, Render, Railway, etc.).
+- **Observações:** se houver usuário/senha específicos para acesso no ambiente de produção, descreva-os aqui.
 
 ---
 
@@ -108,20 +109,7 @@ A aplicação é dividida em duas frentes principais: uma interface web para adm
 
 Um vídeo demonstrando as principais funcionalidades da aplicação está disponível no YouTube.
 
-**[>> Link para o Vídeo <<](https://youtu.be/qMUVv4Dqu7A)**
-
-**Pontos demonstrados no vídeo:**
-- **Autenticação:**
-    - Login com usuário `ADMIN` e `USER`, mostrando as diferenças de permissão.
-    - Processo de logout.
-- **Gerenciamento (CRUDs):**
-    - Criação, listagem, edição e exclusão de Clientes, Motos e Locações.
-    - Demonstração dos filtros nas telas de listagem.
-- **Funcionalidades de Administrador (`ADMIN`):**
-    - Acesso à área de Gerenciamento de Funcionários.
-    - Acesso à tela de Auditoria de Motos, explicando como os filtros funcionam.
-- **Configurações de Conta:**
-    - Demonstração da funcionalidade de alteração de senha pelo próprio usuário.
+**[>> Link para o Vídeo Final da Sprint 4 <<](COLE_AQUI_O_LINK_DO_VIDEO_FINAL)**
 
 ---
 
@@ -131,4 +119,3 @@ Um vídeo demonstrando as principais funcionalidades da aplicação está dispon
 |---|---|
 | Valéria Conceição Dos Santos | 557177 |
 | Mirela Pinheiro Silva Rodrigues | 558191 |
-| Luiz Eduardo Da Silva Pinto | 55213 |
