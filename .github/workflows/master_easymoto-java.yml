@@ -9,6 +9,7 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -23,7 +24,14 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Build with Gradle
-        run: ./gradlew build --stacktrace
+        run: ./gradlew clean build --stacktrace
+
+      - name: Find built JAR
+        id: find-jar
+        run: |
+          JAR_PATH=$(ls build/libs/*.jar | head -n 1)
+          echo "JAR_PATH=$JAR_PATH" >> $GITHUB_ENV
+          echo "Will deploy: $JAR_PATH"
 
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
@@ -31,4 +39,4 @@ jobs:
           app-name: 'easymoto-java'
           slot-name: 'production'
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: 'build/libs/*.jar'
+          package: ${{ env.JAR_PATH }}
