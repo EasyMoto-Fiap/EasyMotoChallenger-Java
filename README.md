@@ -98,7 +98,7 @@ A aplicação é dividida em duas frentes principais: uma interface web para adm
 
 A partir da Sprint 4, o projeto passou a contar com deploy em ambiente de nuvem, permitindo acesso externo para avaliação.
 
-**[>> Link do Deploy (Sprint 4) <<](COLE_AQUI_O_LINK_DO_DEPLOY)**
+**[>> Link do Deploy (Sprint 4) <<](https://easymoto-rm558191.azurewebsites.net/login)**
 
 - **Ambiente:** descreva aqui onde a aplicação está publicada (por exemplo: Azure Web App, Render, Railway, etc.).
 - **Observações:** se houver usuário/senha específicos para acesso no ambiente de produção, descreva-os aqui.
